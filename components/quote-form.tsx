@@ -9,7 +9,7 @@ import { Button } from "@/components/ui/button";
 import { minToday } from "@/lib/utils";
 import { ContactDialog } from "@/components/contact-dialog";
 
-const NOT_SURE = "Not sure — recommend one";
+const NOT_SURE = "Not sure";
 const OTHER_VEHICLE = "Other";
 const OTHER_OCCASION = "Other";
 const ANY_CAR = "No preference";
@@ -37,6 +37,8 @@ export function QuoteForm() {
   // Cars in the chosen class; all cars when no class (or "Not sure"/"Other") is chosen.
   const carOptions = vehicleClass && carsInClass(vehicleClass.slug).length > 0 ? carsInClass(vehicleClass.slug) : cars;
   const chosenCar = cars.find((c) => c.slug === car);
+  // "Other" in both dropdowns needs only one text box: the vehicle one ("Which vehicle are you looking for?").
+  const bothOther = vehicle === OTHER_VEHICLE && car === OTHER_CAR;
 
   const occasionOther = useRef<HTMLInputElement>(null);
   const vehicleOther = useRef<HTMLInputElement>(null);
@@ -80,7 +82,7 @@ export function QuoteForm() {
                   line("Phone", f.get("phone")),
                   line("Occasion", withOther(occasion, OTHER_OCCASION, "occasionOther")),
                   line("Vehicle", withOther(vehicle, OTHER_VEHICLE, "vehicleOther")),
-                  line("Exact vehicle", chosenCar ? carName(chosenCar) : car === OTHER_CAR ? f.get("carOther") || OTHER_CAR : ""),
+                  line("Exact vehicle", chosenCar ? carName(chosenCar) : car === OTHER_CAR && !bothOther ? f.get("carOther") || OTHER_CAR : ""),
                   line("City", withOther(city, otherCity, "cityOther")),
                   line("Date", f.get("date")),
                   line("Notes", f.get("notes")),
@@ -168,7 +170,7 @@ export function QuoteForm() {
                 <SelectTrigger id="q-car" tone="dark">
                   <SelectValue placeholder={ANY_CAR} />
                 </SelectTrigger>
-                <SelectContent onCloseAutoFocus={(e) => focusOther(e, OTHER_CAR, carOther)}>
+                <SelectContent onCloseAutoFocus={(e) => focusOther(e, OTHER_CAR, vehicle === OTHER_VEHICLE ? vehicleOther : carOther)}>
                   <SelectItem value={ANY_CAR}>{ANY_CAR}</SelectItem>
                   {carOptions.map((c) => (
                     <SelectItem key={c.slug} value={c.slug}>
@@ -179,7 +181,7 @@ export function QuoteForm() {
                 </SelectContent>
               </Select>
               <OtherField
-                show={car === OTHER_CAR}
+                show={car === OTHER_CAR && !bothOther}
                 inputRef={carOther}
                 id="q-car-other"
                 name="carOther"
