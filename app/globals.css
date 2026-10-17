@@ -1,0 +1,66 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+@import "@fontsource-variable/dm-sans";
+@import "@fontsource/playfair-display/500.css";
+@import "@fontsource/playfair-display/500-italic.css";
+
+@theme {
+  --color-ink: #151514;
+  --color-ink-soft: #2a2925;
+  --color-paper: #f4f2ee;
+  --color-sand: #eae6de;
+  --color-stone: #e3dfd7;
+  --color-line: #ddd8ce;
+  --color-muted: #5f5c55;
+  --color-muted-dark: #a9a59c;
+  --color-cream: #fbfaf7;
+  --color-gold: #c5a47e;
+  --color-gold-deep: #7a5e3a;
+
+  --font-sans: "DM Sans Variable", ui-sans-serif, system-ui, sans-serif;
+  --font-serif: "Playfair Display", Georgia, serif;
+
+  --animate-hero-zoom: hero-zoom 2.4s cubic-bezier(0.2, 0.7, 0.2, 1) both;
+
+  @keyframes hero-zoom {
+    from {
+      transform: scale(1.08);
+    }
+    to {
+      transform: scale(1);
+    }
+  }
+}
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+    -webkit-tap-highlight-color: transparent;
+  }
+  body {
+    background: var(--color-paper);
+    color: var(--color-ink);
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+  }
+  ::selection {
+    background: var(--color-gold);
+    color: var(--color-ink);
+  }
+  :focus-visible {
+    outline: 2px solid var(--color-gold-deep);
+    outline-offset: 2px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}
