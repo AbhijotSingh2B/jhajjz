@@ -2,29 +2,29 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { cities, fleet, occasions } from "@/lib/site";
+import { cities, occasions } from "@/lib/site";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Button } from "@/components/ui/button";
+import { cn } from "@/lib/utils";
 
-/** Quick availability check under the hero. Hands its choices to /contact as query params. */
+/** Short quote starter under the hero. Hands its choices to /contact as query params. */
 export function BookingBar() {
   const router = useRouter();
   const [occasion, setOccasion] = useState(occasions[0]);
   const [city, setCity] = useState(cities[0]);
-  const [vehicle, setVehicle] = useState(fleet[0].name);
   const [date, setDate] = useState("");
 
   function submit(e: React.FormEvent) {
     e.preventDefault();
-    const q = new URLSearchParams({ occasion, city, vehicle, ...(date ? { date } : {}) });
+    const q = new URLSearchParams({ occasion, city, ...(date ? { date } : {}) });
     router.push(`/contact?${q.toString()}`);
   }
 
   return (
     <form
       onSubmit={submit}
-      aria-label="Check availability"
-      className="mx-auto grid max-w-[1200px] grid-cols-[repeat(auto-fit,minmax(180px,1fr))] items-end gap-4 px-6 py-6"
+      aria-label="Start a quote"
+      className="mx-auto grid max-w-[1200px] grid-cols-2 items-end gap-4 px-6 py-6 md:grid-cols-[1fr_1fr_1fr_auto]"
     >
       <Field label="Occasion" id="bb-occasion">
         <Select value={occasion} onValueChange={setOccasion}>
@@ -54,7 +54,7 @@ export function BookingBar() {
           </SelectContent>
         </Select>
       </Field>
-      <Field label="Date" id="bb-date">
+      <Field label="Date" id="bb-date" className="col-span-2 md:col-span-1">
         <input
           id="bb-date"
           type="date"
@@ -63,30 +63,26 @@ export function BookingBar() {
           className="h-12 w-full border border-line bg-white px-3 text-base text-ink transition-colors outline-none hover:border-ink/40 focus:border-ink"
         />
       </Field>
-      <Field label="Vehicle" id="bb-vehicle">
-        <Select value={vehicle} onValueChange={setVehicle}>
-          <SelectTrigger id="bb-vehicle">
-            <SelectValue />
-          </SelectTrigger>
-          <SelectContent>
-            {fleet.map((v) => (
-              <SelectItem key={v.slug} value={v.name}>
-                {v.name}
-              </SelectItem>
-            ))}
-          </SelectContent>
-        </Select>
-      </Field>
-      <Button type="submit" variant="ink" size="default">
-        Check availability
+      <Button type="submit" variant="ink" size="default" className="col-span-2 md:col-span-1">
+        Start a quote
       </Button>
     </form>
   );
 }
 
-function Field({ label, id, children }: { label: string; id: string; children: React.ReactNode }) {
+function Field({
+  label,
+  id,
+  className,
+  children,
+}: {
+  label: string;
+  id: string;
+  className?: string;
+  children: React.ReactNode;
+}) {
   return (
-    <div className="flex flex-col gap-1.5">
+    <div className={cn("flex min-w-0 flex-col gap-1.5", className)}>
       <label htmlFor={id} className="text-[13px] font-medium text-muted">
         {label}
       </label>

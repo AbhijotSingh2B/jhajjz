@@ -15,7 +15,7 @@ Claude design canvas first, then ported here.
   shadcn registry was unreachable when they were made. They follow shadcn conventions, so
   `npx shadcn add …` works alongside them.
 - `motion` (Framer Motion) for scroll reveals, staggered lists, fleet filter transitions
-- Fonts self-hosted via Fontsource: **Playfair Display** (headings) + **DM Sans Variable** (body)
+- Fonts self-hosted via Fontsource: **Libre Caslon Display** (headings; replaced Playfair, which read as template-luxury) + **DM Sans Variable** (body)
 
 ```bash
 npm install
@@ -31,14 +31,14 @@ Push straight to `main` (no feature branches or PRs) until the site launches to 
 
 ```
 app/
-  page.tsx                 Home: hero, booking bar, fleet preview, weddings, services, about, CTA
+  page.tsx                 Home: hero, booking bar, fleet preview, weddings, services (grouped), about + CTA
   fleet/page.tsx           Full fleet with filter tabs (components/fleet-browser.tsx)
   contact/page.tsx         Quote form (components/quote-form.tsx) + contact details
   privacy-policy/page.tsx  Placeholder — text still needed
 components/
   site-header.tsx          Fixed header; transparent over the home hero until scroll; Fleet mega-menu; mobile sheet
-  site-footer.tsx
-  booking-bar.tsx          Occasion / city / date / vehicle → pushes to /contact?… as query params
+  site-footer.tsx          Also renders the phone-only sticky Call / WhatsApp bar
+  booking-bar.tsx          "Start a quote": occasion / city / date → pushes to /contact?… as query params
   quote-form.tsx           Pre-fills from those query params
   motion.tsx               Reveal, Enter, Stagger, StaggerItem, MotionProvider (respects reduced motion)
   ui/                      button, select, navigation-menu, sheet
@@ -87,6 +87,11 @@ The v0 reference design (`redesign-jhajjz-in.zip`) got several facts wrong — n
       for Nirmal's connected team (permissions). **Never touch the existing Vercel project "aethal".**
 
 ## Changelog
+
+- 2026-10-17 — De-templated the design using only verified content: Libre Caslon headings, smaller hero with
+  WhatsApp as a text link, "Start a quote" bar (no fake availability check), featured fleet tile + swipe row on
+  mobile, services grouped by customer type, CTA band folded into About, phone-only sticky Call/WhatsApp bar,
+  no ↗ arrows on Contact.
 
 - 2026-10-17 — Pushed to github.com/abhijotsingh2b/jhajjz.
 - 2026-10-17 — Initial build: Home, Fleet, Contact, Privacy placeholder; animated selects, Fleet
