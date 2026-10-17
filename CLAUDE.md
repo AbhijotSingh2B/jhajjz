@@ -79,7 +79,8 @@ components/
                            (clipped), the last j turns gold and becomes the second J. The header itself never
                            animates (on reload it reset the logo, Nirmal).
   splash.tsx               Entry screen (Nirmal): ink screen, "Jhajj'z" turns into the monogram, which flies to the
-                           header logo. 3–4s (leaves once the page has loaded, never before 3s or after 4s). Once per
+                           header logo. 3.3–4s on the animation's own clock (not from the tap, which cut it short on a fast phone):
+                           the monogram holds 0.6s, it leaves once the page has loaded, never after 4s. Once per
                            tab (sessionStorage), decided by a script in layout.tsx <head>; skipped for reduced motion;
                            CSS hides it at 4s if JavaScript never runs.
   site-header.tsx          Fixed header (Home, Fleet, Weddings, Services, About, Contact); transparent over the home hero until scroll; Fleet mega-menu; mobile sheet

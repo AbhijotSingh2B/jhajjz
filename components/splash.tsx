@@ -12,8 +12,13 @@ export const splashKey = "jhajjz-intro";
  */
 export const splashScript = `try{var d=document.documentElement;if(sessionStorage.getItem("${splashKey}")||matchMedia("(prefers-reduced-motion: reduce)").matches)d.classList.add("no-splash");else{d.classList.add("splash");sessionStorage.setItem("${splashKey}","1")}}catch(e){}`;
 
-/** On screen for 3–4s: it leaves once the page has loaded, but not before 2.4s or after 3.4s, then 0.6s out. */
-const earliest = 2400;
+/**
+ * Times are on the animation's own clock (from when the screen first paints), not from the tap: on a real
+ * connection the page can arrive a second or more after the tap, and counting from the tap cut the opening
+ * short (Nirmal, on his phone). The opening ends at 2.1s; the monogram then holds so it is seen, and the
+ * screen leaves once the page has loaded too, by 3.4s at the latest (the CSS fallback's time), then 0.6s out.
+ */
+const earliest = 2700;
 const latest = 3400;
 const leave = 600;
 
@@ -64,17 +69,22 @@ export function Splash() {
         })
         .finished.then(done, done);
     };
+    // The fallback fade starts with the opening, so its currentTime is the opening's clock.
+    const clock = screen.current
+      ?.getAnimations()
+      .find((a) => a instanceof CSSAnimation && a.animationName === "splash-fallback");
+    const now = () => (typeof clock?.currentTime === "number" ? clock.currentTime : latest);
     const schedule = () => {
       clearTimeout(timer);
-      const at = Math.min(Math.max(performance.now(), earliest), latest);
-      timer = window.setTimeout(exit, at - performance.now());
+      const at = Math.min(Math.max(now(), earliest), latest);
+      timer = window.setTimeout(exit, at - now());
     };
-    if (performance.now() > latest + leave) done();
+    if (now() > latest + leave) done();
     else if (document.readyState === "complete") schedule();
     else {
       window.addEventListener("load", schedule, { once: true });
       // Never past 3.4s, loaded or not.
-      timer = window.setTimeout(exit, latest - performance.now());
+      timer = window.setTimeout(exit, latest - now());
     }
     return () => {
       clearTimeout(timer);
