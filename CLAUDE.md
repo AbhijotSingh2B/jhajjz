@@ -83,8 +83,8 @@ The v0 reference design (`redesign-jhajjz-in.zip`) got several facts wrong — n
       **has not been visually checked**. Get originals from the client, put them in `/public`, fix the mapping.
 - [ ] **Hero**: currently the client's Wix sharing image. `/public/rolls-royce-hero.webp` (from the v0
       reference, probably AI-generated) is the alternative — swap `heroImage` in `lib/site.ts`.
-- [ ] **Quote form doesn't send anything yet** — only shows a thank-you state. Wire to email / WhatsApp /
-      a form service (e.g. Netlify Forms, Resend, Formspree).
+- [ ] **Quote form** opens the WhatsApp popup (`ContactDialog`) with the details prefilled; nothing is stored
+      server-side. Confirm +91 98144 00019 is also on WhatsApp (only the first number is confirmed).
 - [ ] Privacy policy text (copy from jhajjz.in/privacy-policy)
 - [ ] Favicon / logo — client has a logo on Wix; get the file
 - [ ] Deploy preview: Nirmal views the site at **https://jhajjz.vercel.app**. Claude's cloud sandbox can't load it

@@ -11,8 +11,7 @@ import { cities, fleet, heroImage, serviceGroups } from "@/lib/site";
 import { PageTransition } from "@/components/page-transition";
 
 const preview = ["luxury-cars", "wedding-cars", "suvs", "vintage-cars", "luxury-coaches", "mini-vans"]
-  .map((slug) => fleet.find((v) => v.slug === slug)!)
-  .filter(Boolean);
+  .map((slug) => fleet.find((v) => v.slug === slug)!);
 
 export default function Home() {
   return (
@@ -21,7 +20,7 @@ export default function Home() {
       <PageTransition>
         <main>
           {/* Hero */}
-          <section className="relative flex min-h-[min(100svh,880px)] flex-col overflow-hidden bg-[#0e0e0d] text-cream">
+          <section className="relative flex min-h-[min(100svh,880px)] flex-col overflow-hidden bg-ink-deep text-cream">
             <Image
               src={heroImage}
               alt="A car from the Jhajj'z fleet"
@@ -41,7 +40,7 @@ export default function Home() {
                 </h1>
               </Enter>
               <Enter delay={0.3}>
-                <p className="mt-6 max-w-[480px] text-lg text-[#dad5cb]">
+                <p className="mt-6 max-w-[480px] text-lg text-on-dark-hero">
                   Weddings, VIP visits, corporate travel and airport transfers, anywhere in India. Head office in Mohali,
                   with stations in 14 cities.
                 </p>
@@ -124,7 +123,7 @@ export default function Home() {
               <h2 className="max-w-[640px] font-serif text-[clamp(34px,4.6vw,56px)] leading-[1.08] tracking-[-0.01em]">
                 Cars for your wedding
               </h2>
-              <p className="mt-5 max-w-[520px] text-[17px] text-[#e4dfd5]">
+              <p className="mt-5 max-w-[520px] text-[17px] text-on-dark-strong">
                 We&apos;ve done wedding cars for over 25 years. Pick a car for the couple, cars for family, and coaches
                 for the baraat and guests. We handle decoration, timings and chauffeurs on the day.
               </p>
@@ -166,11 +165,11 @@ export default function Home() {
             <div className="mx-auto flex max-w-[1200px] flex-wrap gap-x-16 gap-y-12 px-6">
               <Reveal className="min-w-0 flex-[1_1_440px]">
                 <h2 className="font-serif text-[clamp(32px,4vw,48px)] leading-[1.1] tracking-[-0.01em]">Chandigarh, since 1998</h2>
-                <p className="mt-5 max-w-[520px] text-[17px] text-[#45423c]">
+                <p className="mt-5 max-w-[520px] text-[17px] text-body">
                   We started in Chandigarh in 1998. Today we run luxury cars, SUVs, coaches and mini vans across India,
                   from stations with trained chauffeurs and a station manager you can call directly.
                 </p>
-                <p className="mt-4 max-w-[520px] text-[17px] text-[#45423c]">
+                <p className="mt-4 max-w-[520px] text-[17px] text-body">
                   Need a car for a month or longer? Ask about long-term hire.
                 </p>
                 <div className="mt-8 flex flex-wrap gap-3">
@@ -188,7 +187,7 @@ export default function Home() {
                 <h3 className="font-serif text-2xl">Pan-India, with stations in</h3>
                 <ul className="mt-4 grid grid-cols-2 gap-x-6 border-t border-ink/15 sm:grid-cols-3">
                   {cities.map((c) => (
-                    <li key={c} className="border-b border-ink/15 py-2.5 text-[16px] text-[#45423c]">
+                    <li key={c} className="border-b border-ink/15 py-2.5 text-[16px] text-body">
                       {c}
                     </li>
                   ))}

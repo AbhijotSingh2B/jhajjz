@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation";
 import { cityOptions, occasions } from "@/lib/site";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Button } from "@/components/ui/button";
-import { cn } from "@/lib/utils";
+import { cn, minToday } from "@/lib/utils";
 
 /** Short quote starter under the hero. Hands its choices to /contact as query params. */
 export function BookingBar() {
@@ -59,6 +59,7 @@ export function BookingBar() {
         <input
           id="bb-date"
           type="date"
+          ref={minToday}
           value={date}
           onChange={(e) => setDate(e.target.value)}
           className="h-12 w-full border border-line bg-white px-3 text-base text-ink transition-colors outline-none hover:border-ink/40 focus:border-ink"
