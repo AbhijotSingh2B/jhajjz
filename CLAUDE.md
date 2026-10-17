@@ -102,6 +102,10 @@ The v0 reference design (`redesign-jhajjz-in.zip`) got several facts wrong — n
 
 ## Changelog
 
+- 2026-10-17 — iPhone: page could be dragged sideways (Safari horizontal bounce). `html, body { overflow-x: clip;
+  overscroll-behavior-x: none }` in globals.css. Chromium shows no overflowing element on any page at 375/390px;
+  no WebKit here to reproduce, so re-check on a real iPhone.
+
 - 2026-10-17 — Footer: icons on every item (gold, outline). Office links to Google Maps; Contact gains a WhatsApp
   entry; social icons are Tabler brand icons copied into `components/icons.tsx` (MIT). Socials in 2 columns on phones.
 
