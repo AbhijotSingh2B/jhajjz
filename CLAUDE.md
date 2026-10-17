@@ -176,6 +176,11 @@ pin for the office. Needs the office's exact coordinates (client, or Google Maps
 - 2026-10-17 — Header: the "Jhajj'z" logo and Home (desktop nav and phone menu) scroll back to the top when you're
   already on the home page (e.g. after Weddings/Services/About). Before, Next skipped the same-page click and nothing happened.
 
+- 2026-10-17 — Map check: every dot re-projected from the DataMeet source and real city coordinates; all within
+  0.6 px (≈4 km) of where they should be. City dots gained a thin paper-coloured outline so close neighbours
+  (Delhi/Gurgaon, the four Uttarakhand towns) stay distinct instead of merging into a smudge. Chandigarh and
+  Ropar sit under the head-office marker at this scale; that's expected.
+
 - 2026-10-17 — Favicon: full "Jhajj'z" word (gold Libre Caslon on ink) replaces the "J" monogram in all 5 icon
   files. Legible at 32px and up; at 16px (old browser tabs) it is too small to read.
 
