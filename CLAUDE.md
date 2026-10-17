@@ -101,7 +101,7 @@ The v0 reference design (`redesign-jhajjz-in.zip`) got several facts wrong — n
 ## Changelog
 
 - 2026-10-17 — "Who we drive for" rebuilt as three equal columns split by hairlines; stations list removed
-  from the About section (About is now heading left, text + buttons right).
+  from the About section, then restored as "Pan-India, including" (no "stations" wording in that section).
 
 - 2026-10-17 — Quote form: choosing "Other" (occasion / vehicle / city) slides open a text box for details
   (`occasionOther`, `vehicleOther`, `cityOther`) and moves focus into it.

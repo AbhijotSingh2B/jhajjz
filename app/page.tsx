@@ -7,7 +7,7 @@ import { BookingBar } from "@/components/booking-bar";
 import { Enter, Reveal, Stagger, StaggerItem } from "@/components/motion";
 import { Button } from "@/components/ui/button";
 import { ContactDialog } from "@/components/contact-dialog";
-import { fleet, heroImage, serviceGroups } from "@/lib/site";
+import { cities, fleet, heroImage, serviceGroups } from "@/lib/site";
 import { PageTransition } from "@/components/page-transition";
 
 const preview = ["luxury-cars", "wedding-cars", "suvs", "vintage-cars", "luxury-coaches", "mini-vans"]
@@ -170,12 +170,10 @@ export default function Home() {
 
           {/* About */}
           <section id="about" className="scroll-mt-16 bg-sand py-[72px] md:py-28">
-            <div className="mx-auto grid max-w-[1200px] gap-x-16 gap-y-6 px-6 md:grid-cols-2">
-              <Reveal>
+            <div className="mx-auto flex max-w-[1200px] flex-wrap gap-x-16 gap-y-12 px-6">
+              <Reveal className="min-w-0 flex-[1_1_440px]">
                 <h2 className="font-serif text-[clamp(32px,4vw,48px)] leading-[1.1] tracking-[-0.01em]">Chandigarh, since 1998</h2>
-              </Reveal>
-              <Reveal delay={0.1}>
-                <p className="max-w-[520px] text-[17px] text-body">
+                <p className="mt-5 max-w-[520px] text-[17px] text-body">
                   We started in Chandigarh in 1998. Today we run luxury cars, SUVs, coaches and mini vans across India,
                   with trained chauffeurs and a station manager you can call directly.
                 </p>
@@ -192,6 +190,17 @@ export default function Home() {
                     </Button>
                   </ContactDialog>
                 </div>
+              </Reveal>
+              <Reveal delay={0.1} className="min-w-0 flex-[1_1_400px]">
+                <h3 className="font-serif text-2xl">Pan-India, including</h3>
+                <ul className="mt-4 grid grid-cols-2 gap-x-6 border-t border-ink/15 sm:grid-cols-3">
+                  {cities.map((c) => (
+                    <li key={c} className="border-b border-ink/15 py-2.5 text-[16px] text-body">
+                      {c}
+                    </li>
+                  ))}
+                </ul>
+                <p className="mt-4 text-[15px] text-muted">Travelling somewhere else in India? Ask us.</p>
               </Reveal>
             </div>
           </section>
