@@ -105,7 +105,8 @@ components/structured-data.tsx   Schema.org JSON-LD (AutoRental business, WebSit
 lib/seo.ts                 `openGraphBase`: spread into every page's openGraph (Next doesn't deep-merge it)
                            and the link-preview banner (public/og/jhajjz.jpg 1200x630 + jhajjz-square.jpg 1080x1080
                            for Instagram), used on every page for now; custom per-page banners can come later
-scripts/make-previews.mjs  Draws the banner (`npm run previews`): the client's Ghost head-on, fading into ink, JJ
+scripts/make-previews.mjs  Draws the banner (`npm run previews`): the client's Ghost head-on, its sides filled from the photo's own
+                           blurred road and trees (no dark bars, Nirmal), JJ
                            monogram and "Jhajj'z" above, one line below. Centred because apps crop previews square.
 lib/india-map.ts           Map path + city positions (generated with mapshaper; source and method in the file header)
 lib/site.ts                ALL client facts: contact, cities, services, fleet, photos. Edit here, not in pages.
