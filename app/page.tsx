@@ -120,18 +120,6 @@ export default function Home() {
                 We&apos;ve done wedding cars for over 25 years. Pick a car for the couple, cars for family, and coaches
                 for the baraat and guests. We handle decoration, timings and chauffeurs on the day.
               </p>
-              <ul className="mt-8 border-t border-white/15">
-                {[
-                  ["Couple's car", "Rolls-Royce, vintage, convertible"],
-                  ["Family cars", "Mercedes-Benz, BMW, Audi"],
-                  ["Baraat & guests", "Volvo coaches, mini vans"],
-                ].map(([a, b]) => (
-                  <li key={a} className="flex flex-wrap justify-between gap-x-4 gap-y-1 border-b border-white/15 py-4">
-                    <span>{a}</span>
-                    <span className="text-muted-dark">{b}</span>
-                  </li>
-                ))}
-              </ul>
               <Button asChild className="mt-8">
                 <Link href="/contact?occasion=Wedding">Plan wedding cars</Link>
               </Button>
