@@ -7,7 +7,7 @@ import { Enter } from "@/components/motion";
 import { contact } from "@/lib/site";
 import { PageTransition } from "@/components/page-transition";
 import { BreadcrumbStructuredData } from "@/components/structured-data";
-import { openGraphBase } from "@/lib/seo";
+import { openGraphBase, previewImage } from "@/lib/seo";
 import { ContactDialog, type ContactChannel } from "@/components/contact-dialog";
 
 const contactDescription =
@@ -17,7 +17,13 @@ export const metadata: Metadata = {
   title: "Get a Quote for Luxury & Wedding Car Rental",
   description: contactDescription,
   alternates: { canonical: "/contact" },
-  openGraph: { ...openGraphBase, url: "/contact", title: "Get a quote from Jhajj'z", description: contactDescription },
+  openGraph: {
+    ...openGraphBase,
+    url: "/contact",
+    title: "Get a quote from Jhajj'z",
+    description: contactDescription,
+    images: [previewImage("contact", "Get a quote from Jhajj'z")],
+  },
 };
 
 export default function ContactPage() {

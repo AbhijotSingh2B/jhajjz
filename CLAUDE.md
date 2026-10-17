@@ -103,6 +103,10 @@ app/sitemap.ts, robots.ts, manifest.ts   SEO files; all URLs use `siteUrl` from 
 app/icon.svg, favicon.ico, apple-icon.png, public/icon-192/512.png   JJ monogram on ink (rendered from icon.svg)
 components/structured-data.tsx   Schema.org JSON-LD (AutoRental business, WebSite, breadcrumbs) from lib/site.ts
 lib/seo.ts                 `openGraphBase`: spread into every page's openGraph (Next doesn't deep-merge it)
+                           and `previewImage(name)`: the page's link-preview card, public/og/<name>.jpg
+scripts/make-previews.mjs  Draws those cards (1200x630: page photo, JJ monogram, page name, site fonts). Run
+                           `npm run previews` after adding a car or changing a photo (after save-photos). Stand-in
+                           studio photos never go on a card; those pages use the hero photo or a car in the class.
 lib/india-map.ts           Map path + city positions (generated with mapshaper; source and method in the file header)
 lib/site.ts                ALL client facts: contact, cities, services, fleet, photos. Edit here, not in pages.
 ```

@@ -3,7 +3,7 @@ import "./globals.css";
 import { MotionProvider } from "@/components/motion";
 import { Splash, splashScript } from "@/components/splash";
 import { BusinessStructuredData } from "@/components/structured-data";
-import { absoluteUrl, heroImage, siteName, siteUrl } from "@/lib/site";
+import { siteName, siteUrl } from "@/lib/site";
 import { openGraphBase } from "@/lib/seo";
 
 const description =
@@ -45,9 +45,8 @@ export const metadata: Metadata = {
   twitter: {
     card: "summary_large_image",
     site: "@Jhajjztransport",
-    title: "Jhajj'z | Luxury car, wedding car & coach rental since 1998",
-    description,
-    images: [absoluteUrl(heroImage)],
+    // No title, description or image here: Next fills them from each page's openGraph, so X shows that page's
+    // own preview card and words instead of the home page's everywhere.
   },
   robots: {
     index: true,

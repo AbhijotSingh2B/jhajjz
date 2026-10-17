@@ -12,8 +12,8 @@ import { ShareButton } from "@/components/share-button";
 import { CarGallery } from "@/components/car-gallery";
 import { BreadcrumbStructuredData, CarStructuredData } from "@/components/structured-data";
 import { FleetClassPage } from "@/components/fleet-class-page";
-import { absoluteUrl, carName, cars, carsInClass, classHref, fleet, inSentence } from "@/lib/site";
-import { openGraphBase } from "@/lib/seo";
+import { carName, cars, carsInClass, classHref, fleet, inSentence } from "@/lib/site";
+import { openGraphBase, previewImage } from "@/lib/seo";
 
 type Props = { params: Promise<{ car: string }> };
 
@@ -39,7 +39,13 @@ function classMetadata(v: NonNullable<ReturnType<typeof classWithCars>>): Metada
     title: `${v.name} on Rent with Chauffeur`,
     description,
     alternates: { canonical: path },
-    openGraph: { ...openGraphBase, url: path, title: `${v.name} with chauffeur | Jhajj'z`, description },
+    openGraph: {
+      ...openGraphBase,
+      url: path,
+      title: `${v.name} with chauffeur | Jhajj'z`,
+      description,
+      images: [previewImage(v.slug, `${v.name} from Jhajj'z`)],
+    },
   };
 }
 
@@ -50,8 +56,6 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const name = carName(car);
   const description = `Hire a chauffeur-driven ${name} from Jhajj'z for weddings, business and special occasions. Head office in Chandigarh, serving pan-India.`;
   const path = `/fleet/${car.slug}`;
-  // Placeholder (CarWale) photos aren't the client's cars, so they don't become the sharing image.
-  const ownPhoto = car.photos.find((p) => !p.placeholder);
   return {
     title: `${name} on Rent with Chauffeur`,
     description,
@@ -61,7 +65,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       url: path,
       title: `${name} with chauffeur | Jhajj'z`,
       description,
-      ...(ownPhoto && { images: [{ url: absoluteUrl(ownPhoto.src), alt: ownPhoto.alt }] }),
+      images: [previewImage(car.slug, `${name} from Jhajj'z`)],
     },
   };
 }
