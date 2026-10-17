@@ -75,9 +75,13 @@ export const otherCity = "Other city in India";
 export const cityOptions = [...cities, otherCity];
 
 // The same 9 services as jhajjz.in, grouped by who books them.
+// One of the client's own photos per group (from jhajjz.in), shown in the "Who we drive for" rows.
+const groupPhoto = (id: string) => `https://static.wixstatic.com/media/${id}~mv2.jpg/v1/fill/w_1200,h_800,al_c,q_80/photo.webp`;
+
 export const serviceGroups = [
   {
     title: "Weddings & events",
+    photo: { src: groupPhoto("171684_c3987d8a36be4e0c8aaf707439a6ed96"), alt: "Jhajj'z cars decorated with red ribbon for a wedding, seen from above" },
     items: [
       { title: "Weddings", text: "Couple, family and guest transport." },
       { title: "Events & conferences", text: "Moving guests between venues and hotels." },
@@ -86,6 +90,7 @@ export const serviceGroups = [
   },
   {
     title: "Corporate & VIP",
+    photo: { src: groupPhoto("171684_bc6e0cdbab524b7184ceec501d071b4d"), alt: "Jhajj'z chauffeur beside a white BMW 7 Series with Taj branding" },
     items: [
       { title: "VIP delegations", text: "Convoys for official and state visits." },
       { title: "Hotel travel desks", text: "On-site desks at 5-star hotels." },
@@ -95,6 +100,7 @@ export const serviceGroups = [
   },
   {
     title: "Personal travel",
+    photo: { src: groupPhoto("171684_d1fc70691c5d49a992df3e11337b6f7a"), alt: "Jhajj'z chauffeur beside a black Toyota Innova Crysta" },
     items: [
       { title: "Chauffeur-driven cars", text: "By the hour, day or month." },
       { title: "City tours", text: "Sightseeing with a local driver." },
@@ -171,6 +177,25 @@ export const photos = {
   limousineTree: wixFit("171684_4e26a4cccdf7484fb9b0abe3fd9fbbbd~mv2.jpg"),
   audiSunset: wixFit("171684_b92c4c7fbc4544efaa3155a9e1b7ea5a~mv2.jpeg"),
   audiAbove: wixFit("171684_51c707a64ff645a6b827e8e2f725dc6d~mv2.jpg"),
+  sClassOlderSilver: wix("171684_54ce935d2c1143669a4ad9a04866731d"),
+  sClassOlderWhite: wix("171684_802ac0228de44308b45ad59a065c0542"),
+  bmwX7: wixFit("171684_0f7ec1a1dc534c71bae4d52224b1a906~mv2.jpg"),
+  fPace: wixFit("171684_14d2bd8bde1f4f21b0ac524e9aa17aed~mv2.png"),
+  gClassBlack: wixFit("171684_1e6d9cf11df8432a9213fb8b8626de1d~mv2.jpg"),
+  gClassWhite: wixFit("171684_8eeb67bdb2c048b582f2fbc622da8e24~mv2.jpg"),
+  vClass: wixJpeg("171684_2c1d32861eec49088dbb8a5f8d6abbbe"),
+  rangeRoverSportWedding: wixFit("171684_2ddf2c32246a480496a520f3bebc5a3c~mv2.png"),
+  rangeRoverSportFront: wixFit("171684_70c708cf855e45c4bd02a91e15391a84~mv2.jpg"),
+  rangeRoverSportBlue: wix("171684_d579ac12078a431ebbd000a307471bf8"),
+  eClass: wixFit("171684_64da252c780f4817bb018b0e9bc800bb~mv2.png"),
+  eClassOlderWedding: wixFit("171684_d0a1c5d7ba6b46d79023cb7002020974~mv2.jpg"),
+  flyingSpur: wixJpeg("171684_9a263a9503ca45a692784946f6d5cc34"),
+  maybachGls: wix("171684_aa22a48d457b42e987fff34e2eb08550"),
+  hiaceSide: wix("171684_c7d78ab1cd9b4c3dbd9766cd79d35603"),
+  innovaCrysta: wix("171684_d1fc70691c5d49a992df3e11337b6f7a"),
+  jaguarXj: wix("171684_d6742c74994b45778c8f50bc0ed52817"),
+  audiQ7: wixFit("171684_d95eac75e6314492bd61b5a29577a3f1~mv2.jpg"),
+  bmwLineUp: wix("171684_ea339aad2cb8490cb5d8d1e38d055a29"), // BMW X5, BMW i8 and a Range Rover on the road
 };
 
 // PLACEHOLDER: CarWale studio shots on white (from each model's colours page), matched to the generation and colour
@@ -188,6 +213,15 @@ export const studio = {
   vellfire: carwaleColour("48e4tsa_1481285"), // Vellfire 2020–2023, Pearl White
   defender: carwaleColour("m77deeb_1759635"), // Defender, Santorini Black
   eClass: carwaleColour("4vqrueb_1779981"), // current E-Class, Polar White
+  bmwX7: carwaleColour("lpa894a_1517731"), // X7 2019–2023, Alpine White
+  bmwX5: carwaleColour("mzvepra_1422179"), // X5 2014–2019, Alpine White
+  bmwI8: carwaleColour("7zigura_1428550"), // i8 2015–2019, Crystal White
+  fPace: carwaleColour("lp8crsa_1477901"), // F-Pace 2016–2021, Fuji White
+  jaguarXj: carwaleColour("vwrmrsa_1478302"), // XJ L, Fuji White
+  gClass: carwaleColour("vohua9b_1783719"), // Mercedes-AMG G 63, Obsidian Black
+  innovaCrysta: carwaleColour("p8d49jb_1950184"), // Innova Crysta, Attitude Black Mica
+  audiQ7: carwaleColour("93c7oua_1555653"), // Q7 2022–2024, Carrara White
+  rangeRoverSport: carwaleColour("2x5uqsa_1477733"), // Range Rover Sport 2018–2022, Fuji White
 };
 
 // There is no separate "wedding cars" class: every car in the fleet can be booked for a wedding or any event.
@@ -196,7 +230,7 @@ export const fleet: Vehicle[] = [
     slug: "luxury-cars",
     name: "Luxury cars",
     group: "cars",
-    text: "Rolls-Royce, Mercedes-Benz, BMW and Audi, for business, celebrations and everything in between.",
+    text: "Rolls-Royce, Bentley, Mercedes-Benz, BMW and Jaguar, for business, celebrations and everything in between.",
     image: studio.sClass,
     imageAlt: "Black Mercedes-Benz S-Class",
     imagePlaceholder: true,
@@ -267,7 +301,7 @@ export const fleet: Vehicle[] = [
     slug: "luxury-mpvs",
     name: "Luxury MPVs",
     group: "group",
-    text: "The Toyota Vellfire, for families, small groups and business guests who need more room than a sedan.",
+    text: "The Toyota Vellfire and Mercedes-Benz V-Class, for families, small groups and business guests who need more room than a sedan.",
     image: studio.vellfire,
     imageAlt: "White Toyota Vellfire",
     imagePlaceholder: true,
@@ -355,6 +389,8 @@ export const cars: Car[] = [
       { src: photos.sClass, alt: "Black Mercedes-Benz S-Class from the Jhajj'z fleet", generation: "Newer model" },
       { src: photos.sClassOlderWedding, alt: "White Mercedes-Benz S-Class decorated for a wedding", portrait: true, generation: "Older model" },
       { src: photos.sClassOlderChauffeur, alt: "White Mercedes-Benz S-Class with a Jhajj'z chauffeur", portrait: true, generation: "Older model" },
+      { src: photos.sClassOlderSilver, alt: "Silver Mercedes-Benz S-Class parked under trees", generation: "Older model" },
+      { src: photos.sClassOlderWhite, alt: "White Mercedes-Benz S-Class from the side", generation: "Older model" },
     ],
     details: [
       { label: "Passengers", value: null },
@@ -525,6 +561,229 @@ export const cars: Car[] = [
     details: [
       { label: "Passengers", value: null },
       { label: "Colour", value: "Red" },
+    ],
+  },
+  {
+    slug: "bentley-flying-spur",
+    brand: "Bentley",
+    model: "Flying Spur",
+    fleetClass: "luxury-cars",
+    text: "A Bentley Flying Spur for weddings, business visits and the days you want to remember.",
+    photos: [
+      { src: photos.flyingSpur, alt: "Silver Bentley Flying Spur from the Jhajj'z fleet" },
+    ],
+    details: [
+      { label: "Passengers", value: null },
+      { label: "Colour", value: "Silver" },
+    ],
+  },
+  {
+    slug: "jaguar-xj",
+    brand: "Jaguar",
+    model: "XJ",
+    fleetClass: "luxury-cars",
+    text: "A Jaguar XJ for weddings, business travel and airport transfers.",
+    photos: [
+      // PLACEHOLDER: CarWale photo — remove before public launch
+      { src: studio.jaguarXj, alt: "White Jaguar XJ", placeholder: true, cutout: true },
+      { src: photos.jaguarXj, alt: "White Jaguar XJ decorated for a wedding" },
+    ],
+    details: [
+      { label: "Passengers", value: null },
+      { label: "Colour", value: "White" },
+    ],
+  },
+  {
+    slug: "bmw-i8",
+    brand: "BMW",
+    model: "i8",
+    fleetClass: "luxury-cars",
+    text: "A BMW i8 for weddings, photoshoots and special arrivals.",
+    photos: [
+      // PLACEHOLDER: CarWale photo — remove before public launch
+      { src: studio.bmwI8, alt: "White BMW i8", placeholder: true, cutout: true },
+      { src: photos.bmwLineUp, alt: "BMW i8 between a BMW X5 and a Range Rover from the Jhajj'z fleet" },
+    ],
+    details: [
+      { label: "Passengers", value: null },
+      { label: "Colour", value: "White" },
+    ],
+  },
+  {
+    slug: "mercedes-benz-e-class",
+    brand: "Mercedes-Benz",
+    model: "E-Class",
+    fleetClass: "executive-cabs",
+    text: "A Mercedes-Benz E-Class for meetings, corporate events and airport runs.",
+    photos: [
+      // PLACEHOLDER: CarWale photo — remove before public launch
+      { src: studio.eClass, alt: "White Mercedes-Benz E-Class", placeholder: true, cutout: true, generation: "Newer model" },
+      { src: photos.eClass, alt: "White Mercedes-Benz E-Class from the Jhajj'z fleet", portrait: true, generation: "Newer model" },
+      { src: photos.eClassOlderWedding, alt: "Mercedes-Benz E-Class decorated with red ribbon for a wedding", portrait: true, generation: "Older model" },
+    ],
+    details: [
+      { label: "Passengers", value: null },
+      { label: "Colour", value: null },
+    ],
+  },
+  {
+    slug: "bmw-x7",
+    brand: "BMW",
+    model: "X7",
+    fleetClass: "suvs",
+    text: "A BMW X7 for family travel, business visits and trips to the hills.",
+    photos: [
+      // PLACEHOLDER: CarWale photo — remove before public launch
+      { src: studio.bmwX7, alt: "White BMW X7", placeholder: true, cutout: true },
+      { src: photos.bmwX7, alt: "White BMW X7 from the Jhajj'z fleet", portrait: true },
+    ],
+    details: [
+      { label: "Passengers", value: null },
+      { label: "Colour", value: "White" },
+    ],
+  },
+  {
+    slug: "bmw-x5",
+    brand: "BMW",
+    model: "X5",
+    fleetClass: "suvs",
+    text: "A BMW X5 for business visits, airport runs and weekend drives.",
+    photos: [
+      // PLACEHOLDER: CarWale photo — remove before public launch
+      { src: studio.bmwX5, alt: "White BMW X5", placeholder: true, cutout: true },
+      { src: photos.bmwLineUp, alt: "BMW X5, BMW i8 and a Range Rover from the Jhajj'z fleet" },
+    ],
+    details: [
+      { label: "Passengers", value: null },
+      { label: "Colour", value: "White" },
+    ],
+  },
+  {
+    slug: "mercedes-benz-g-class",
+    brand: "Mercedes-Benz",
+    model: "G-Class",
+    fleetClass: "suvs",
+    text: "A Mercedes-Benz G-Class for weddings, VIP arrivals and hill trips.",
+    photos: [
+      // PLACEHOLDER: CarWale photo — remove before public launch
+      { src: studio.gClass, alt: "Black Mercedes-AMG G 63", placeholder: true, cutout: true },
+      { src: photos.gClassBlack, alt: "Black Mercedes-Benz G-Class from the Jhajj'z fleet", portrait: true },
+      { src: photos.gClassWhite, alt: "White Mercedes-Benz G-Class decorated for a wedding", portrait: true },
+    ],
+    details: [
+      { label: "Passengers", value: null },
+      { label: "Colour", value: null },
+    ],
+  },
+  {
+    slug: "mercedes-maybach-gls",
+    brand: "Mercedes-Maybach",
+    model: "GLS",
+    name: "Mercedes-Maybach GLS",
+    fleetClass: "suvs",
+    text: "A Mercedes-Maybach GLS for weddings, VIP visits and family travel.",
+    photos: [
+      { src: photos.maybachGls, alt: "Two-tone Mercedes-Maybach GLS at night" },
+    ],
+    details: [
+      { label: "Passengers", value: null },
+      { label: "Colour", value: null },
+    ],
+  },
+  {
+    slug: "range-rover-sport",
+    brand: "Land Rover",
+    model: "Range Rover Sport",
+    name: "Range Rover Sport",
+    fleetClass: "suvs",
+    text: "A Range Rover Sport for weddings, business visits and trips to the hills.",
+    photos: [
+      // PLACEHOLDER: CarWale photo — remove before public launch
+      { src: studio.rangeRoverSport, alt: "White Range Rover Sport", placeholder: true, cutout: true, generation: "Newer model" },
+      { src: photos.rangeRoverSportFront, alt: "White Range Rover Sport from the Jhajj'z fleet", portrait: true, generation: "Newer model" },
+      { src: photos.rangeRoverSportWedding, alt: "White Range Rover Sport decorated for a wedding", portrait: true, generation: "Newer model" },
+      { src: photos.rangeRoverSportBlue, alt: "Blue Range Rover Sport", generation: "Older model" },
+    ],
+    details: [
+      { label: "Passengers", value: null },
+      { label: "Colour", value: null },
+    ],
+  },
+  {
+    slug: "jaguar-f-pace",
+    brand: "Jaguar",
+    model: "F-Pace",
+    fleetClass: "suvs",
+    text: "A Jaguar F-Pace for business visits, weekend drives and wedding convoys.",
+    photos: [
+      // PLACEHOLDER: CarWale photo — remove before public launch
+      { src: studio.fPace, alt: "White Jaguar F-Pace", placeholder: true, cutout: true },
+      { src: photos.fPace, alt: "White Jaguar F-Pace from the Jhajj'z fleet" },
+    ],
+    details: [
+      { label: "Passengers", value: null },
+      { label: "Colour", value: "White" },
+    ],
+  },
+  {
+    slug: "audi-q7",
+    brand: "Audi",
+    model: "Q7",
+    fleetClass: "suvs",
+    text: "An Audi Q7 for family travel, business visits and trips to the hills.",
+    photos: [
+      // PLACEHOLDER: CarWale photo — remove before public launch
+      { src: studio.audiQ7, alt: "White Audi Q7", placeholder: true, cutout: true },
+      { src: photos.audiQ7, alt: "White Audi Q7 from the Jhajj'z fleet", portrait: true },
+    ],
+    details: [
+      { label: "Passengers", value: null },
+      { label: "Colour", value: "White" },
+    ],
+  },
+  {
+    slug: "mercedes-benz-v-class",
+    brand: "Mercedes-Benz",
+    model: "V-Class",
+    fleetClass: "luxury-mpvs",
+    text: "A Mercedes-Benz V-Class for families, small groups and business guests.",
+    photos: [
+      { src: photos.vClass, alt: "White Mercedes-Benz V-Class from the Jhajj'z fleet" },
+    ],
+    details: [
+      { label: "Passengers", value: null },
+      { label: "Colour", value: "White" },
+    ],
+  },
+  {
+    slug: "toyota-hiace",
+    brand: "Toyota",
+    model: "HiAce",
+    fleetClass: "mini-vans",
+    text: "A Toyota HiAce van for families, small groups and trips with plenty of luggage.",
+    photos: [
+      { src: photos.hiace, alt: "Navy Toyota HiAce van from the Jhajj'z fleet" },
+      { src: photos.hiaceSide, alt: "Navy Toyota HiAce with its sliding door open" },
+    ],
+    details: [
+      { label: "Passengers", value: null },
+      { label: "Colour", value: "Navy blue" },
+    ],
+  },
+  {
+    slug: "toyota-innova-crysta",
+    brand: "Toyota",
+    model: "Innova Crysta",
+    fleetClass: "mini-vans",
+    text: "A Toyota Innova Crysta for family trips, airport runs and small groups.",
+    photos: [
+      // PLACEHOLDER: CarWale photo — remove before public launch
+      { src: studio.innovaCrysta, alt: "Black Toyota Innova Crysta", placeholder: true, cutout: true },
+      { src: photos.innovaCrysta, alt: "Black Toyota Innova Crysta with a Jhajj'z chauffeur" },
+    ],
+    details: [
+      { label: "Passengers", value: null },
+      { label: "Colour", value: "Black" },
     ],
   },
 ];

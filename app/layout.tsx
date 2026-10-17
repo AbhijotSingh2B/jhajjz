@@ -6,7 +6,7 @@ import { heroImage, siteName, siteUrl } from "@/lib/site";
 import { openGraphBase } from "@/lib/seo";
 
 const description =
-  "Chauffeur-driven luxury car, wedding car and coach rental since 1998. Rolls-Royce, Mercedes-Benz, BMW, Audi, Range Rover and Volvo coaches. Head office in Chandigarh, serving pan-India.";
+  "Chauffeur-driven luxury car, wedding car and coach rental since 1998. Rolls-Royce, Bentley, Mercedes-Benz, BMW, Audi, Jaguar, Range Rover and Volvo coaches. Head office in Chandigarh, serving pan-India.";
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),

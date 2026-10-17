@@ -181,6 +181,9 @@ export default function Home() {
                             </span>
                           </Link>
                         )}
+                        <div className="relative mt-5 aspect-[3/2] max-w-[420px] overflow-hidden bg-stone">
+                          <Image src={g.photo.src} alt={g.photo.alt} fill sizes="(max-width: 768px) 100vw, 360px" className="object-cover" />
+                        </div>
                       </div>
                       <ul className="grid gap-x-10 gap-y-5 sm:grid-cols-2 md:pt-2">
                         {g.items.map((s) => (

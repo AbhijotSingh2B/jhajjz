@@ -10,7 +10,7 @@ import { BreadcrumbStructuredData } from "@/components/structured-data";
 import { openGraphBase } from "@/lib/seo";
 
 const fleetDescription =
-  "Rent a Rolls-Royce, Mercedes-Benz, BMW, Audi or Range Rover with a chauffeur: luxury cars, wedding cars, vintage cars, limousines, SUVs, luxury MPVs like the Toyota Vellfire, Volvo coaches and mini vans. Chandigarh and pan-India.";
+  "Rent a Rolls-Royce, Bentley, Mercedes-Benz, BMW, Audi, Jaguar or Range Rover with a chauffeur: luxury cars, wedding cars, vintage cars, limousines, SUVs, luxury MPVs like the Toyota Vellfire, Volvo coaches and mini vans. Chandigarh and pan-India.";
 
 export const metadata: Metadata = {
   title: "Luxury Car, Wedding Car & Coach Fleet",
@@ -35,7 +35,7 @@ export default function FleetPage() {
               </Enter>
               <Enter delay={0.12}>
                 <p className="mt-5 max-w-[560px] text-[17px] text-muted">
-                  Rolls-Royce, Mercedes-Benz, BMW, Audi and Range Rover, plus Volvo and Mercedes-Benz coaches. Every
+                  Rolls-Royce, Bentley, Mercedes-Benz, BMW, Audi, Jaguar and Range Rover, plus Volvo and Mercedes-Benz coaches. Every
                   vehicle comes with a trained chauffeur, anywhere in India, and any of them can be booked for a wedding or event.
                 </p>
               </Enter>

@@ -98,7 +98,8 @@ lib/site.ts                ALL client facts: contact, cities, services, fleet, p
 - Phones +91 98036 00001 (the Mohali office's number, per Nirmal), +91 98144 00019 · info.jhajjz@gmail.com · WhatsApp on the first number
 - **Pan-India service** (confirmed by Nirmal); stations in **14 cities**: Chandigarh, New Delhi, Gurgaon, Jaipur, Udaipur, Mumbai, Chennai, Kolkata, Bhubaneswar,
   Dehradun, Mussoorie, Rishikesh, Haridwar, Ropar
-- Brands: Rolls-Royce, Mercedes-Benz, BMW, Audi, Range Rover; coaches by Volvo and Mercedes-Benz
+- Brands: Rolls-Royce, Bentley, Mercedes-Benz (and Maybach), BMW, Audi, Jaguar, Land Rover / Range Rover, Toyota; coaches
+  by Volvo and Mercedes-Benz (Bentley, Jaguar and the newer cars below come from the car photos on jhajjz.in)
 - 9 vehicle classes and 9 services — see `lib/site.ts`. jhajjz.in's "Wedding cars" class was dropped (Nirmal:
   every car can be booked for any event); "Luxury MPVs" (Toyota Vellfire) was added by Nirmal
 
@@ -132,7 +133,7 @@ The v0 reference design (`redesign-jhajjz-in.zip`) got several facts wrong — n
       an E-Class (Executive cabs), coaches, Toyota Vellfire (white). Mini vans has no photo ([CONFIRM: photo]).
       Still worth getting the originals into /public (Wix hot-links can break). The privacy policy text, logo file and
       real office list still need jhajjz.in access (blocked from the sandbox).
-- [ ] **Car pages** (12): Rolls-Royce Ghost, Mercedes-Benz S-Class, BMW 7 Series, Range Rover Autobiography,
+- [ ] **Car pages** (26). The first 12 came from Nirmal: Rolls-Royce Ghost, Mercedes-Benz S-Class, BMW 7 Series, Range Rover Autobiography,
       Mercedes-Benz GLS, bulletproof Mercedes-Benz GLE, Toyota Land Cruiser, black Toyota Fortuner, Land Rover
       Defender, Chrysler 300C stretch limousine, Audi Cabriolet (Nirmal; I think an A3 Cabriolet — confirm the model),
       Toyota Vellfire. Ghost, 7 Series, Defender, limousine, Audi and Vellfire have real Jhajj'z photos; the others
@@ -147,24 +148,31 @@ The v0 reference design (`redesign-jhajjz-in.zip`) got several facts wrong — n
       studio shot. Fleet cards / home use studio shots for luxury cars (S-Class), SUVs (Range Rover), executive cabs
       (E-Class), MPVs (Vellfire); vintage, convertibles, limousines, coaches keep real photos; mini vans got the client's
       HiAce photo. All studio shots are `placeholder: true` / `imagePlaceholder: true`: the client will send their own.
-      **More cars in jhajjz.in's photos, not on the new site** (identified by eye; client must confirm they're in the
-      fleet before adding pages): Mercedes-Maybach S-Class, Mercedes G-Class (black and white), Mercedes-Maybach GLS
-      (red), Range Rover Sport (white, blue), BMW X7, BMW X5, BMW i8, Bentley Flying Spur, Jaguar XJ, Jaguar F-Pace,
-      Audi Q7, Mercedes E-Class, Mercedes V-Class, Toyota HiAce, Toyota Innova (black), a grey 12-seat van, Mercedes GLE
-      (dark blue, at a wedding). Also photos with uniformed chauffeurs (Taj-branded) and wedding line-ups.
+      **14 more (added 2026-10-17 on Nirmal's go-ahead) from the car photos on jhajjz.in, identified by eye**, so the
+      client should still confirm each is in the fleet: Bentley Flying Spur, Jaguar XJ, BMW i8 (luxury cars); Mercedes
+      E-Class (executive cabs; newer W214 + older AMG one); BMW X7, BMW X5, Mercedes G-Class, Mercedes-Maybach GLS, Range
+      Rover Sport (newer white + older blue), Jaguar F-Pace, Audi Q7 (SUVs); Mercedes V-Class (luxury MPVs); Toyota
+      HiAce, Toyota Innova Crysta (mini vans). X5 and i8 only appear in one group photo (with a Range Rover). No studio
+      shot for Flying Spur (CarWale has no silver), Maybach GLS (no red two-tone), V-Class and HiAce (none for the
+      client's generation). Two silver/white photos that looked like a Maybach S-Class are the older S-Class (Maybach-
+      style wheels) and sit in its "Older model" carousel. Left out: a grey van (model unknown), a dark-blue GLE at a
+      wedding (not clearly the bulletproof one), vintage cars (make unknown).
+      "Who we drive for" rows each have one of the client's photos (wedding line-up from above; chauffeur with the
+      Taj-branded 7 Series; chauffeur with the Innova).
 - [ ] **Hero**: currently the client's Wix sharing image. `/public/rolls-royce-hero.webp` (from the v0
       reference, probably AI-generated) is the alternative — swap `heroImage` in `lib/site.ts`.
 - [ ] **Quote form** opens the WhatsApp popup (`ContactDialog`) with the details prefilled; nothing is stored
       server-side. Confirm +91 98144 00019 is also on WhatsApp (only the first number is confirmed).
 - [ ] Privacy policy: drafted from what the site actually does (no cookies/tracking; form only opens WhatsApp or
       email). Client must confirm the 3 highlighted `[CONFIRM]` items (who details are shared with, how long they're
-      kept, no selling/marketing), or swap in the text from jhajjz.in/privacy-policy.
+      kept, no selling/marketing). jhajjz.in/privacy-policy turned out to be only Wix's template paragraph ("My Site is
+      committed to…"), so there is no client text to swap in.
 - [ ] Favicon / logo — placeholder favicon is the word "Jhajj'z" in gold Caslon on ink (made from the heading font
       with fontTools, see app/icon.svg; PNGs use a narrower word to fit the maskable safe zone). Swap for the client's real logo when we have the file; regenerate all 5 icon files.
 - [ ] **SEO at launch** (code is ready; these are outside the repo):
       1. Point www.jhajjz.in at Vercel — the noindex on previews switches off automatically for that host.
-      2. 301-redirect every old Wix URL to its new page (`redirects()` in next.config.ts) so rankings carry over.
-         Needs the list of Wix URLs (Search Console → Pages, or a crawl of jhajjz.in).
+      2. ~~301-redirect every old Wix URL~~ Done: `redirects()` in next.config.ts covers every URL in jhajjz.in's
+         sitemap (permanent 308s). After launch, check Search Console → Pages for any other old URL still getting traffic.
       3. Google Search Console: verify the domain, submit https://www.jhajjz.in/sitemap.xml.
       4. Google Business Profile for the Mohali office (same name, address, phone as the site) — the single
          biggest factor for "luxury car rental Chandigarh"-type local searches. Ask the client for reviews there.
@@ -205,6 +213,11 @@ pin for the office. Needs the office's exact coordinates (client, or Google Maps
 (an embed loads Google cookies, so the privacy policy would need a line). Still ask the client for photos and logo.
 
 ## Changelog
+
+- 2026-10-17 — 14 more car pages from the car photos on jhajjz.in (Flying Spur, XJ, i8, E-Class, X7, X5, G-Class,
+  Maybach GLS, Range Rover Sport, F-Pace, Q7, V-Class, HiAce, Innova Crysta), each with matching CarWale studio shots
+  where available; more older S-Class photos. "Who we drive for" rows gain a real photo each. Redirects from every
+  old Wix URL. Brand lists in SEO descriptions and the fleet intro now include Bentley and Jaguar.
 
 - 2026-10-17 — Car pages: photo carousel (components/car-gallery.tsx), one per model generation, newer on top.
   CarWale studio shots (white background) on every car and on the luxury cars / SUVs / executive cabs / MPVs cards,
