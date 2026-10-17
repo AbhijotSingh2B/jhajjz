@@ -18,7 +18,8 @@ export function BookingBar() {
     e.preventDefault();
     // Only pass on what the visitor actually chose; the quote form shows empty fields for the rest.
     const q = new URLSearchParams(Object.entries({ occasion, city, date }).filter(([, v]) => v));
-    router.push(q.size ? `/contact?${q.toString()}` : "/contact");
+    const qs = q.toString();
+    router.push(qs ? `/contact?${qs}` : "/contact");
   }
 
   return (

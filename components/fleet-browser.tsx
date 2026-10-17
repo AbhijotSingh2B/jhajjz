@@ -48,14 +48,14 @@ export function FleetBrowser() {
           </button>
         )}
       </div>
-      <div role="tablist" aria-label="Filter the fleet" className="flex flex-wrap gap-2">
+      <div role="group" aria-label="Filter the fleet" className="flex flex-wrap gap-2">
         {fleetGroups.map((g) => {
           const active = g.id === filter;
           return (
             <button
               key={g.id}
-              role="tab"
-              aria-selected={active}
+              type="button"
+              aria-pressed={active}
               onClick={() => setFilter(g.id)}
               className={cn(
                 "relative isolate h-11 px-5 text-[15px] font-medium transition-colors duration-300",
