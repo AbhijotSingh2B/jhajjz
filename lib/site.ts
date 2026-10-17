@@ -216,6 +216,8 @@ export type Car = {
   slug: string;
   brand: string;
   model: string;
+  /** What we call it on the site, when "brand model" reads wrong (e.g. "Range Rover Autobiography"). */
+  name?: string;
   /** Slug of the vehicle class in `fleet` this car belongs to. */
   fleetClass: string;
   text: string;
@@ -238,6 +240,107 @@ export const cars: Car[] = [
       { label: "Based in", value: null },
     ],
   },
+  {
+    slug: "mercedes-benz-s-class",
+    brand: "Mercedes-Benz",
+    model: "S-Class",
+    fleetClass: "luxury-cars",
+    text: "Our Mercedes-Benz S-Class comes with a trained Jhajj'z chauffeur. Ask us about it for business travel, airport transfers or a wedding.",
+    photos: [],
+    details: [
+      { label: "Passengers", value: null },
+      { label: "Colour", value: null },
+      { label: "Model year", value: null },
+      { label: "Based in", value: null },
+    ],
+  },
+  {
+    slug: "range-rover-autobiography",
+    brand: "Land Rover",
+    model: "Range Rover Autobiography",
+    name: "Range Rover Autobiography",
+    fleetClass: "suvs",
+    text: "Our Range Rover Autobiography comes with a trained Jhajj'z chauffeur. Ask us about it for a wedding, a business visit or a trip to the hills.",
+    photos: [],
+    details: [
+      { label: "Passengers", value: null },
+      { label: "Colour", value: null },
+      { label: "Model year", value: null },
+      { label: "Based in", value: null },
+    ],
+  },
+  {
+    slug: "mercedes-benz-gls",
+    brand: "Mercedes-Benz",
+    model: "GLS",
+    fleetClass: "suvs",
+    text: "Our Mercedes-Benz GLS comes with a trained Jhajj'z chauffeur. Ask us about it for family travel, business visits or a trip to the hills.",
+    photos: [],
+    details: [
+      { label: "Passengers", value: null },
+      { label: "Colour", value: null },
+      { label: "Model year", value: null },
+      { label: "Based in", value: null },
+    ],
+  },
+  {
+    slug: "mercedes-benz-gle-bulletproof",
+    brand: "Mercedes-Benz",
+    model: "GLE",
+    name: "Mercedes-Benz GLE (bulletproof)",
+    fleetClass: "suvs",
+    text: "Our bulletproof Mercedes-Benz GLE comes with a trained Jhajj'z chauffeur. Ask us about it for VIP visits, delegations and anyone who needs extra security on the road.",
+    photos: [],
+    details: [
+      { label: "Passengers", value: null },
+      { label: "Colour", value: null },
+      { label: "Model year", value: null },
+      { label: "Protection level", value: null },
+      { label: "Based in", value: null },
+    ],
+  },
+  {
+    slug: "toyota-land-cruiser",
+    brand: "Toyota",
+    model: "Land Cruiser",
+    fleetClass: "suvs",
+    text: "Our Toyota Land Cruiser comes with a trained Jhajj'z chauffeur. Ask us about it for long road trips, hill travel or business visits.",
+    photos: [],
+    details: [
+      { label: "Passengers", value: null },
+      { label: "Colour", value: null },
+      { label: "Model year", value: null },
+      { label: "Based in", value: null },
+    ],
+  },
+  {
+    slug: "toyota-fortuner",
+    brand: "Toyota",
+    model: "Fortuner",
+    fleetClass: "suvs",
+    text: "Our black Toyota Fortuner comes with a trained Jhajj'z chauffeur. Ask us about it for family trips, hill travel or a wedding convoy.",
+    photos: [],
+    details: [
+      { label: "Passengers", value: null },
+      { label: "Colour", value: "Black" },
+      { label: "Model year", value: null },
+      { label: "Based in", value: null },
+    ],
+  },
+  {
+    slug: "toyota-vellfire",
+    brand: "Toyota",
+    model: "Vellfire",
+    fleetClass: "mini-vans",
+    text: "Our Toyota Vellfire comes with a trained Jhajj'z chauffeur. Ask us about it for families, small groups and business guests.",
+    photos: [],
+    details: [
+      { label: "Passengers", value: null },
+      { label: "Colour", value: null },
+      { label: "Model year", value: null },
+      { label: "Based in", value: null },
+    ],
+  },
 ];
 
-export const carName = (c: Car) => `${c.brand} ${c.model}`;
+export const carName = (c: Car) => c.name ?? `${c.brand} ${c.model}`;

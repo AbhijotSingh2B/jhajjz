@@ -26,6 +26,9 @@ async function getCar(params: Props["params"]) {
   return { car, fleetClass: fleet.find((v) => v.slug === car.fleetClass) };
 }
 
+/** "Luxury cars" → "luxury cars", but "SUVs" stays "SUVs". */
+const inSentence = (s: string) => (/^[A-Z][a-z]/.test(s) ? s[0].toLowerCase() + s.slice(1) : s);
+
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { car } = await getCar(params);
   const name = carName(car);
@@ -49,6 +52,7 @@ export default async function CarPage({ params }: Props) {
   const { car, fleetClass } = await getCar(params);
   const name = carName(car);
   const [photo, ...morePhotos] = car.photos;
+  const sameClass = cars.filter((c) => c.fleetClass === car.fleetClass && c.slug !== car.slug);
 
   return (
     <>
@@ -143,9 +147,23 @@ export default async function CarPage({ params }: Props) {
                 <div className="min-w-0 flex-[1_1_480px]">
                   <h2 className="font-serif text-[clamp(28px,3.4vw,40px)] leading-[1.1]">Looking at other cars?</h2>
                   <p className="mt-3 max-w-[480px] text-[17px] text-body">{fleetClass.text}</p>
+                  {sameClass.length > 0 && (
+                    <ul className="mt-3 flex flex-wrap gap-x-5">
+                      {sameClass.map((c) => (
+                        <li key={c.slug}>
+                          <Link
+                            href={`/fleet/${c.slug}`}
+                            className="inline-flex min-h-11 items-center text-[16px] text-ink underline decoration-ink/30 underline-offset-[5px] transition-colors hover:decoration-ink"
+                          >
+                            {carName(c)}
+                          </Link>
+                        </li>
+                      ))}
+                    </ul>
+                  )}
                 </div>
                 <Button asChild variant="outline">
-                  <Link href={`/fleet#${fleetClass.slug}`}>See all {fleetClass.name.toLowerCase()}</Link>
+                  <Link href={`/fleet#${fleetClass.slug}`}>See all {inSentence(fleetClass.name)}</Link>
                 </Button>
               </Reveal>
             </section>

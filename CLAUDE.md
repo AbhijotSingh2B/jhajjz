@@ -128,8 +128,10 @@ The v0 reference design (`redesign-jhajjz-in.zip`) got several facts wrong — n
       **Prerequisite:** photos committed to `/public/fleet/`, OR the cloud environment allows
       `static.wixstatic.com` + `jhajjz.in` + `www.jhajjz.in`. As of 2026-10-17 all three are blocked (proxy 403),
       including for WebFetch.
-- [ ] **Car pages**: Rolls-Royce Ghost page is a template with [CONFIRM] for photos, passengers, colour, model year
-      and base city. Client to confirm the Ghost is in the fleet and supply those; then list the other cars.
+- [ ] **Car pages** (8, cars named by Nirmal): Rolls-Royce Ghost, Mercedes-Benz S-Class, Range Rover Autobiography
+      ("latest", per Nirmal; year still [CONFIRM]), Mercedes-Benz GLS, bulletproof Mercedes-Benz GLE (protection level
+      [CONFIRM]), Toyota Land Cruiser, black Toyota Fortuner, Toyota Vellfire (filed under Mini vans). All need photos,
+      passengers, model year and base city from the client; colour too except the Fortuner.
 - [ ] **Hero**: currently the client's Wix sharing image. `/public/rolls-royce-hero.webp` (from the v0
       reference, probably AI-generated) is the alternative — swap `heroImage` in `lib/site.ts`.
 - [ ] **Quote form** opens the WhatsApp popup (`ContactDialog`) with the details prefilled; nothing is stored
@@ -177,6 +179,10 @@ pin for the office. Needs the office's exact coordinates (client, or Google Maps
 (an embed loads Google cookies, so the privacy policy would need a line). Still ask the client for photos and logo.
 
 ## Changelog
+
+- 2026-10-17 — 7 more car pages (S-Class, Range Rover Autobiography, GLS, bulletproof GLE, Land Cruiser, black
+  Fortuner, Vellfire). `Car.name` overrides "brand model" where it reads wrong. Car pages list the other cars in
+  the same class.
 
 - 2026-10-17 — Individual car pages: `/fleet/rolls-royce-ghost` (photo, details as ruled rows, quote link that
   prefills the form, WhatsApp popup with a message about the car, "See all luxury cars" band). Car JSON-LD +
