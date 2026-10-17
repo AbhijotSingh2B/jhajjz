@@ -25,6 +25,8 @@ export const metadata: Metadata = {
     "vintage car for wedding",
     "limousine rental",
     "luxury coach hire",
+    "luxury MPV rental",
+    "Toyota Vellfire rental",
     "Volvo coach rental",
     "chauffeur driven car",
     "VIP car rental India",

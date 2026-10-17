@@ -7,6 +7,7 @@ import { AnimatePresence, motion } from "motion/react";
 import { Search, X } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { carName, cars, contact, fleet, fleetGroups, type FleetGroup } from "@/lib/site";
+import { Confirm } from "@/components/confirm";
 
 const ease = [0.2, 0.7, 0.2, 1] as const;
 
@@ -91,15 +92,21 @@ export function FleetBrowser() {
               exit={{ opacity: 0, scale: 0.96, transition: { duration: 0.25 } }}
               className="group relative scroll-mt-28"
             >
-              <div className="relative aspect-[3/2] overflow-hidden bg-stone">
-                <Image
-                  src={v.image}
-                  alt={v.imageAlt}
-                  fill
-                  priority={i < 3}
-                  sizes="(max-width: 768px) 100vw, 400px"
-                  className="object-cover transition-transform duration-700 ease-out group-hover:scale-[1.03]"
-                />
+              <div className="relative flex aspect-[3/2] items-center justify-center overflow-hidden bg-stone">
+                {v.image ? (
+                  <Image
+                    src={v.image}
+                    alt={v.imageAlt ?? v.name}
+                    fill
+                    priority={i < 3}
+                    sizes="(max-width: 768px) 100vw, 400px"
+                    className="object-cover transition-transform duration-700 ease-out group-hover:scale-[1.03]"
+                  />
+                ) : (
+                  <span className="text-[15px]">
+                    <Confirm>photo</Confirm>
+                  </span>
+                )}
               </div>
               <h2 className="mt-4 font-serif text-[28px] leading-tight">{v.name}</h2>
               <p className="mt-1.5 text-[15px] text-muted">{v.text}</p>

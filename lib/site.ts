@@ -122,8 +122,9 @@ export type Vehicle = {
   name: string;
   group: FleetGroup;
   text: string;
-  image: string;
-  imageAlt: string;
+  /** Leave out until the client sends a real photo; the card then shows a highlighted [CONFIRM]. */
+  image?: string;
+  imageAlt?: string;
 };
 
 export const fleet: Vehicle[] = [
@@ -199,6 +200,13 @@ export const fleet: Vehicle[] = [
     image: wixJpeg("171684_1371098b103945e981bf18c1563c7087"),
     imageAlt: "Mini van",
   },
+  {
+    // "MPV" is the term used in India for the Vellfire class (Toyota sells it here as a luxury MPV).
+    slug: "luxury-mpvs",
+    name: "Luxury MPVs",
+    group: "group",
+    text: "The Toyota Vellfire, for families, small groups and business guests who need more room than a sedan.",
+  },
 ];
 
 export const fleetGroups: { id: "all" | FleetGroup; label: string }[] = [
@@ -206,7 +214,7 @@ export const fleetGroups: { id: "all" | FleetGroup; label: string }[] = [
   { id: "cars", label: "Luxury & executive" },
   { id: "wedding", label: "Weddings" },
   { id: "suv", label: "SUVs" },
-  { id: "group", label: "Coaches & vans" },
+  { id: "group", label: "MPVs, vans & coaches" },
 ];
 
 // Individual cars, each with its own page at /fleet/<slug>. Only add a car the client has confirmed is in the
@@ -331,7 +339,7 @@ export const cars: Car[] = [
     slug: "toyota-vellfire",
     brand: "Toyota",
     model: "Vellfire",
-    fleetClass: "mini-vans",
+    fleetClass: "luxury-mpvs",
     text: "Our Toyota Vellfire comes with a trained Jhajj'z chauffeur. Ask us about it for families, small groups and business guests.",
     photos: [],
     details: [

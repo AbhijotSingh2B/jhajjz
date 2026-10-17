@@ -11,8 +11,15 @@ import { IndiaMap } from "@/components/india-map";
 import { cities, fleet, heroImage, serviceGroups } from "@/lib/site";
 import { PageTransition } from "@/components/page-transition";
 
+// Home only shows classes that have a real photo.
+const withPhoto = (slug: string) => {
+  const v = fleet.find((x) => x.slug === slug);
+  return v?.image ? { ...v, image: v.image, imageAlt: v.imageAlt ?? v.name } : undefined;
+};
 const preview = ["luxury-cars", "wedding-cars", "suvs", "vintage-cars", "luxury-coaches", "mini-vans"]
-  .map((slug) => fleet.find((v) => v.slug === slug)!);
+  .map(withPhoto)
+  .filter((v) => v !== undefined);
+const weddingPhoto = withPhoto("wedding-cars")?.image ?? heroImage;
 
 // The quote-form link under each group name (occasion names match lib/site.ts `occasions`).
 const groupLinks: Record<string, { label: string; href: string }> = {
@@ -117,7 +124,7 @@ export default function Home() {
           {/* Weddings */}
           <section id="weddings" className="relative isolate flex min-h-[560px] scroll-mt-16 items-end overflow-hidden bg-ink text-cream md:min-h-[640px]">
             <Image
-              src={fleet.find((v) => v.slug === "wedding-cars")!.image}
+              src={weddingPhoto}
               alt="Decorated wedding car from the Jhajj'z fleet"
               fill
               sizes="100vw"

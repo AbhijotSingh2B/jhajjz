@@ -93,7 +93,8 @@ lib/site.ts                ALL client facts: contact, cities, services, fleet, p
 - **Pan-India service** (confirmed by Nirmal); stations in **14 cities**: Chandigarh, New Delhi, Gurgaon, Jaipur, Udaipur, Mumbai, Chennai, Kolkata, Bhubaneswar,
   Dehradun, Mussoorie, Rishikesh, Haridwar, Ropar
 - Brands: Rolls-Royce, Mercedes-Benz, BMW, Audi, Range Rover; coaches by Volvo and Mercedes-Benz
-- 9 vehicle classes and 9 services — see `lib/site.ts`
+- 10 vehicle classes and 9 services — see `lib/site.ts`. "Luxury MPVs" (Toyota Vellfire) was added by Nirmal; the
+  other 9 classes are from jhajjz.in
 
 The v0 reference design (`redesign-jhajjz-in.zip`) got several facts wrong — never copy these from it:
 "Est. 2014", phone +91 98765 43210, hello@jhajjz.in, "a small fleet", Chandigarh-only.
@@ -179,6 +180,12 @@ pin for the office. Needs the office's exact coordinates (client, or Google Maps
 (an embed loads Google cookies, so the privacy policy would need a line). Still ask the client for photos and logo.
 
 ## Changelog
+
+- 2026-10-17 — New fleet class "Luxury MPVs" (the Indian term for the Vellfire class; "people mover" is British).
+  The Vellfire moved there from Mini vans. No photo yet: class photos are optional now, and a card without one
+  shows a highlighted [CONFIRM: photo]; the home page only previews classes that have a photo. Filter tab renamed
+  "MPVs, vans & coaches"; Fleet menu counts the classes instead of saying "9". MPV wording in SEO description and
+  keywords.
 
 - 2026-10-17 — 7 more car pages (S-Class, Range Rover Autobiography, GLS, bulletproof GLE, Land Cruiser, black
   Fortuner, Vellfire). `Car.name` overrides "brand model" where it reads wrong. Car pages list the other cars in

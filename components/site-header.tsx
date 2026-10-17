@@ -174,7 +174,7 @@ function FleetMenu() {
           <span className="absolute inset-x-0 bottom-0 p-5 text-cream">
             <span className="block font-serif text-2xl">See the full fleet</span>
             <span className="mt-1 flex items-center gap-2 text-sm text-cream/80">
-              9 classes, all chauffeur-driven
+              {fleet.length} classes, all chauffeur-driven
               <ArrowRight className="size-3.5 transition-transform duration-300 group-hover:translate-x-1" aria-hidden="true" />
             </span>
           </span>
