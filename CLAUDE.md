@@ -132,17 +132,15 @@ The v0 reference design (`redesign-jhajjz-in.zip`) got several facts wrong — n
       Toyota Vellfire. Ghost, 7 Series, Defender, limousine, Audi and Vellfire have real Jhajj'z photos; the others
       need photos. Model year and "Based in" were dropped (Nirmal); details without a value are hidden. Confirm with
       the client: the limousine is a Chrysler 300C (identified from the photo); passengers for every car.
-      **Stand-in photos — Nirmal's latest instruction:** use professional photos from **CarWale / CarDekho** for the
-      6 cars without photos (S-Class, Range Rover Autobiography, GLS, bulletproof GLE, Land Cruiser, black Fortuner).
-      NOT done yet: carwale.com, imgd.aeplcdn.com, cardekho.com and stimg.cardekho.com are blocked from the sandbox
-      (WebFetch too). Asked Nirmal to allow those 4 hosts in the environment's network settings. When allowed:
-      look at each photo before using it (exact model/generation, clean exterior); add the image host to `images`
-      in next.config.ts; on each such photo put a `// PLACEHOLDER: CarWale/CarDekho photo — remove before public
-      launch` comment and a `placeholder: true` flag (add the flag to the photo type); add "remove placeholder photos"
-      to the launch checklist. Offered a small "Placeholder photo" caption under them (not yet agreed). Caution
-      raised: those photos are CarWale/CarDekho/manufacturer copyright, and jhajjz.vercel.app is public (only
-      noindex), so replace them before the client shares the preview widely. `credit` + "Representative photo"
-      caption already exists for licensed (e.g. Wikimedia Commons) stand-ins.
+      **Stand-in photos (done 2026-10-17, Nirmal's instruction):** the 6 cars without photos (S-Class, Range Rover
+      Autobiography, GLS, bulletproof GLE, Land Cruiser, black Fortuner) show CarWale photos, hot-linked from
+      imgd.aeplcdn.com, each marked `placeholder: true` with a `// PLACEHOLDER` comment (see Launch checklist). They're
+      left out of Open Graph and the Car JSON-LD. No caption yet: a "Placeholder photo" caption was offered, not agreed.
+      Caveats: the GLE photo is a standard GLE (the bulletproof one looks the same outside); the Fortuner photo is the
+      pre-2021 model (CarWale has no black current-model photo except studio cut-outs); the Range Rover is the standard
+      body. Those photos are CarWale/manufacturer copyright and jhajjz.vercel.app is public (only noindex): replace them
+      before the client shares the preview widely. In the sandbox, Next's image optimizer can't resolve DNS
+      (ENOTFOUND), so stand in the downloaded files with `page.route`; Vercel is unaffected.
 - [ ] **Hero**: currently the client's Wix sharing image. `/public/rolls-royce-hero.webp` (from the v0
       reference, probably AI-generated) is the alternative — swap `heroImage` in `lib/site.ts`.
 - [ ] **Quote form** opens the WhatsApp popup (`ContactDialog`) with the details prefilled; nothing is stored
@@ -162,6 +160,12 @@ The v0 reference design (`redesign-jhajjz-in.zip`) got several facts wrong — n
 - [ ] Deploy preview: Nirmal views the site at **https://jhajjz.vercel.app**. Claude's cloud sandbox can't load it
       (network policy blocks vercel.app; the Vercel connector has no access to that project). Netlify site
       `jhajjz-preview` also exists (empty). **Never touch the existing Vercel project "aethal".**
+
+## Launch checklist
+
+- [ ] **Remove placeholder photos**: every car photo with `placeholder: true` in lib/site.ts (search `PLACEHOLDER`),
+      and the `imgd.aeplcdn.com` entry in next.config.ts. Replace with the client's own photos, or leave `photos: []`.
+- [ ] SEO steps under "SEO at launch" above.
 
 ## Ideas to replace icon-in-box design (agreed direction, not built yet)
 
@@ -190,6 +194,10 @@ pin for the office. Needs the office's exact coordinates (client, or Google Maps
 (an embed loads Google cookies, so the privacy policy would need a line). Still ask the client for photos and logo.
 
 ## Changelog
+
+- 2026-10-17 — Placeholder CarWale photos on the 6 car pages that had none (S-Class, Range Rover Autobiography, GLS,
+  bulletproof GLE, Land Cruiser, black Fortuner). `CarPhoto` type gains `placeholder` (kept out of Open Graph and
+  JSON-LD) and `position` (object-position for photos where the 3:2 crop cut the car off). Launch checklist added.
 
 - 2026-10-17 — Fleet rebuilt around what the Wix photos actually show (identified from Nirmal's screenshots):
   "Wedding cars" class removed (every car can do any event; fleet intro says so), "Weddings" filter tab replaced by

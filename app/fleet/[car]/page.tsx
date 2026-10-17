@@ -34,6 +34,8 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const name = carName(car);
   const description = `Hire a chauffeur-driven ${name} from Jhajj'z for weddings, business and special occasions. Head office in Chandigarh, serving pan-India.`;
   const path = `/fleet/${car.slug}`;
+  // Placeholder (CarWale) photos aren't the client's cars, so they don't become the sharing image.
+  const ownPhoto = car.photos.find((p) => !p.placeholder);
   return {
     title: `${name} on Rent with Chauffeur`,
     description,
@@ -43,7 +45,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       url: path,
       title: `${name} with chauffeur | Jhajj'z`,
       description,
-      ...(car.photos[0] && { images: [{ url: car.photos[0].src, alt: car.photos[0].alt }] }),
+      ...(ownPhoto && { images: [{ url: ownPhoto.src, alt: ownPhoto.alt }] }),
     },
   };
 }
@@ -93,7 +95,7 @@ export default async function CarPage({ params }: Props) {
                   {photo ? (
                     <figure>
                       <div className="relative aspect-[3/2] overflow-hidden bg-stone">
-                        <Image src={photo.src} alt={photo.alt} fill priority sizes="(max-width: 1024px) 100vw, 680px" className="object-cover" />
+                        <Image src={photo.src} alt={photo.alt} fill priority sizes="(max-width: 1024px) 100vw, 680px" className="object-cover" style={{ objectPosition: photo.position }} />
                       </div>
                       {photo.credit && (
                         <figcaption className="mt-2 text-[13px] text-muted">Representative photo · {photo.credit}</figcaption>
@@ -143,7 +145,7 @@ export default async function CarPage({ params }: Props) {
                   {morePhotos.map((p) => (
                     <figure key={p.src}>
                       <div className="relative aspect-[3/2] overflow-hidden bg-stone">
-                        <Image src={p.src} alt={p.alt} fill sizes="(max-width: 768px) 50vw, 380px" className="object-cover" />
+                        <Image src={p.src} alt={p.alt} fill sizes="(max-width: 768px) 50vw, 380px" className="object-cover" style={{ objectPosition: p.position }} />
                       </div>
                       {p.credit && <figcaption className="mt-2 text-[13px] text-muted">Representative photo · {p.credit}</figcaption>}
                     </figure>

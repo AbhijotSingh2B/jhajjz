@@ -231,6 +231,21 @@ export const fleetGroups: { id: "all" | FleetGroup; label: string }[] = [
 // Until the client's own photos arrive, a licensed photo of the same model may stand in: give it a `credit`
 // (photographer + licence, e.g. "Photo: Jane Doe, CC BY-SA 4.0, via Wikimedia Commons") and the page labels it
 // "Representative photo".
+// PLACEHOLDER photos (`placeholder: true`) are CarWale stand-ins for cars the client hasn't sent photos of yet,
+// used on Nirmal's instruction for the preview only. They're CarWale's / the maker's copyright: remove every one
+// before public launch (see "Launch checklist" in CLAUDE.md). They're kept out of Open Graph and JSON-LD.
+const carwale = (path: string) => `https://imgd.aeplcdn.com/1280x720/n/cw/ec/${path}?isig=0&q=80`;
+
+export type CarPhoto = {
+  src: string;
+  alt: string;
+  credit?: string;
+  /** CSS object-position, when the 3:2 crop cuts the car off (e.g. "right" for a car right of centre). */
+  position?: string;
+  /** A CarWale/CarDekho stand-in, not the client's own car. Remove before public launch. */
+  placeholder?: true;
+};
+
 export type Car = {
   slug: string;
   brand: string;
@@ -240,7 +255,7 @@ export type Car = {
   /** Slug of the vehicle class in `fleet` this car belongs to. */
   fleetClass: string;
   text: string;
-  photos: { src: string; alt: string; credit?: string }[];
+  photos: CarPhoto[];
   details: { label: string; value: string | null }[];
 };
 
@@ -263,7 +278,10 @@ export const cars: Car[] = [
     model: "S-Class",
     fleetClass: "luxury-cars",
     text: "Our Mercedes-Benz S-Class comes with a trained Jhajj'z chauffeur. Ask us about it for business travel, airport transfers or a wedding.",
-    photos: [],
+    photos: [
+      // PLACEHOLDER: CarWale/CarDekho photo — remove before public launch
+      { src: carwale("216615/s-class-facelift-exterior-right-front-three-quarter-2.jpeg"), alt: "Black Mercedes-Benz S-Class", placeholder: true },
+    ],
     details: [
       { label: "Passengers", value: null },
       { label: "Colour", value: null },
@@ -276,7 +294,10 @@ export const cars: Car[] = [
     name: "Range Rover Autobiography",
     fleetClass: "suvs",
     text: "Our Range Rover Autobiography comes with a trained Jhajj'z chauffeur. Ask us about it for a wedding, a business visit or a trip to the hills.",
-    photos: [],
+    photos: [
+      // PLACEHOLDER: CarWale/CarDekho photo — remove before public launch
+      { src: carwale("107719/range-rover-exterior-left-front-three-quarter-37.jpeg"), alt: "White Range Rover", position: "right", placeholder: true },
+    ],
     details: [
       { label: "Passengers", value: null },
       { label: "Colour", value: null },
@@ -288,7 +309,10 @@ export const cars: Car[] = [
     model: "GLS",
     fleetClass: "suvs",
     text: "Our Mercedes-Benz GLS comes with a trained Jhajj'z chauffeur. Ask us about it for family travel, business visits or a trip to the hills.",
-    photos: [],
+    photos: [
+      // PLACEHOLDER: CarWale/CarDekho photo — remove before public launch
+      { src: carwale("167373/gls-exterior-left-front-three-quarter.jpeg"), alt: "Dark blue Mercedes-Benz GLS", placeholder: true },
+    ],
     details: [
       { label: "Passengers", value: null },
       { label: "Colour", value: null },
@@ -301,7 +325,10 @@ export const cars: Car[] = [
     name: "Mercedes-Benz GLE (bulletproof)",
     fleetClass: "suvs",
     text: "Our bulletproof Mercedes-Benz GLE comes with a trained Jhajj'z chauffeur. Ask us about it for VIP visits, delegations and anyone who needs extra security on the road.",
-    photos: [],
+    photos: [
+      // PLACEHOLDER: CarWale/CarDekho photo — remove before public launch
+      { src: carwale("167117/mercedes-benz-gle-right-front-three-quarter12.jpeg"), alt: "White Mercedes-Benz GLE", position: "right", placeholder: true },
+    ],
     details: [
       { label: "Passengers", value: null },
       { label: "Colour", value: null },
@@ -314,7 +341,10 @@ export const cars: Car[] = [
     model: "Land Cruiser",
     fleetClass: "suvs",
     text: "Our Toyota Land Cruiser comes with a trained Jhajj'z chauffeur. Ask us about it for long road trips, hill travel or business visits.",
-    photos: [],
+    photos: [
+      // PLACEHOLDER: CarWale/CarDekho photo — remove before public launch
+      { src: carwale("139739/land-cruiser-exterior-right-front-three-quarter-13.jpeg"), alt: "White Toyota Land Cruiser", placeholder: true },
+    ],
     details: [
       { label: "Passengers", value: null },
       { label: "Colour", value: null },
@@ -326,7 +356,10 @@ export const cars: Car[] = [
     model: "Fortuner",
     fleetClass: "suvs",
     text: "Our black Toyota Fortuner comes with a trained Jhajj'z chauffeur. Ask us about it for family trips, hill travel or a wedding convoy.",
-    photos: [],
+    photos: [
+      // PLACEHOLDER: CarWale/CarDekho photo — remove before public launch
+      { src: carwale("43037/toyota-fortuner-front-three-quarter-8.jpeg"), alt: "Black Toyota Fortuner", position: "right", placeholder: true },
+    ],
     details: [
       { label: "Passengers", value: null },
       { label: "Colour", value: "Black" },

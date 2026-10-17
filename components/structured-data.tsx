@@ -84,6 +84,7 @@ export function BreadcrumbStructuredData({
 
 /** One car's page. Only the facts we have: no price, rating or specs the client hasn't confirmed. */
 export function CarStructuredData({ car }: { car: Car }) {
+  const ownPhotos = car.photos.filter((p) => !p.placeholder);
   return (
     <JsonLd
       data={{
@@ -94,7 +95,8 @@ export function CarStructuredData({ car }: { car: Car }) {
         model: car.model,
         description: car.text,
         url: `${siteUrl}/fleet/${car.slug}`,
-        ...(car.photos.length > 0 && { image: car.photos.map((p) => p.src) }),
+        // Placeholder (CarWale) photos aren't the client's cars, so they stay out of structured data.
+        ...(ownPhotos.length > 0 && { image: ownPhotos.map((p) => p.src) }),
       }}
     />
   );

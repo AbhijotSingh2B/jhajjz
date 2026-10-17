@@ -6,7 +6,11 @@ const nextConfig: NextConfig = {
   images: {
     // Car photos are still hosted on the client's Wix site. Move them into
     // /public (or a CDN) once the client sends originals, then drop this.
-    remotePatterns: [{ protocol: "https", hostname: "static.wixstatic.com", pathname: "/media/**" }],
+    remotePatterns: [
+      { protocol: "https", hostname: "static.wixstatic.com", pathname: "/media/**" },
+      // PLACEHOLDER: CarWale stand-in car photos (lib/site.ts, `placeholder: true`). Remove before public launch.
+      { protocol: "https", hostname: "imgd.aeplcdn.com", pathname: "/1280x720/n/cw/ec/**", search: "?isig=0&q=80" },
+    ],
   },
   turbopack: {
     rules: {
