@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, type MouseEvent } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
@@ -26,6 +26,18 @@ const links = [
   { label: "About", href: "/#about" },
   { label: "Contact", href: "/contact" },
 ];
+
+/**
+ * Next skips the navigation when you're already on "/", so a click on the logo
+ * or Home (e.g. after jumping to #about) would do nothing: scroll back up instead.
+ * Smooth scrolling and its reduced-motion opt-out come from globals.css.
+ */
+function scrollHomeToTop(e: MouseEvent<HTMLAnchorElement>) {
+  if (window.location.pathname !== "/") return;
+  e.preventDefault();
+  if (window.location.hash) history.replaceState(history.state, "", "/");
+  window.scrollTo({ top: 0 });
+}
 
 /**
  * `overlay` = sits transparent on top of a hero photo until the visitor
@@ -58,7 +70,7 @@ export function SiteHeader({ overlay = false }: { overlay?: boolean }) {
           solid ? "h-[72px]" : "h-[88px]",
         )}
       >
-        <Link href="/" className="font-serif text-[26px] leading-none tracking-tight">
+        <Link href="/" onClick={scrollHomeToTop} className="font-serif text-[26px] leading-none tracking-tight">
           Jhajj&apos;z
         </Link>
 
@@ -107,6 +119,7 @@ function NavItem({ href, label, active }: { href: string; label: string; active:
       <NavigationMenuLink asChild active={active}>
         <Link
           href={href}
+          onClick={href === "/" ? scrollHomeToTop : undefined}
           className="group relative inline-flex h-11 items-center px-3 text-[15px] text-cream/85 transition-colors hover:text-cream data-[active]:text-cream"
         >
           {label}
@@ -195,7 +208,10 @@ function MobileMenu() {
                 className="border-b border-white/10"
               >
                 <SheetClose asChild>
-                  <Link href={l.href} className="flex min-h-14 items-center font-serif text-3xl transition-colors hover:text-gold">
+                  <Link
+                    href={l.href}
+                    onClick={l.href === "/" ? scrollHomeToTop : undefined}
+                    className="flex min-h-14 items-center font-serif text-3xl transition-colors hover:text-gold">
                     {l.label}
                   </Link>
                 </SheetClose>
