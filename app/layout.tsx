@@ -64,8 +64,9 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
       <body>
         <BusinessStructuredData />
         {/* iPhone Safari ignores overflow on html/body when you drag sideways, so the clip lives on a plain
-            wrapper. `clip` (not `hidden`) keeps the fixed header and bottom bar pinned to the screen. */}
-        <div className="overflow-x-clip">
+            wrapper. `clip` (not `hidden`) keeps the fixed header and bottom bar pinned to the screen.
+            It also carries the paper background; body is ink so the iPhone overscroll matches the footer. */}
+        <div className="overflow-x-clip bg-paper">
           <MotionProvider>{children}</MotionProvider>
         </div>
       </body>

@@ -173,8 +173,9 @@ pin for the office. Needs the office's exact coordinates (client, or Google Maps
 
 ## Changelog
 
-- 2026-10-17 — Overscroll: `html` is ink (body stays paper), so the iPhone bounce past the top or bottom shows the
-  dark header/footer colour instead of a pale strip. Can't reproduce the bounce in Chromium; check on the phone.
+- 2026-10-17 — Overscroll: `html` and `body` are ink and the paper page background moved to the wrapper div in
+  layout.tsx, so the iPhone bounce past the top or bottom shows the dark header/footer colour. Setting only `html`
+  didn't work on iPhone (WebKit paints that area with body's colour over html's). Can't reproduce in Chromium.
 
 - 2026-10-17 — Header: the "Jhajj'z" logo and Home (desktop nav and phone menu) scroll back to the top when you're
   already on the home page (e.g. after Weddings/Services/About). Before, Next skipped the same-page click and nothing happened.

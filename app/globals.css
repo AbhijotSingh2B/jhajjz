@@ -44,15 +44,16 @@
   body {
     overscroll-behavior-x: none;
   }
-  /* Ink on html shows when a phone bounces past the top or bottom, matching the dark header and footer
-     instead of a pale strip. Body keeps the paper background for the page itself. */
+  /* Ink on html and body shows when a phone bounces past the top or bottom, matching the dark header and
+     footer instead of a pale strip. iPhone browsers paint that area with body's colour (blended over html's),
+     so body must be ink too; the paper page background sits on the wrapper div in app/layout.tsx. */
   html {
     background: var(--color-ink);
     scroll-behavior: smooth;
     -webkit-tap-highlight-color: transparent;
   }
   body {
-    background: var(--color-paper);
+    background: var(--color-ink);
     color: var(--color-ink);
     font-family: var(--font-sans);
     -webkit-font-smoothing: antialiased;
