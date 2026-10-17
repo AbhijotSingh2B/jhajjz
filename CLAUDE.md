@@ -163,6 +163,8 @@ The v0 reference design (`redesign-jhajjz-in.zip`) got several facts wrong — n
   If they send their own logo file, swap it there and regenerate all 5 icon files.
 - **Privacy policy**: 3 highlighted `[CONFIRM]` items. jhajjz.in's own policy is only Wix template text.
 - Second number +91 98144 00019 is hidden until the client confirms it is theirs.
+- **+91 98036 00002** is probably one of their numbers (Nirmal's guess, unverified). Commented out next to the
+  other hidden number in `lib/site.ts`; ask the client, and if it is theirs, also ask whether it is on WhatsApp.
 - Office map on /contact: needs the office's exact pin; an embed would need a privacy-policy line (Google cookies).
 - Names/proof (hotels, airlines, events they've driven for; real client quotes) only with client permission.
 - Hero: client's Wix sharing image. `/public/rolls-royce-hero.webp` (v0 reference, probably AI-made) is the alternative.

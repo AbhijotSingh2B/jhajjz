@@ -9,6 +9,9 @@ export const contact = {
     { label: "+91 98036 00001", href: "tel:+919803600001" },
     // Hidden: +91 98144 00019 doesn't appear to be Jhajj'z's number. Restore only once the client confirms it.
     // { label: "+91 98144 00019", href: "tel:+919814400019" },
+    // Hidden, to confirm with the client: +91 98036 00002 is probably theirs (next number after the main one) but
+    // nobody has verified it. Restore only once confirmed; phones feeds the footer, popups and JSON-LD.
+    // { label: "+91 98036 00002", href: "tel:+919803600002" },
   ],
   whatsapp: "https://wa.me/919803600001",
   email: "info.jhajjz@gmail.com",
