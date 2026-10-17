@@ -143,6 +143,30 @@ The v0 reference design (`redesign-jhajjz-in.zip`) got several facts wrong — n
       (network policy blocks vercel.app; the Vercel connector has no access to that project). Netlify site
       `jhajjz-preview` also exists (empty). **Never touch the existing Vercel project "aethal".**
 
+## Ideas to replace icon-in-box design (agreed direction, not built yet)
+
+Icons were standing in for "this is a real business". Use real, specific material instead — things only
+Jhajj'z has. In order of impact:
+
+1. **Real photos** (needs client): one real photo per "Who we drive for" group — decorated car at an actual
+   wedding, coach outside a hotel for a delegation, chauffeur at the door. Their Instagram has this material;
+   get originals or network access to the Wix photos.
+2. **Their real logo** (needs the file) in header, favicon and popup headers, replacing the placeholder "J".
+3. **Map of the 14 cities** (can build now, verified data): fine-line outline of India, small gold dots for the
+   14 cities, a heavier dot for the Chandigarh/Mohali head office, beside the "Pan-India, including" list.
+   The outline **must follow official Survey of India boundaries** (many free world maps draw Kashmir
+   differently). If no compliant outline is available, skip the map rather than use a wrong one.
+4. **Small real-world details** (can build now): in the contact popups a quiet line like
+   "Office: SSS-106, PCA Stadium Road, Mohali" under the numbers; a small static map of the office on /contact.
+5. **Names and proof** (needs client permission): hotels, airlines or events they've driven for as a plain line
+   of text (not a logo wall); one or two real client quotes with names. Never invented.
+
+Avoid as replacements (next-generation AI tells): stat strips ("25+ years · 14 cities · 9 classes"), gradient
+blobs / glassmorphism, stock photos, paper-grain or texture overlays, emoji-style or animated icons.
+
+Suggested next step: build #4 now, then #3 if a compliant outline is available; ask the client for photos
+and the logo (#1, #2).
+
 ## Changelog
 
 - 2026-10-17 — "Contact us" buttons on the privacy page (Contact section) and in the footer (under Contact) open
