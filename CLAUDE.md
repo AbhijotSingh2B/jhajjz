@@ -52,7 +52,8 @@ lib/site.ts                ALL client facts: contact, cities, services, fleet, p
 ## Client facts (from jhajjz.in — do not change without the client)
 
 - Founded **1998** in Chandigarh. Office: SSS-106, 107, PCA Stadium Road, Sector 63, Mohali (SAS Nagar), Punjab
-- Phones +91 98036 00001, +91 98144 00019 · info.jhajjz@gmail.com · WhatsApp on the first number
+- Phone +91 98036 00001 · info.jhajjz@gmail.com · WhatsApp on that number. The second number on the old site,
+  +91 98144 00019, is hidden (commented out in `lib/site.ts`) because it doesn't seem to be Jhajj'z's — restore only if the client confirms
 - **Pan-India service** (confirmed by Nirmal); stations in **14 cities**: Chandigarh, New Delhi, Gurgaon, Jaipur, Udaipur, Mumbai, Chennai, Kolkata, Bhubaneswar,
   Dehradun, Mussoorie, Rishikesh, Haridwar, Ropar
 - Brands: Rolls-Royce, Mercedes-Benz, BMW, Audi, Range Rover; coaches by Volvo and Mercedes-Benz
@@ -84,7 +85,7 @@ The v0 reference design (`redesign-jhajjz-in.zip`) got several facts wrong — n
 - [ ] **Hero**: currently the client's Wix sharing image. `/public/rolls-royce-hero.webp` (from the v0
       reference, probably AI-generated) is the alternative — swap `heroImage` in `lib/site.ts`.
 - [ ] **Quote form** opens the WhatsApp popup (`ContactDialog`) with the details prefilled; nothing is stored
-      server-side. Confirm +91 98144 00019 is also on WhatsApp (only the first number is confirmed).
+      server-side.
 - [ ] Privacy policy text (copy from jhajjz.in/privacy-policy)
 - [ ] Favicon / logo — client has a logo on Wix; get the file
 - [ ] Deploy preview: Nirmal views the site at **https://jhajjz.vercel.app**. Claude's cloud sandbox can't load it

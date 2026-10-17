@@ -136,7 +136,7 @@ export function QuoteForm() {
               Request a quote
             </Button>
             <p className="col-span-full -mt-2 text-[14px] text-muted-dark">
-              Next you&apos;ll choose a number to send these details to on WhatsApp.
+              Next, your details open in a WhatsApp chat with us, ready to send.
             </p>
           </motion.form>
       <ContactDialog channel="whatsapp" open={open} onOpenChange={setOpen} message={message} />

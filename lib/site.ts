@@ -5,7 +5,8 @@
 export const contact = {
   phones: [
     { label: "+91 98036 00001", href: "tel:+919803600001" },
-    { label: "+91 98144 00019", href: "tel:+919814400019" },
+    // Hidden: +91 98144 00019 doesn't appear to be Jhajj'z's number. Restore only once the client confirms it.
+    // { label: "+91 98144 00019", href: "tel:+919814400019" },
   ],
   whatsapp: "https://wa.me/919803600001",
   email: "info.jhajjz@gmail.com",
