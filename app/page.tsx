@@ -16,8 +16,9 @@ const withPhoto = (slug: string) => {
   const v = fleet.find((x) => x.slug === slug);
   return v?.image ? { ...v, image: v.image, imageAlt: v.imageAlt ?? v.name } : undefined;
 };
-const preview = ["luxury-cars", "suvs", "limousines", "vintage-cars", "luxury-coaches", "luxury-mpvs"]
-  .map(withPhoto)
+// Same order as the fleet page: luxury cars, executive cabs, SUVs and MPVs first.
+const preview = fleet
+  .map((v) => withPhoto(v.slug))
   .filter((v) => v !== undefined);
 // Wedding band photo: the white Rolls-Royce Ghost.
 const weddingPhoto = photos.ghost;
@@ -105,13 +106,15 @@ export default function Home() {
                       <div
                         className={`relative aspect-[3/2] overflow-hidden ${v.imageCutout ? "bg-sand" : "bg-stone"} ${i === 0 ? "md:aspect-auto md:min-h-[360px] md:flex-1" : ""}`}
                       >
-                        <Image
-                          src={v.image}
-                          alt={v.imageAlt}
-                          fill
-                          sizes={i === 0 ? "(max-width: 768px) 85vw, 800px" : "(max-width: 768px) 85vw, 400px"}
-                          className={v.imageCutout ? "object-contain p-5 mix-blend-multiply md:p-8" : "object-cover"}
-                        />
+                        <div className={`absolute inset-0 ${v.imageCutout ? "mix-blend-multiply" : ""}`} style={{ transform: v.imageZoom ? `scale(${v.imageZoom})` : undefined }}>
+                          <Image
+                            src={v.image}
+                            alt={v.imageAlt}
+                            fill
+                            sizes={i === 0 ? "(max-width: 768px) 85vw, 800px" : "(max-width: 768px) 85vw, 400px"}
+                            className={v.imageCutout ? "object-contain p-5 md:p-8" : "object-cover"}
+                          />
+                        </div>
                       </div>
                       <div>
                         <h3 className={i === 0 ? "text-[19px] font-semibold md:font-serif md:text-[28px] md:font-normal" : "text-[19px] font-semibold"}>{v.name}</h3>

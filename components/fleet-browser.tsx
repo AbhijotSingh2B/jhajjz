@@ -94,14 +94,16 @@ export function FleetBrowser() {
             >
               <div className={`relative flex aspect-[3/2] items-center justify-center overflow-hidden ${v.imageCutout ? "bg-sand" : "bg-stone"}`}>
                 {v.image ? (
-                  <Image
-                    src={v.image}
-                    alt={v.imageAlt ?? v.name}
-                    fill
-                    priority={i < 3}
-                    sizes="(max-width: 768px) 100vw, 400px"
-                    className={`transition-transform duration-700 ease-out group-hover:scale-[1.03] ${v.imageCutout ? "object-contain p-5 mix-blend-multiply" : "object-cover"}`}
-                  />
+                  <div className={`absolute inset-0 ${v.imageCutout ? "mix-blend-multiply" : ""}`} style={{ transform: v.imageZoom ? `scale(${v.imageZoom})` : undefined }}>
+                    <Image
+                      src={v.image}
+                      alt={v.imageAlt ?? v.name}
+                      fill
+                      priority={i < 3}
+                      sizes="(max-width: 768px) 100vw, 400px"
+                      className={`transition-transform duration-700 ease-out group-hover:scale-[1.03] ${v.imageCutout ? "object-contain p-5" : "object-cover"}`}
+                    />
+                  </div>
                 ) : (
                   <span className="text-[15px]">
                     <Confirm>photo</Confirm>

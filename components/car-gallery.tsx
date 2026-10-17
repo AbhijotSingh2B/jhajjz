@@ -50,17 +50,21 @@ export function CarGallery({
             aria-label={many ? `${i + 1} of ${photos.length}` : undefined}
           >
             <div className={cn("relative aspect-[3/2] overflow-hidden", photo.cutout ? "bg-sand" : "bg-stone")}>
-              <Image
-                src={photo.src}
-                alt={photo.alt}
-                fill
-                priority={priority && i === 0}
-                sizes={sizes}
-                className={cn(
-                  photo.cutout ? "object-contain p-4 mix-blend-multiply md:p-8" : photo.portrait ? "object-contain" : "object-cover",
-                )}
-                style={{ objectPosition: photo.position }}
-              />
+              {/* The multiply sits on this wrapper: a scaled (zoomed) element is its own stacking context. */}
+              <div
+                className={cn("absolute inset-0", photo.cutout && "mix-blend-multiply")}
+                style={{ transform: photo.zoom ? `scale(${photo.zoom})` : undefined }}
+              >
+                <Image
+                  src={photo.src}
+                  alt={photo.alt}
+                  fill
+                  priority={priority && i === 0}
+                  sizes={sizes}
+                  className={cn(photo.cutout ? "object-contain p-4 md:p-8" : photo.portrait ? "object-contain" : "object-cover")}
+                  style={{ objectPosition: photo.position }}
+                />
+              </div>
             </div>
             {photo.credit && <figcaption className="mt-2 text-[13px] text-muted">Representative photo · {photo.credit}</figcaption>}
           </figure>

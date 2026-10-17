@@ -142,6 +142,8 @@ export type Vehicle = {
   imagePlaceholder?: true;
   /** Studio shot on white: shown whole on sand (see `CarPhoto.cutout`). */
   imageCutout?: true;
+  /** See `CarPhoto.zoom`. */
+  imageZoom?: number;
 };
 
 // Photos from jhajjz.in. Identified by eye from Nirmal's screenshots of the preview (Oct 2026); the cars carry
@@ -196,6 +198,7 @@ export const photos = {
   jaguarXj: wix("171684_d6742c74994b45778c8f50bc0ed52817"),
   audiQ7: wixFit("171684_d95eac75e6314492bd61b5a29577a3f1~mv2.jpg"),
   bmwLineUp: wix("171684_ea339aad2cb8490cb5d8d1e38d055a29"), // BMW X5, BMW i8 and a Range Rover on the road
+  ghostSilver: wixJpeg("171684_3bae57ad0f5348dbb59d4c51ce5ed205"),
   forceUrbania: wix("171684_93c797d72e81473ba9e78345d7a49391"),
   weddingLineUpGle: wix("171684_12c0dc2805044efb842caad88abfe2f4"), // black GLE in front of a decorated wedding line-up
 };
@@ -204,7 +207,10 @@ export const photos = {
 // of the client's own car. CarWale/maker copyright: remove before public launch (see "Launch checklist" in CLAUDE.md).
 // Leaving out `wm=1` from CarWale's URL gives the photo without their watermark.
 const carwaleColour = (id: string) => `https://imgd.aeplcdn.com/1280x720/n/${id}.jpg?q=80`;
+// CarDekho's colours pages work the same way (studio shot on white); used where CarWale has no match.
+const cardekhoColour = (path: string) => `https://stimg.cardekho.com/images/car-images/930x620/${path}`;
 export const studio = {
+  ghost: cardekhoColour("Rolls-Royce/Ghost/8051/1602847337627/235_silver_7b7d7f.jpg"), // Ghost 2014–2020 (CarDekho), Silver
   sClass: carwaleColour("y2ehbua_1541075"), // S-Class 2021 generation, Onyx Black
   bmw7Series: carwaleColour("tp798sa_1468095"), // 7 Series 2019–2023, Alpine White
   rangeRover: carwaleColour("af5du3a_1590443"), // current Range Rover, Fuji White
@@ -234,8 +240,40 @@ export const fleet: Vehicle[] = [
     name: "Luxury cars",
     group: "cars",
     text: "Rolls-Royce, Bentley, Mercedes-Benz, BMW and Jaguar, for business, celebrations and everything in between.",
-    image: studio.sClass,
-    imageAlt: "Black Mercedes-Benz S-Class",
+    image: studio.ghost,
+    imageAlt: "Silver Rolls-Royce Ghost",
+    imageZoom: 1.35,
+    imagePlaceholder: true,
+    imageCutout: true,
+  },
+  {
+    slug: "executive-cabs",
+    name: "Executive cabs",
+    group: "cars",
+    text: "Comfortable sedans for meetings, corporate events and airport runs.",
+    image: studio.eClass,
+    imageAlt: "White Mercedes-Benz E-Class",
+    imagePlaceholder: true,
+    imageCutout: true,
+  },
+  {
+    slug: "suvs",
+    name: "SUVs",
+    group: "suv",
+    text: "Range Rover and more, with space for families, luggage and hill trips.",
+    image: studio.rangeRover,
+    imageAlt: "White Range Rover",
+    imagePlaceholder: true,
+    imageCutout: true,
+  },
+  {
+    // "MPV" is the term used in India for the Vellfire class (Toyota sells it here as a luxury MPV).
+    slug: "luxury-mpvs",
+    name: "Luxury MPVs",
+    group: "group",
+    text: "The Toyota Vellfire and Mercedes-Benz V-Class, for families, small groups and business guests who need more room than a sedan.",
+    image: studio.vellfire,
+    imageAlt: "White Toyota Vellfire",
     imagePlaceholder: true,
     imageCutout: true,
   },
@@ -264,34 +302,6 @@ export const fleet: Vehicle[] = [
     imageAlt: "White Chrysler 300C stretch limousine with a red roof",
   },
   {
-    slug: "suvs",
-    name: "SUVs",
-    group: "suv",
-    text: "Range Rover and more, with space for families, luggage and hill trips.",
-    image: studio.rangeRover,
-    imageAlt: "White Range Rover",
-    imagePlaceholder: true,
-    imageCutout: true,
-  },
-  {
-    slug: "executive-cabs",
-    name: "Executive cabs",
-    group: "cars",
-    text: "Comfortable sedans for meetings, corporate events and airport runs.",
-    image: studio.eClass,
-    imageAlt: "White Mercedes-Benz E-Class",
-    imagePlaceholder: true,
-    imageCutout: true,
-  },
-  {
-    slug: "luxury-coaches",
-    name: "Luxury coaches",
-    group: "group",
-    text: "Volvo and Mercedes-Benz coaches for delegations, baraat and large groups.",
-    image: photos.coaches,
-    imageAlt: "Jhajj'z coaches",
-  },
-  {
     slug: "mini-vans",
     name: "Mini vans",
     group: "group",
@@ -300,15 +310,12 @@ export const fleet: Vehicle[] = [
     imageAlt: "Navy Toyota HiAce van from the Jhajj'z fleet",
   },
   {
-    // "MPV" is the term used in India for the Vellfire class (Toyota sells it here as a luxury MPV).
-    slug: "luxury-mpvs",
-    name: "Luxury MPVs",
+    slug: "luxury-coaches",
+    name: "Luxury coaches",
     group: "group",
-    text: "The Toyota Vellfire and Mercedes-Benz V-Class, for families, small groups and business guests who need more room than a sedan.",
-    image: studio.vellfire,
-    imageAlt: "White Toyota Vellfire",
-    imagePlaceholder: true,
-    imageCutout: true,
+    text: "Volvo and Mercedes-Benz coaches for delegations, baraat and large groups.",
+    image: photos.coaches,
+    imageAlt: "Jhajj'z coaches",
   },
 ];
 
@@ -342,6 +349,8 @@ export type CarPhoto = {
   placeholder?: true;
   /** Studio shot with no (or a plain white) background: shown whole on sand instead of cropped to fill the frame. */
   cutout?: true;
+  /** Enlarges a cutout whose studio shot has wide white margins, so the car matches the others in size. */
+  zoom?: number;
   /** Portrait photo: shown whole (letterboxed) in the 3:2 frame rather than cropped. Fetch it with `wixFit`. */
   portrait?: true;
   /** When the client has two generations of a car, each gets its own carousel, newer on top. */
@@ -370,15 +379,18 @@ export const cars: Car[] = [
     fleetClass: "luxury-cars",
     text: "A Rolls-Royce Ghost for weddings, business visits and the days you want to remember.",
     photos: [
+      // PLACEHOLDER: CarDekho photo — remove before public launch
+      { src: studio.ghost, alt: "Silver Rolls-Royce Ghost", placeholder: true, cutout: true, zoom: 1.35 },
       { src: photos.ghostFlowers, alt: "White Rolls-Royce Ghost decorated with flowers" },
       { src: photos.ghostSide, alt: "White Rolls-Royce Ghost from the side" },
       { src: photos.ghostFront, alt: "White Rolls-Royce Ghost with a JHAJJZ number plate", portrait: true },
       { src: photos.ghostLimos, alt: "White Rolls-Royce Ghost with a JHAJJZ LIMOS plate", portrait: true },
       { src: photos.ghostRear, alt: "White Rolls-Royce Ghost from behind", portrait: true },
+      { src: photos.ghostSilver, alt: "Silver Rolls-Royce Ghost with its coach doors open" },
     ],
     details: [
       { label: "Passengers", value: null },
-      { label: "Colour", value: "White" },
+      { label: "Colour", value: "White, silver" },
     ],
   },
   {

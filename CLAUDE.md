@@ -144,9 +144,10 @@ The v0 reference design (`redesign-jhajjz-in.zip`) got several facts wrong — n
       model's CarWale *colours* page, `studio` in lib/site.ts, matched to the generation and colour the client has; no
       `wm=1` so no watermark) first, then the client's own photos from jhajjz.in. Where the client has two generations
       (S-Class, Range Rover, 7 Series) each gets its own carousel, "Newer model" on top, "Older model" below
-      (`generation` on the photo). No studio shot where CarWale has none for the client's generation/colour: Ghost
-      (generations not told apart from the photos), Audi (no red), limousine. GLE, Land Cruiser, Fortuner have only the
-      studio shot. Fleet cards / home use studio shots for luxury cars (S-Class), SUVs (Range Rover), executive cabs
+      (`generation` on the photo). The Ghost's studio shot is from CarDekho's colours page (the 2014–2020 Ghost, the
+      client's generation; silver, as the client has a silver Ghost too), with `zoom` because its white margins are
+      wide. No studio shot: Audi (no red), limousine. GLE, Land Cruiser, Fortuner have only the
+      studio shot. Fleet cards / home use studio shots for luxury cars (Rolls-Royce Ghost), SUVs (Range Rover), executive cabs
       (E-Class), MPVs (Vellfire); vintage, convertibles, limousines, coaches keep real photos; mini vans got the client's
       HiAce photo. All studio shots are `placeholder: true` / `imagePlaceholder: true`: the client will send their own.
       **14 more (added 2026-10-17 on Nirmal's go-ahead) from the car photos on jhajjz.in, identified by eye**, so the
@@ -216,6 +217,10 @@ pin for the office. Needs the office's exact coordinates (client, or Google Maps
 (an embed loads Google cookies, so the privacy policy would need a line). Still ask the client for photos and logo.
 
 ## Changelog
+
+- 2026-10-17 — Fleet order (fleet page, Fleet menu, home): luxury cars, executive cabs, SUVs, luxury MPVs first, then
+  vintage, convertibles, limousines, mini vans, coaches. Home shows all 9 classes. Luxury cars card and the Ghost
+  page lead with a no-background Rolls-Royce Ghost (CarDekho, matching generation); silver Ghost photo added.
 
 - 2026-10-17 — 3 more car pages: Force Urbania, Mercedes-Benz GLE (black), Vintage open tourer (no make; JSON-LD
   brand omitted when `brand` is empty). 29 car pages in all.
