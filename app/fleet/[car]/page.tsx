@@ -96,7 +96,7 @@ export default async function CarPage({ params }: Props) {
                 </ol>
               </nav>
 
-              <div className="mt-4 grid gap-x-16 gap-y-10 md:mt-6 lg:grid-cols-[minmax(0,7fr)_minmax(0,5fr)]">
+              <div className="mt-4 grid gap-x-16 gap-y-10 md:mt-6 grid-cols-[minmax(0,1fr)] lg:grid-cols-[minmax(0,7fr)_minmax(0,5fr)]">
                 <Enter>
                   {first ? (
                     <>
@@ -143,7 +143,7 @@ export default async function CarPage({ params }: Props) {
               </div>
 
               {older.map((g) => (
-                <Reveal key={g.generation} className="mt-16 grid gap-x-16 lg:grid-cols-[minmax(0,7fr)_minmax(0,5fr)]">
+                <Reveal key={g.generation} className="mt-16 grid gap-x-16 grid-cols-[minmax(0,1fr)] lg:grid-cols-[minmax(0,7fr)_minmax(0,5fr)]">
                   <div>
                     <h2 className="mb-5 font-serif text-[clamp(26px,3vw,34px)] leading-[1.1]">{g.generation}</h2>
                     <CarGallery photos={g.photos} label={`Photos of the ${name}, ${g.generation?.toLowerCase()}`} sizes="(max-width: 1024px) 100vw, 680px" />

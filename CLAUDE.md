@@ -78,7 +78,8 @@ components/
                            ("all" opens on the "Get in touch" list; used by the "Contact us" buttons)
                            (both numbers / WhatsApp / email, copy buttons, "Other ways to reach us" list)
   page-transition.tsx      Fade-and-lift between pages (React <ViewTransition>); wraps each page's <main>
-  car-gallery.tsx          Car-page photo carousel (scroll-snap swipe, prev/next, "2 / 5" counter); one per model generation
+  car-gallery.tsx          Car-page photo carousel (scroll-snap swipe, prev/next, thumbnail row as a preview); one per
+                           model generation
   india-map.tsx            India outline (lib/india-map.ts, Survey of India boundary) + city dots, beside "Pan-India, including"
   motion.tsx               Reveal, Enter, Stagger, StaggerItem, MotionProvider (respects reduced motion)
   icons.tsx                WhatsApp glyph (Simple Icons) + social icons (Tabler, MIT); lucide has no brand icons
@@ -217,6 +218,10 @@ pin for the office. Needs the office's exact coordinates (client, or Google Maps
 (an embed loads Google cookies, so the privacy policy would need a line). Still ask the client for photos and logo.
 
 ## Changelog
+
+- 2026-10-17 — Carousel thumbnails: a row of small previews under each car-page carousel (tap to jump, current one
+  ringed, row follows along on phones) replaces the "2 / 5" counter. Car page grid forced to `minmax(0,1fr)` on phones,
+  otherwise the thumbnail row widened the column past the screen (the page clips overflow, so it didn't scroll).
 
 - 2026-10-17 — Fleet order (fleet page, Fleet menu, home): luxury cars, executive cabs, SUVs, luxury MPVs first, then
   vintage, convertibles, limousines, mini vans, coaches. Home shows all 9 classes. Luxury cars card and the Ghost

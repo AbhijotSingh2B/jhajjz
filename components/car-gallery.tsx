@@ -2,7 +2,7 @@
 
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import Image from "next/image";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import type { CarPhoto } from "@/lib/site";
@@ -23,8 +23,20 @@ export function CarGallery({
   sizes: string;
 }) {
   const track = useRef<HTMLDivElement>(null);
+  const thumbs = useRef<HTMLUListElement>(null);
   const [index, setIndex] = useState(0);
   const many = photos.length > 1;
+
+  // Keep the current photo's thumbnail in view when the row is wider than the screen (phones). Scrolls only the row.
+  useEffect(() => {
+    const list = thumbs.current;
+    const active = list?.children[index] as HTMLElement | undefined;
+    if (!list || !active) return;
+    const left = active.offsetLeft - list.offsetLeft;
+    if (left < list.scrollLeft || left + active.offsetWidth > list.scrollLeft + list.clientWidth) {
+      list.scrollTo({ left: left - 8, behavior: "smooth" });
+    }
+  }, [index]);
 
   const go = (to: number) => {
     const el = track.current;
@@ -72,11 +84,40 @@ export function CarGallery({
       </div>
 
       {many && (
-        <div className="mt-3 flex items-center justify-between gap-4">
-          <p className="text-[15px] text-muted tabular-nums" aria-live="polite">
-            {index + 1} / {photos.length}
+        <div className="mt-3 flex items-start justify-between gap-4">
+          <p className="sr-only" aria-live="polite">
+            Photo {index + 1} of {photos.length}
           </p>
-          <div className="flex gap-2">
+          {/* Thumbnails: a preview of every photo in the carousel; tap one to jump to it. */}
+          <ul ref={thumbs} className="-m-1 flex min-w-0 gap-2 overflow-x-auto p-1 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+            {photos.map((photo, i) => (
+              <li key={photo.src} className="shrink-0">
+                <button
+                  type="button"
+                  onClick={() => go(i)}
+                  aria-label={`Show photo ${i + 1}: ${photo.alt}`}
+                  aria-current={i === index ? "true" : undefined}
+                  className={cn(
+                    "relative block h-11 w-16 overflow-hidden transition-[opacity,box-shadow] duration-200",
+                    photo.cutout ? "bg-sand" : "bg-stone",
+                    i === index ? "opacity-100 ring-1 ring-ink ring-offset-2 ring-offset-paper" : "opacity-60 hover:opacity-100",
+                  )}
+                >
+                  <span className={cn("absolute inset-0", photo.cutout && "mix-blend-multiply")}>
+                    <Image
+                      src={photo.src}
+                      alt=""
+                      fill
+                      sizes="64px"
+                      className={cn(photo.cutout ? "object-contain p-1" : "object-cover")}
+                      style={{ objectPosition: photo.position }}
+                    />
+                  </span>
+                </button>
+              </li>
+            ))}
+          </ul>
+          <div className="flex shrink-0 gap-2">
             <Button type="button" variant="outline" size="icon" onClick={() => go(index - 1)} disabled={index === 0} aria-label="Previous photo">
               <ChevronLeft />
             </Button>
