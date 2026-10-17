@@ -52,6 +52,8 @@ export default async function CarPage({ params }: Props) {
   const { car, fleetClass } = await getCar(params);
   const name = carName(car);
   const [photo, ...morePhotos] = car.photos;
+  // Only details we actually know; unknown ones are left out rather than shown as blanks.
+  const known = car.details.filter((d) => d.value);
   const sameClass = cars.filter((c) => c.fleetClass === car.fleetClass && c.slug !== car.slug);
 
   return (
@@ -89,9 +91,14 @@ export default async function CarPage({ params }: Props) {
               <div className="mt-4 grid gap-x-16 gap-y-10 md:mt-6 lg:grid-cols-[minmax(0,7fr)_minmax(0,5fr)]">
                 <Enter>
                   {photo ? (
-                    <div className="relative aspect-[3/2] overflow-hidden bg-stone">
-                      <Image src={photo.src} alt={photo.alt} fill priority sizes="(max-width: 1024px) 100vw, 680px" className="object-cover" />
-                    </div>
+                    <figure>
+                      <div className="relative aspect-[3/2] overflow-hidden bg-stone">
+                        <Image src={photo.src} alt={photo.alt} fill priority sizes="(max-width: 1024px) 100vw, 680px" className="object-cover" />
+                      </div>
+                      {photo.credit && (
+                        <figcaption className="mt-2 text-[13px] text-muted">Representative photo · {photo.credit}</figcaption>
+                      )}
+                    </figure>
                   ) : (
                     <div className="flex aspect-[3/2] items-center justify-center bg-sand p-6 text-center text-[15px]">
                       <Confirm>photos of our {name}</Confirm>
@@ -103,14 +110,16 @@ export default async function CarPage({ params }: Props) {
                   <h1 className="font-serif text-[clamp(38px,4.8vw,56px)] leading-[1.08] tracking-[-0.01em]">{name}</h1>
                   <p className="mt-5 max-w-[520px] text-[17px] text-body">{car.text}</p>
 
-                  <dl className="mt-8 border-t border-ink/15">
-                    {car.details.map((d) => (
-                      <div key={d.label} className="grid grid-cols-[minmax(0,2fr)_minmax(0,3fr)] gap-4 border-b border-ink/15 py-3 text-[16px]">
-                        <dt className="text-muted">{d.label}</dt>
-                        <dd className="text-ink">{d.value ?? <Confirm>{d.label.toLowerCase()}</Confirm>}</dd>
-                      </div>
-                    ))}
-                  </dl>
+                  {known.length > 0 && (
+                    <dl className="mt-8 border-t border-ink/15">
+                      {known.map((d) => (
+                        <div key={d.label} className="grid grid-cols-[minmax(0,2fr)_minmax(0,3fr)] gap-4 border-b border-ink/15 py-3 text-[16px]">
+                          <dt className="text-muted">{d.label}</dt>
+                          <dd className="text-ink">{d.value}</dd>
+                        </div>
+                      ))}
+                    </dl>
+                  )}
 
                   <div className="mt-8 flex flex-wrap gap-3">
                     <Button asChild variant="ink">
@@ -132,9 +141,12 @@ export default async function CarPage({ params }: Props) {
               {morePhotos.length > 0 && (
                 <Reveal className="mt-6 grid grid-cols-2 gap-6 md:grid-cols-3">
                   {morePhotos.map((p) => (
-                    <div key={p.src} className="relative aspect-[3/2] overflow-hidden bg-stone">
-                      <Image src={p.src} alt={p.alt} fill sizes="(max-width: 768px) 50vw, 380px" className="object-cover" />
-                    </div>
+                    <figure key={p.src}>
+                      <div className="relative aspect-[3/2] overflow-hidden bg-stone">
+                        <Image src={p.src} alt={p.alt} fill sizes="(max-width: 768px) 50vw, 380px" className="object-cover" />
+                      </div>
+                      {p.credit && <figcaption className="mt-2 text-[13px] text-muted">Representative photo · {p.credit}</figcaption>}
+                    </figure>
                   ))}
                 </Reveal>
               )}

@@ -218,8 +218,11 @@ export const fleetGroups: { id: "all" | FleetGroup; label: string }[] = [
 ];
 
 // Individual cars, each with its own page at /fleet/<slug>. Only add a car the client has confirmed is in the
-// fleet. `null` details and an empty `photos` list show a highlighted [CONFIRM] on the page until filled in;
-// never fill them from the manufacturer's brochure or a guess.
+// fleet. Details with a `null` value are simply not shown; fill them in only from the client, never from the
+// manufacturer's brochure or a guess. An empty `photos` list shows a highlighted [CONFIRM] box.
+// Until the client's own photos arrive, a licensed photo of the same model may stand in: give it a `credit`
+// (photographer + licence, e.g. "Photo: Jane Doe, CC BY-SA 4.0, via Wikimedia Commons") and the page labels it
+// "Representative photo".
 export type Car = {
   slug: string;
   brand: string;
@@ -229,7 +232,7 @@ export type Car = {
   /** Slug of the vehicle class in `fleet` this car belongs to. */
   fleetClass: string;
   text: string;
-  photos: { src: string; alt: string }[];
+  photos: { src: string; alt: string; credit?: string }[];
   details: { label: string; value: string | null }[];
 };
 
@@ -244,8 +247,6 @@ export const cars: Car[] = [
     details: [
       { label: "Passengers", value: null },
       { label: "Colour", value: null },
-      { label: "Model year", value: null },
-      { label: "Based in", value: null },
     ],
   },
   {
@@ -258,8 +259,6 @@ export const cars: Car[] = [
     details: [
       { label: "Passengers", value: null },
       { label: "Colour", value: null },
-      { label: "Model year", value: null },
-      { label: "Based in", value: null },
     ],
   },
   {
@@ -273,8 +272,6 @@ export const cars: Car[] = [
     details: [
       { label: "Passengers", value: null },
       { label: "Colour", value: null },
-      { label: "Model year", value: null },
-      { label: "Based in", value: null },
     ],
   },
   {
@@ -287,8 +284,6 @@ export const cars: Car[] = [
     details: [
       { label: "Passengers", value: null },
       { label: "Colour", value: null },
-      { label: "Model year", value: null },
-      { label: "Based in", value: null },
     ],
   },
   {
@@ -302,9 +297,7 @@ export const cars: Car[] = [
     details: [
       { label: "Passengers", value: null },
       { label: "Colour", value: null },
-      { label: "Model year", value: null },
       { label: "Protection level", value: null },
-      { label: "Based in", value: null },
     ],
   },
   {
@@ -317,8 +310,6 @@ export const cars: Car[] = [
     details: [
       { label: "Passengers", value: null },
       { label: "Colour", value: null },
-      { label: "Model year", value: null },
-      { label: "Based in", value: null },
     ],
   },
   {
@@ -331,8 +322,6 @@ export const cars: Car[] = [
     details: [
       { label: "Passengers", value: null },
       { label: "Colour", value: "Black" },
-      { label: "Model year", value: null },
-      { label: "Based in", value: null },
     ],
   },
   {
@@ -345,8 +334,6 @@ export const cars: Car[] = [
     details: [
       { label: "Passengers", value: null },
       { label: "Colour", value: null },
-      { label: "Model year", value: null },
-      { label: "Based in", value: null },
     ],
   },
 ];

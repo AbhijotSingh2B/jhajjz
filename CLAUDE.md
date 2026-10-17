@@ -129,10 +129,18 @@ The v0 reference design (`redesign-jhajjz-in.zip`) got several facts wrong — n
       **Prerequisite:** photos committed to `/public/fleet/`, OR the cloud environment allows
       `static.wixstatic.com` + `jhajjz.in` + `www.jhajjz.in`. As of 2026-10-17 all three are blocked (proxy 403),
       including for WebFetch.
-- [ ] **Car pages** (8, cars named by Nirmal): Rolls-Royce Ghost, Mercedes-Benz S-Class, Range Rover Autobiography
-      ("latest", per Nirmal; year still [CONFIRM]), Mercedes-Benz GLS, bulletproof Mercedes-Benz GLE (protection level
-      [CONFIRM]), Toyota Land Cruiser, black Toyota Fortuner, Toyota Vellfire (filed under Mini vans). All need photos,
-      passengers, model year and base city from the client; colour too except the Fortuner.
+- [ ] **Car pages** (8, cars named by Nirmal): Rolls-Royce Ghost, Mercedes-Benz S-Class, Range Rover Autobiography,
+      Mercedes-Benz GLS, bulletproof Mercedes-Benz GLE, Toyota Land Cruiser, black Toyota Fortuner, Toyota Vellfire
+      (Luxury MPVs). Model year and "Based in" were dropped (Nirmal); details without a value are hidden, so only the
+      Fortuner shows one (Colour: Black). Passengers, colour and the GLE's protection level stay hidden until the
+      client gives them.
+      **Stand-in photos** (Nirmal wants licensed web photos until the client's arrive): not done — every photo source
+      is blocked from the sandbox (commons.wikimedia.org, upload.wikimedia.org, Unsplash, Pexels; WebFetch too), and
+      picking photos blind risks the wrong model or an unlicensed image. Code is ready: add
+      `{ src, alt, credit }` to a car's `photos`; the page captions it "Representative photo · <credit>". To do it,
+      allow those hosts in the environment's network settings (and add `upload.wikimedia.org` to `images` in
+      next.config.ts), then choose Wikimedia Commons photos of the exact model/generation with CC BY/CC BY-SA/CC0
+      licences and put photographer + licence in `credit`. Avoid manufacturer press photos (copyright).
 - [ ] **Hero**: currently the client's Wix sharing image. `/public/rolls-royce-hero.webp` (from the v0
       reference, probably AI-generated) is the alternative — swap `heroImage` in `lib/site.ts`.
 - [ ] **Quote form** opens the WhatsApp popup (`ContactDialog`) with the details prefilled; nothing is stored
@@ -180,6 +188,9 @@ pin for the office. Needs the office's exact coordinates (client, or Google Maps
 (an embed loads Google cookies, so the privacy policy would need a line). Still ask the client for photos and logo.
 
 ## Changelog
+
+- 2026-10-17 — Car pages: "Model year" and "Based in" removed; details without a value are no longer shown (no
+  [CONFIRM] rows). Photos can carry a `credit`, shown as "Representative photo · …" for licensed stand-ins.
 
 - 2026-10-17 — New fleet class "Luxury MPVs" (the Indian term for the Vellfire class; "people mover" is British).
   The Vellfire moved there from Mini vans. No photo yet: class photos are optional now, and a card without one
