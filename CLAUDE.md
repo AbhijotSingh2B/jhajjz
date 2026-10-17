@@ -73,9 +73,10 @@ app/
   privacy-policy/page.tsx  Drafted policy; 3 highlighted [CONFIRM] items for the client
   not-found.tsx            Branded 404
 components/
-  logo.tsx                 JJ monogram (two Caslon Js, the second lower-right, no overlap cut-outs) + "Jhajj'z".
-                           Header animation is queued, NOT to be built until Nirmal says go: the navbar text
-                           "Jhajj'z" collapses into the JJ monogram.
+  logo.tsx                 JJ monogram (two Caslon Js, the second lower-right). `Logo` = mark + name (footer);
+                           `LogoMark intro` = header opening (Nirmal's idea): "Jhajj'z" with a gold J, the other
+                           letters fold into it and the last j becomes the second J. Outlines from the font, CSS
+                           keyframes in globals.css, first page of a visit only; header shows the monogram only.
   site-header.tsx          Fixed header (Home, Fleet, Weddings, Services, About, Contact); transparent over the home hero until scroll; Fleet mega-menu; mobile sheet
   site-footer.tsx          Also renders the phone-only sticky Call / WhatsApp bar
   booking-bar.tsx          "Start a quote": occasion / city / date (all start empty) → pushes to /contact?… as query params

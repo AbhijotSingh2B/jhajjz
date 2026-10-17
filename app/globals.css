@@ -114,3 +114,72 @@
     transition-duration: 0.01ms !important;
   }
 }
+
+/* Header logo opening (components/logo.tsx LogoMark): "Jhajj'z" folds into the JJ monogram. Once per visit.
+   The resting styles are the finished monogram, so reduced motion (animation: none) just shows that. */
+.logo-intro .logo-word {
+  transform-box: view-box;
+  transform-origin: 0 0;
+  animation: logo-grow 900ms cubic-bezier(0.6, 0, 0.2, 1) 800ms both;
+}
+.logo-intro .logo-letter {
+  opacity: 0;
+  animation: logo-fold 450ms cubic-bezier(0.5, 0, 0.3, 1) var(--delay) both;
+}
+/* Same timing as logo-grow so the j and J2 travel together while one fades into the other. */
+.logo-intro .logo-last-j {
+  opacity: 0;
+  animation: logo-j-out 900ms cubic-bezier(0.6, 0, 0.2, 1) 800ms both;
+}
+.logo-intro .logo-j2 {
+  animation: logo-j2-in 900ms cubic-bezier(0.6, 0, 0.2, 1) 800ms both;
+}
+@keyframes logo-grow {
+  from {
+    transform: translate(0, 200px) scale(0.657);
+  }
+}
+@keyframes logo-fold {
+  from {
+    opacity: 1;
+    transform: none;
+  }
+  to {
+    opacity: 0;
+    transform: translateX(var(--dx));
+  }
+}
+@keyframes logo-j-out {
+  0%,
+  35% {
+    opacity: 1;
+  }
+  0% {
+    transform: none;
+  }
+  75%,
+  100% {
+    opacity: 0;
+  }
+  100% {
+    transform: translate(-1189px, 150px);
+  }
+}
+@keyframes logo-j2-in {
+  0%,
+  35% {
+    opacity: 0;
+  }
+  0% {
+    transform: translate(1189px, -150px);
+  }
+  75%,
+  100% {
+    opacity: 1;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .logo-intro * {
+    animation: none !important;
+  }
+}
