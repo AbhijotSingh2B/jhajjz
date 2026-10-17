@@ -1,8 +1,28 @@
 import Link from "next/link";
-import { Phone } from "lucide-react";
-import { WhatsAppIcon } from "@/components/icons";
+import { Mail, MapPin, Phone } from "lucide-react";
+import {
+  FacebookIcon,
+  InstagramIcon,
+  LinkedInIcon,
+  WhatsAppIcon,
+  XIcon,
+  YouTubeIcon,
+} from "@/components/icons";
 import { contact, founded } from "@/lib/site";
 import { ContactDialog } from "@/components/contact-dialog";
+
+const socialIcons = {
+  Instagram: InstagramIcon,
+  LinkedIn: LinkedInIcon,
+  YouTube: YouTubeIcon,
+  Facebook: FacebookIcon,
+  X: XIcon,
+};
+// "Instagram (Delhi)" uses the Instagram icon too.
+const socialIcon = (label: string) => socialIcons[label.split(" ")[0] as keyof typeof socialIcons] ?? InstagramIcon;
+
+const item = "group flex min-h-11 items-center gap-3 text-left transition-colors hover:text-cream md:min-h-9";
+const icon = "size-4 shrink-0 text-gold transition-transform duration-300 group-hover:scale-110";
 
 export function SiteFooter() {
   return (
@@ -16,11 +36,14 @@ export function SiteFooter() {
         </div>
         <div>
           <h3 className="mb-2.5 text-sm font-semibold text-cream">Office</h3>
-          <p>
-            {contact.address[0]}
-            <br />
-            {contact.address[1]}
-          </p>
+          <a href={contact.mapsUrl} target="_blank" rel="noreferrer" className="group flex gap-3 transition-colors hover:text-cream">
+            <MapPin className={`${icon} mt-1`} aria-hidden="true" />
+            <span>
+              {contact.address[0]}
+              <br />
+              {contact.address[1]}
+            </span>
+          </a>
         </div>
         <div>
           <h3 className="mb-2.5 text-sm font-semibold text-cream">Contact</h3>
@@ -28,15 +51,25 @@ export function SiteFooter() {
             {contact.phones.map((p) => (
               <li key={p.href}>
                 <ContactDialog channel="call">
-                  <button type="button" className="text-left transition-colors hover:text-cream">
+                  <button type="button" className={item}>
+                    <Phone className={icon} aria-hidden="true" />
                     {p.label}
                   </button>
                 </ContactDialog>
               </li>
             ))}
             <li>
+              <ContactDialog channel="whatsapp">
+                <button type="button" className={item}>
+                  <WhatsAppIcon className={icon} aria-hidden="true" />
+                  WhatsApp
+                </button>
+              </ContactDialog>
+            </li>
+            <li>
               <ContactDialog channel="email">
-                <button type="button" className="text-left transition-colors hover:text-cream">
+                <button type="button" className={item}>
+                  <Mail className={icon} aria-hidden="true" />
                   {contact.email}
                 </button>
               </ContactDialog>
@@ -45,14 +78,18 @@ export function SiteFooter() {
         </div>
         <div>
           <h3 className="mb-2.5 text-sm font-semibold text-cream">Follow</h3>
-          <ul className="flex flex-wrap gap-x-4 gap-y-1">
-            {contact.socials.map((s) => (
-              <li key={s.href}>
-                <a href={s.href} target="_blank" rel="noreferrer" className="transition-colors hover:text-cream">
-                  {s.label}
-                </a>
-              </li>
-            ))}
+          <ul className="grid grid-cols-2 gap-x-4 sm:flex sm:flex-col">
+            {contact.socials.map((s) => {
+              const Icon = socialIcon(s.label);
+              return (
+                <li key={s.href}>
+                  <a href={s.href} target="_blank" rel="noreferrer" className={item}>
+                    <Icon className={icon} aria-hidden="true" />
+                    {s.label}
+                  </a>
+                </li>
+              );
+            })}
           </ul>
         </div>
       </div>

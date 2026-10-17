@@ -6,3 +6,38 @@ export function WhatsAppIcon(props: React.SVGProps<SVGSVGElement>) {
     </svg>
   );
 }
+
+// Social icons: Tabler Icons outline set (MIT, © Paweł Kuna), copied in so we don't pull the whole package.
+// Same 24px grid and 2px stroke as lucide, so they sit naturally next to the Phone / Mail icons.
+function outline(paths: string[]) {
+  return function Icon(props: React.SVGProps<SVGSVGElement>) {
+    return (
+      <svg
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        strokeWidth={2}
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        width="24"
+        height="24"
+        {...props}
+      >
+        {paths.map((d) => (
+          <path key={d} d={d} />
+        ))}
+      </svg>
+    );
+  };
+}
+
+const rounded = "M3 7a4 4 0 0 1 4 -4h10a4 4 0 0 1 4 4v10a4 4 0 0 1 -4 4h-10a4 4 0 0 1 -4 -4l0 -10";
+
+export const InstagramIcon = outline([rounded, "M8.5 12a3.5 3.5 0 1 0 7 0a3.5 3.5 0 0 0 -7 0", "M17 7v.01"]);
+export const LinkedInIcon = outline(["M8 11v5", "M8 8v.01", "M12 16v-5", "M16 16v-3a2 2 0 1 0 -4 0", rounded]);
+export const YouTubeIcon = outline([
+  "M2 8a4 4 0 0 1 4 -4h12a4 4 0 0 1 4 4v8a4 4 0 0 1 -4 4h-12a4 4 0 0 1 -4 -4v-8",
+  "M10 9l5 3l-5 3l0 -6",
+]);
+export const FacebookIcon = outline(["M7 10v4h3v7h4v-7h3l1 -4h-4v-2a1 1 0 0 1 1 -1h3v-4h-3a5 5 0 0 0 -5 5v2h-3"]);
+export const XIcon = outline(["M4 4l11.733 16h4.267l-11.733 -16l-4.267 0", "M4 20l6.768 -6.768m2.46 -2.46l6.772 -6.772"]);
