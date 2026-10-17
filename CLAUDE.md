@@ -31,9 +31,10 @@ before pushing, and merge (never force-push) if someone else's commit arrives.
 
 ## Working in the Claude cloud sandbox
 
-- Network: `static.wixstatic.com`, `jhajjz.in` and `vercel.app` are blocked (proxy 403), so fleet photos don't
-  load locally and the live preview can't be opened. To judge layouts, Playwright can stand in a local image:
-  `page.route(/_next\/image\?url=https/, r => r.fulfill({ path: 'public/rolls-royce-hero.webp' }))`.
+- Network: since 2026-10-17 jhajjz.in, static.wixstatic.com, carwale/aeplcdn and cardekho load (Nirmal opened the
+  environment's network). `vercel.app` untested. Next's image optimizer still fails locally (it does its own DNS
+  lookup, ENOTFOUND), so in Playwright fetch the originals yourself, run with `NODE_USE_ENV_PROXY=1`:
+  `page.route(/_next\/image\?url=https/, async r => { const res = await fetch(new URL(r.request().url()).searchParams.get('url')); r.fulfill({ status: res.status, contentType: res.headers.get('content-type'), body: Buffer.from(await res.arrayBuffer()) }) })`.
 - Playwright: `require('/opt/node22/lib/node_modules/playwright')`; Chromium only (no WebKit, so iPhone Safari
   behaviour can't be reproduced — ask Nirmal to check on his phone). Don't run `playwright install`.
 - Verify against a production build (`npm run build && npx next start -p 3001`), not a long-running `next dev`:
@@ -132,15 +133,19 @@ The v0 reference design (`redesign-jhajjz-in.zip`) got several facts wrong — n
       Toyota Vellfire. Ghost, 7 Series, Defender, limousine, Audi and Vellfire have real Jhajj'z photos; the others
       need photos. Model year and "Based in" were dropped (Nirmal); details without a value are hidden. Confirm with
       the client: the limousine is a Chrysler 300C (identified from the photo); passengers for every car.
-      **Stand-in photos (done 2026-10-17, Nirmal's instruction):** the 6 cars without photos (S-Class, Range Rover
-      Autobiography, GLS, bulletproof GLE, Land Cruiser, black Fortuner) show CarWale photos, hot-linked from
-      imgd.aeplcdn.com, each marked `placeholder: true` with a `// PLACEHOLDER` comment (see Launch checklist). They're
-      left out of Open Graph and the Car JSON-LD. No caption yet: a "Placeholder photo" caption was offered, not agreed.
-      Caveats: the GLE photo is a standard GLE (the bulletproof one looks the same outside); the Fortuner photo is the
-      pre-2021 model (CarWale has no black current-model photo except studio cut-outs); the Range Rover is the standard
-      body. Those photos are CarWale/manufacturer copyright and jhajjz.vercel.app is public (only noindex): replace them
-      before the client shares the preview widely. In the sandbox, Next's image optimizer can't resolve DNS
-      (ENOTFOUND), so stand in the downloaded files with `page.route`; Vercel is unaffected.
+      **Photos for the 6 newer car pages (2026-10-17):** jhajjz.in has the client's own photos of the S-Class (black,
+      W223), two white Range Rovers (older L405 and current L460 "Jhajj'z Limos"; confirm which is the Autobiography)
+      and the GLS; those pages use them. GLE, Land Cruiser and black Fortuner have no clear photo there, so they show
+      **placeholder** studio shots with no background (Nirmal prefers those): CarDekho GLE, CarWale Land Cruiser and
+      Fortuner, flagged `placeholder: true` + `cutout: true` (shown whole on sand with multiply blending; `backdrop`
+      brightens a grey studio backdrop away). Skipped CarWale's transparent PNGs that carry a "carwale" badge on the
+      bumper. Placeholders stay out of Open Graph and JSON-LD; remove before launch (Launch checklist). They're
+      CarWale/CarDekho/maker copyright and jhajjz.vercel.app is public (only noindex).
+      **More cars in jhajjz.in's photos, not on the new site** (identified by eye; client must confirm they're in the
+      fleet before adding pages): Mercedes-Maybach S-Class, Mercedes G-Class (black and white), Mercedes-Maybach GLS
+      (red), Range Rover Sport (white, blue), BMW X7, BMW X5, BMW i8, Bentley Flying Spur, Jaguar XJ, Jaguar F-Pace,
+      Audi Q7, Mercedes E-Class, Mercedes V-Class, Toyota HiAce, Toyota Innova (black), a grey 12-seat van, Mercedes GLE
+      (dark blue, at a wedding). Also photos with uniformed chauffeurs (Taj-branded) and wedding line-ups.
 - [ ] **Hero**: currently the client's Wix sharing image. `/public/rolls-royce-hero.webp` (from the v0
       reference, probably AI-generated) is the alternative — swap `heroImage` in `lib/site.ts`.
 - [ ] **Quote form** opens the WhatsApp popup (`ContactDialog`) with the details prefilled; nothing is stored
@@ -164,7 +169,7 @@ The v0 reference design (`redesign-jhajjz-in.zip`) got several facts wrong — n
 ## Launch checklist
 
 - [ ] **Remove placeholder photos**: every car photo with `placeholder: true` in lib/site.ts (search `PLACEHOLDER`),
-      and the `imgd.aeplcdn.com` entry in next.config.ts. Replace with the client's own photos, or leave `photos: []`.
+      and the `imgd.aeplcdn.com` and `stimg.cardekho.com` entries in next.config.ts. Replace with the client's own photos, or leave `photos: []`.
 - [ ] SEO steps under "SEO at launch" above.
 
 ## Ideas to replace icon-in-box design (agreed direction, not built yet)
@@ -194,6 +199,10 @@ pin for the office. Needs the office's exact coordinates (client, or Google Maps
 (an embed loads Google cookies, so the privacy policy would need a line). Still ask the client for photos and logo.
 
 ## Changelog
+
+- 2026-10-17 — Real Jhajj'z photos (from jhajjz.in) on the S-Class, Range Rover Autobiography and GLS pages, replacing
+  CarWale placeholders. GLE, Land Cruiser and Fortuner placeholders swapped for no-background studio shots (`cutout`),
+  shown whole on sand. `wixFit` helper for uncropped portrait Wix photos, cropped on the page with `position`.
 
 - 2026-10-17 — Placeholder CarWale photos on the 6 car pages that had none (S-Class, Range Rover Autobiography, GLS,
   bulletproof GLE, Land Cruiser, black Fortuner). `CarPhoto` type gains `placeholder` (kept out of Open Graph and
