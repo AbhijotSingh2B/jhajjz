@@ -8,7 +8,7 @@ import { Enter, Reveal, Stagger, StaggerItem } from "@/components/motion";
 import { Button } from "@/components/ui/button";
 import { ContactDialog } from "@/components/contact-dialog";
 import { IndiaMap } from "@/components/india-map";
-import { cities, fleet, heroImage, photos, serviceGroups } from "@/lib/site";
+import { cities, fleet, heroPhoto, photos, serviceGroups } from "@/lib/site";
 import { PageTransition } from "@/components/page-transition";
 
 // Home only shows classes that have a real photo.
@@ -38,7 +38,7 @@ export default function Home() {
           {/* Hero */}
           <section className="relative flex min-h-[min(100svh,880px)] flex-col overflow-hidden bg-ink-deep text-cream">
             <Image
-              src={heroImage}
+              src={heroPhoto}
               alt="A car from the Jhajj'z fleet"
               fill
               priority

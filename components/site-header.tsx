@@ -8,7 +8,7 @@ import { motion } from "motion/react";
 import { ArrowRight, Mail, Menu, Phone } from "lucide-react";
 import { WhatsAppIcon } from "@/components/icons";
 import { cn } from "@/lib/utils";
-import { contact, fleet, heroImage } from "@/lib/site";
+import { contact, fleet, heroThumb } from "@/lib/site";
 import {
   NavigationMenu,
   NavigationMenuContent,
@@ -164,7 +164,7 @@ function FleetMenu() {
       <NavigationMenuLink asChild>
         <Link href="/fleet" className="group relative block min-h-[280px] overflow-hidden bg-ink">
           <Image
-            src={heroImage}
+            src={heroThumb}
             alt=""
             fill
             sizes="320px"

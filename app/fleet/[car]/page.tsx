@@ -10,7 +10,7 @@ import { PageTransition } from "@/components/page-transition";
 import { ContactDialog } from "@/components/contact-dialog";
 import { Confirm } from "@/components/confirm";
 import { BreadcrumbStructuredData, CarStructuredData } from "@/components/structured-data";
-import { carName, cars, fleet, type CarPhoto } from "@/lib/site";
+import { carName, cars, fleet } from "@/lib/site";
 import { openGraphBase } from "@/lib/seo";
 
 type Props = { params: Promise<{ car: string }> };
@@ -26,10 +26,6 @@ async function getCar(params: Props["params"]) {
   return { car, fleetClass: fleet.find((v) => v.slug === car.fleetClass) };
 }
 
-const photoStyle = (p: CarPhoto) => ({
-  objectPosition: p.position,
-  filter: p.backdrop ? `brightness(${(255 / p.backdrop).toFixed(3)})` : undefined,
-});
 
 /** "Luxury cars" → "luxury cars", but "SUVs" stays "SUVs". */
 const inSentence = (s: string) => (/^[A-Z][a-z]/.test(s) ? s[0].toLowerCase() + s.slice(1) : s);
@@ -100,7 +96,7 @@ export default async function CarPage({ params }: Props) {
                   {photo ? (
                     <figure>
                       <div className={`relative aspect-[3/2] overflow-hidden ${photo.cutout ? "bg-sand" : "bg-stone"}`}>
-                        <Image src={photo.src} alt={photo.alt} fill priority sizes="(max-width: 1024px) 100vw, 680px" className={photo.cutout ? "object-contain p-4 mix-blend-multiply md:p-8" : "object-cover"} style={photoStyle(photo)} />
+                        <Image src={photo.src} alt={photo.alt} fill priority sizes="(max-width: 1024px) 100vw, 680px" className={photo.cutout ? "object-contain p-4 mix-blend-multiply md:p-8" : "object-cover"} style={{ objectPosition: photo.position }} />
                       </div>
                       {photo.credit && (
                         <figcaption className="mt-2 text-[13px] text-muted">Representative photo · {photo.credit}</figcaption>
@@ -150,7 +146,7 @@ export default async function CarPage({ params }: Props) {
                   {morePhotos.map((p) => (
                     <figure key={p.src}>
                       <div className={`relative aspect-[3/2] overflow-hidden ${p.cutout ? "bg-sand" : "bg-stone"}`}>
-                        <Image src={p.src} alt={p.alt} fill sizes="(max-width: 768px) 50vw, 380px" className={p.cutout ? "object-contain p-3 mix-blend-multiply" : "object-cover"} style={photoStyle(p)} />
+                        <Image src={p.src} alt={p.alt} fill sizes="(max-width: 768px) 50vw, 380px" className={p.cutout ? "object-contain p-3 mix-blend-multiply" : "object-cover"} style={{ objectPosition: p.position }} />
                       </div>
                       {p.credit && <figcaption className="mt-2 text-[13px] text-muted">Representative photo · {p.credit}</figcaption>}
                     </figure>

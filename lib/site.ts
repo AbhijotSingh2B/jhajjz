@@ -41,8 +41,12 @@ export const postalAddress = {
 // Hero photo. The client's own sharing image from jhajjz.in is used for now.
 // /public/rolls-royce-hero.webp (from the v0 reference, likely AI-generated)
 // is kept as an alternative — swap the value below to use it instead.
-export const heroImage =
-  "https://static.wixstatic.com/media/171684_54ce935d2c1143669a4ad9a04866731d~mv2.jpg/v1/fill/w_2400,h_1600,al_c,q_85/hero.jpg";
+// `heroImage` (JPEG) is the sharing image for link previews, which don't all accept WebP; the page shows the WebP
+// copies. Images aren't optimized by Next/Vercel (next.config.ts), so these URLs are what visitors download.
+const hero = "https://static.wixstatic.com/media/171684_54ce935d2c1143669a4ad9a04866731d~mv2.jpg/v1/fill";
+export const heroImage = `${hero}/w_2400,h_1600,al_c,q_85/hero.jpg`;
+export const heroPhoto = `${hero}/w_2400,h_1600,al_c,q_80/hero.webp`;
+export const heroThumb = `${hero}/w_640,h_640,al_c,q_80/hero.webp`;
 
 export const cities = [
   "Chandigarh",
@@ -112,10 +116,11 @@ export const occasions = [
 // Wix-hosted photos from the current site. The image-to-category mapping was
 // taken from the order on the live homepage and has NOT been visually checked
 // — confirm each one with the client (see CLAUDE.md, "Open items").
-const wix = (id: string) => `https://static.wixstatic.com/media/${id}~mv2.jpg/v1/fill/w_1600,h_1067,al_c,q_85/photo.jpg`;
+// Wix converts to WebP when the URL ends in .webp (about 45% smaller than its JPEG at this size).
+const wix = (id: string) => `https://static.wixstatic.com/media/${id}~mv2.jpg/v1/fill/w_1600,h_1067,al_c,q_80/photo.webp`;
 // Whole photo, uncropped (for portrait shots; the page crops them with `position`).
-const wixFit = (file: string) => `https://static.wixstatic.com/media/${file}/v1/fit/w_1600,h_1600,q_85/photo.${file.split(".").pop()}`;
-const wixJpeg = (id: string) => `https://static.wixstatic.com/media/${id}~mv2.jpeg/v1/fill/w_1600,h_1067,al_c,q_85/photo.jpeg`;
+const wixFit = (file: string) => `https://static.wixstatic.com/media/${file}/v1/fit/w_1600,h_1600,q_80/photo.webp`;
+const wixJpeg = (id: string) => `https://static.wixstatic.com/media/${id}~mv2.jpeg/v1/fill/w_1600,h_1067,al_c,q_80/photo.webp`;
 
 export type FleetGroup = "cars" | "classic" | "suv" | "group";
 
@@ -237,11 +242,10 @@ export const fleetGroups: { id: "all" | FleetGroup; label: string }[] = [
 // Until the client's own photos arrive, a licensed photo of the same model may stand in: give it a `credit`
 // (photographer + licence, e.g. "Photo: Jane Doe, CC BY-SA 4.0, via Wikimedia Commons") and the page labels it
 // "Representative photo".
-// PLACEHOLDER photos (`placeholder: true`) are CarWale/CarDekho studio shots (no background) standing in for cars the client hasn't sent photos of yet,
+// PLACEHOLDER photos (`placeholder: true`) are CarWale studio shots (no background) standing in for cars the client hasn't sent photos of yet,
 // used on Nirmal's instruction for the preview only. They're CarWale's / the maker's copyright: remove every one
 // before public launch (see "Launch checklist" in CLAUDE.md). They're kept out of Open Graph and JSON-LD.
 const carwale = (path: string) => `https://imgd.aeplcdn.com/1280x720/n/cw/ec/${path}?isig=0&q=80`;
-const cardekho = (path: string) => `https://stimg.cardekho.com/images/carexteriorimages/930x620/${path}`;
 
 export type CarPhoto = {
   src: string;
@@ -253,8 +257,6 @@ export type CarPhoto = {
   placeholder?: true;
   /** Studio shot with no (or a plain white) background: shown whole on sand instead of cropped to fill the frame. */
   cutout?: true;
-  /** Grey level (0–255) of a cutout's studio backdrop when it isn't white; the photo is brightened to blend it away. */
-  backdrop?: number;
 };
 
 export type Car = {
@@ -332,7 +334,7 @@ export const cars: Car[] = [
     text: "Our bulletproof Mercedes-Benz GLE comes with a trained Jhajj'z chauffeur. Ask us about it for VIP visits, delegations and anyone who needs extra security on the road.",
     photos: [
       // PLACEHOLDER: CarWale/CarDekho photo — remove before public launch
-      { src: cardekho("Mercedes-Benz/GLE/11332/1763535294500/front-left-side-47.jpg"), alt: "Silver Mercedes-Benz GLE", placeholder: true, cutout: true, backdrop: 224 },
+      { src: carwale("163317/gle-exterior-right-front-three-quarter-4.png"), alt: "White Mercedes-Benz GLE", placeholder: true, cutout: true },
     ],
     details: [
       { label: "Passengers", value: null },
