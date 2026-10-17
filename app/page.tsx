@@ -6,7 +6,7 @@ import { SiteFooter } from "@/components/site-footer";
 import { BookingBar } from "@/components/booking-bar";
 import { Enter, Reveal, Stagger, StaggerItem } from "@/components/motion";
 import { Button } from "@/components/ui/button";
-import { cities, contact, fleet, heroImage, services } from "@/lib/site";
+import { cities, contact, fleet, heroImage, serviceGroups } from "@/lib/site";
 
 const preview = ["luxury-cars", "wedding-cars", "suvs", "vintage-cars", "luxury-coaches", "mini-vans"]
   .map((slug) => fleet.find((v) => v.slug === slug)!)
@@ -33,7 +33,7 @@ export default function Home() {
           />
           <div className="relative mx-auto mt-auto w-full max-w-[1200px] px-6 pt-36 pb-16 md:pb-20">
             <Enter delay={0.15}>
-              <h1 className="max-w-[640px] font-serif text-[clamp(44px,6vw,76px)] leading-[1.05] tracking-[-0.02em]">
+              <h1 className="max-w-[720px] font-serif text-[clamp(38px,4.8vw,60px)] leading-[1.1] tracking-[-0.01em]">
                 Luxury cars and coaches, chauffeur-driven since 1998.
               </h1>
             </Enter>
@@ -43,13 +43,16 @@ export default function Home() {
                 across India.
               </p>
             </Enter>
-            <Enter delay={0.45} className="mt-8 flex flex-wrap gap-3">
+            <Enter delay={0.45} className="mt-8 flex flex-wrap items-center gap-x-6 gap-y-3">
               <Button asChild>
                 <Link href="/contact">Get a quote</Link>
               </Button>
-              <Button asChild variant="outlineLight">
-                <a href={contact.whatsapp}>WhatsApp us</a>
-              </Button>
+              <a
+                href={contact.whatsapp}
+                className="inline-flex min-h-11 items-center text-[15px] font-medium text-cream/90 underline decoration-white/40 underline-offset-[6px] transition-colors hover:text-cream hover:decoration-cream"
+              >
+                or WhatsApp us
+              </a>
             </Enter>
           </div>
         </section>
@@ -71,21 +74,25 @@ export default function Home() {
                 <ArrowRight className="size-4 transition-transform duration-300 group-hover:translate-x-1" aria-hidden="true" />
               </Link>
             </Reveal>
-            <Stagger className="grid grid-cols-[repeat(auto-fill,minmax(320px,1fr))] gap-x-6 gap-y-8">
-              {preview.map((v) => (
-                <StaggerItem key={v.slug}>
-                  <Link href={`/fleet#${v.slug}`} className="group flex flex-col gap-3.5">
-                    <div className="relative aspect-[3/2] overflow-hidden bg-stone">
+            {/* Swipeable row on phones; on desktop the first class gets a large tile. */}
+            <Stagger className="-mx-6 flex snap-x snap-mandatory scroll-px-6 gap-4 overflow-x-auto px-6 pb-2 [scrollbar-width:none] md:mx-0 md:grid md:grid-cols-3 md:gap-x-6 md:gap-y-8 md:overflow-visible md:px-0 md:pb-0">
+              {preview.map((v, i) => (
+                <StaggerItem
+                  key={v.slug}
+                  className={i === 0 ? "w-[82%] shrink-0 snap-start md:col-span-2 md:row-span-2 md:w-auto" : "w-[82%] shrink-0 snap-start md:w-auto"}
+                >
+                  <Link href={`/fleet#${v.slug}`} className="group flex h-full flex-col gap-3.5">
+                    <div className={i === 0 ? "relative aspect-[3/2] overflow-hidden bg-stone md:aspect-auto md:min-h-[360px] md:flex-1" : "relative aspect-[3/2] overflow-hidden bg-stone"}>
                       <Image
                         src={v.image}
                         alt={v.imageAlt}
                         fill
-                        sizes="(max-width: 768px) 100vw, 400px"
+                        sizes={i === 0 ? "(max-width: 768px) 85vw, 800px" : "(max-width: 768px) 85vw, 400px"}
                         className="object-cover saturate-[0.85] transition-[transform,filter] duration-700 ease-out group-hover:scale-[1.04] group-hover:saturate-100"
                       />
                     </div>
                     <div>
-                      <h3 className="text-[19px] font-semibold">{v.name}</h3>
+                      <h3 className={i === 0 ? "text-[19px] font-semibold md:font-serif md:text-[28px] md:font-normal" : "text-[19px] font-semibold"}>{v.name}</h3>
                       <p className="mt-1 text-[15px] text-muted">{v.text}</p>
                     </div>
                   </Link>
@@ -138,11 +145,18 @@ export default function Home() {
             <Reveal>
               <h2 className="mb-10 font-serif text-[clamp(32px,4vw,48px)] leading-[1.1] tracking-[-0.01em]">What we do</h2>
             </Reveal>
-            <Stagger gap={0.05} className="grid grid-cols-[repeat(auto-fit,minmax(260px,1fr))] gap-x-12 border-t border-line">
-              {services.map((s) => (
-                <StaggerItem key={s.title} className="border-b border-line py-5">
-                  <h3 className="text-[17px] font-semibold">{s.title}</h3>
-                  <p className="mt-1 text-[15px] text-muted">{s.text}</p>
+            <Stagger className="grid gap-x-12 gap-y-12 md:grid-cols-3">
+              {serviceGroups.map((g) => (
+                <StaggerItem key={g.title}>
+                  <h3 className="border-b border-ink/80 pb-3 font-serif text-2xl">{g.title}</h3>
+                  <ul>
+                    {g.items.map((s) => (
+                      <li key={s.title} className="border-b border-line py-4">
+                        <h4 className="text-[17px] font-semibold">{s.title}</h4>
+                        <p className="mt-1 text-[15px] text-muted">{s.text}</p>
+                      </li>
+                    ))}
+                  </ul>
                 </StaggerItem>
               ))}
             </Stagger>
@@ -161,6 +175,14 @@ export default function Home() {
               <p className="mt-4 max-w-[520px] text-[17px] text-[#45423c]">
                 Need a car for a month or longer? Ask about long-term hire.
               </p>
+              <div className="mt-8 flex flex-wrap gap-3">
+                <Button asChild variant="ink">
+                  <Link href="/contact">Get a quote</Link>
+                </Button>
+                <Button asChild variant="outline">
+                  <a href={contact.phones[0].href}>Call {contact.phones[0].label}</a>
+                </Button>
+              </div>
             </Reveal>
             <Reveal delay={0.1} className="min-w-0 flex-[1_1_400px]">
               <h3 className="mb-3 text-[15px] font-semibold">Where we operate</h3>
@@ -171,25 +193,6 @@ export default function Home() {
           </div>
         </section>
 
-        {/* CTA */}
-        <section className="bg-ink py-[72px] text-cream md:py-28">
-          <Reveal className="mx-auto flex max-w-[1200px] flex-wrap items-center justify-between gap-8 px-6">
-            <div className="min-w-0 flex-[1_1_480px]">
-              <h2 className="font-serif text-[clamp(32px,4vw,48px)] leading-[1.1] tracking-[-0.01em]">Planning a booking?</h2>
-              <p className="mt-4 max-w-[480px] text-[17px] text-[#cfcac0]">
-                Call, WhatsApp or send us the details and we&apos;ll send a quote.
-              </p>
-            </div>
-            <div className="flex flex-wrap gap-3">
-              <Button asChild>
-                <Link href="/contact">Get a quote</Link>
-              </Button>
-              <Button asChild variant="outlineLight">
-                <a href={contact.phones[0].href}>Call {contact.phones[0].label}</a>
-              </Button>
-            </div>
-          </Reveal>
-        </section>
       </main>
       <SiteFooter />
     </>

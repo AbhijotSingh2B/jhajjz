@@ -45,16 +45,32 @@ export const cities = [
   "Ropar",
 ];
 
-export const services = [
-  { title: "Chauffeur-driven cars", text: "By the hour, day or month." },
-  { title: "Weddings", text: "Couple, family and guest transport." },
-  { title: "VIP delegations", text: "Convoys for official and state visits." },
-  { title: "Events & conferences", text: "Moving guests between venues and hotels." },
-  { title: "Hotel travel desks", text: "On-site desks at 5-star hotels." },
-  { title: "Airline crew handling", text: "Crew pickups and drops on schedule." },
-  { title: "Employee transport", text: "Daily office commutes for companies." },
-  { title: "Photoshoots", text: "Vintage, sports and convertible cars." },
-  { title: "City tours", text: "Sightseeing with a local driver." },
+// The same 9 services as jhajjz.in, grouped by who books them.
+export const serviceGroups = [
+  {
+    title: "Weddings & events",
+    items: [
+      { title: "Weddings", text: "Couple, family and guest transport." },
+      { title: "Events & conferences", text: "Moving guests between venues and hotels." },
+      { title: "Photoshoots", text: "Vintage, sports and convertible cars." },
+    ],
+  },
+  {
+    title: "Corporate & VIP",
+    items: [
+      { title: "VIP delegations", text: "Convoys for official and state visits." },
+      { title: "Hotel travel desks", text: "On-site desks at 5-star hotels." },
+      { title: "Airline crew handling", text: "Crew pickups and drops on schedule." },
+      { title: "Employee transport", text: "Daily office commutes for companies." },
+    ],
+  },
+  {
+    title: "Personal travel",
+    items: [
+      { title: "Chauffeur-driven cars", text: "By the hour, day or month." },
+      { title: "City tours", text: "Sightseeing with a local driver." },
+    ],
+  },
 ];
 
 export const occasions = [

@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
 import { Suspense } from "react";
-import { ArrowUpRight } from "lucide-react";
 import { SiteHeader } from "@/components/site-header";
 import { SiteFooter } from "@/components/site-footer";
 import { QuoteForm } from "@/components/quote-form";
@@ -35,12 +34,8 @@ export default function ContactPage() {
                 <li key={r.href} className="border-b border-line">
                   <a href={r.href} className="group flex min-h-16 items-center justify-between gap-4 py-3">
                     <span className="text-sm font-medium text-muted">{r.label}</span>
-                    <span className="flex items-center gap-2 text-right font-serif text-2xl transition-colors group-hover:text-gold-deep">
+                    <span className="text-right font-serif text-2xl decoration-gold-deep/60 underline-offset-[6px] transition-colors group-hover:text-gold-deep group-hover:underline">
                       {r.value}
-                      <ArrowUpRight
-                        aria-hidden="true"
-                        className="size-4 transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
-                      />
                     </span>
                   </a>
                 </li>
