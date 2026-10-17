@@ -26,25 +26,51 @@ npm run build
 ## Git workflow
 
 Push straight to `main` (no feature branches or PRs) until the site launches to the client's customers.
+More than one Claude session has pushed to `main` at the same time: always `git pull` before starting and
+before pushing, and merge (never force-push) if someone else's commit arrives.
+
+## Working in the Claude cloud sandbox
+
+- Network: `static.wixstatic.com`, `jhajjz.in` and `vercel.app` are blocked (proxy 403), so fleet photos don't
+  load locally and the live preview can't be opened. To judge layouts, Playwright can stand in a local image:
+  `page.route(/_next\/image\?url=https/, r => r.fulfill({ path: 'public/rolls-royce-hero.webp' }))`.
+- Playwright: `require('/opt/node22/lib/node_modules/playwright')`; Chromium only (no WebKit, so iPhone Safari
+  behaviour can't be reproduced — ask Nirmal to check on his phone). Don't run `playwright install`.
+- Verify against a production build (`npm run build && npx next start -p 3001`), not a long-running `next dev`:
+  the dev server served stale CSS once (footer lost its background) and made a working change look broken.
+- Python helpers (fontTools, Pillow) go in a venv in the scratchpad; the favicon was made that way from the
+  "J" glyph of Libre Caslon Display.
+- Nirmal reviews on his iPhone at jhajjz.vercel.app; it lags a few pushes behind while Vercel redeploys.
+
+## How Nirmal likes to work
+
+- Wants changes done and pushed, then a short summary of what changed and anything that still needs the client.
+- Only verified facts: nothing invented, even "safe" defaults (e.g. languages spoken were removed from JSON-LD).
+- Very sensitive to anything that looks AI-made or templated — check new UI against the "avoid" list below.
+- Wording he set: "Talk to us on WhatsApp" (never "WhatsApp us"); hero line "Head office in Chandigarh,
+  serving pan-India"; "stations" isn't used in the About city list heading ("Pan-India, including").
 
 ## Structure
 
 ```
 app/
-  page.tsx                 Home: hero, booking bar, fleet preview, weddings, services (grouped), about + CTA
-  fleet/page.tsx           Full fleet with filter tabs (components/fleet-browser.tsx)
+  page.tsx                 Home: hero, booking bar, fleet preview, weddings photo band, "Who we drive for"
+                           (rate-card rows), "Chandigarh, since 1998" about + city list
+  fleet/page.tsx           Full fleet with search + filter tabs (components/fleet-browser.tsx)
   contact/page.tsx         Quote form (components/quote-form.tsx) + contact details
-  privacy-policy/page.tsx  Placeholder — text still needed
+  privacy-policy/page.tsx  Drafted policy; 3 highlighted [CONFIRM] items for the client
   not-found.tsx            Branded 404
 components/
   site-header.tsx          Fixed header (Home, Fleet, Weddings, Services, About, Contact); transparent over the home hero until scroll; Fleet mega-menu; mobile sheet
   site-footer.tsx          Also renders the phone-only sticky Call / WhatsApp bar
   booking-bar.tsx          "Start a quote": occasion / city / date (all start empty) → pushes to /contact?… as query params
-  quote-form.tsx           Pre-fills from those query params
+  quote-form.tsx           Pre-fills from those query params; "Other" opens a text box; submit opens the
+                           WhatsApp popup with the details written out (nothing stored server-side)
   contact-dialog.tsx       <ContactDialog channel="call|whatsapp|email"> wraps any button → animated popup
                            (both numbers / WhatsApp / email, copy buttons, "Other ways to reach us" list)
   page-transition.tsx      Fade-and-lift between pages (React <ViewTransition>); wraps each page's <main>
   motion.tsx               Reveal, Enter, Stagger, StaggerItem, MotionProvider (respects reduced motion)
+  icons.tsx                WhatsApp glyph (Simple Icons) + social icons (Tabler, MIT); lucide has no brand icons
   ui/                      button, select, navigation-menu, sheet, dialog (bottom sheet on phones)
 proxy.ts                   Adds `X-Robots-Tag: noindex` on every host except www.jhajjz.in / jhajjz.in (previews)
 app/sitemap.ts, robots.ts, manifest.ts   SEO files; all URLs use `siteUrl` from lib/site.ts
