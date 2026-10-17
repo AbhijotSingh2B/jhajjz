@@ -50,6 +50,10 @@ export const cities = [
 
 // Jhajj'z works pan-India; the cities above are where it has stations. Forms
 // offer this for trips that start anywhere else.
+/** wa.me link for one of the phone numbers (tel: href in, chat link out), optionally with a prefilled message. */
+export const whatsappUrl = (telHref: string, text?: string) =>
+  `https://wa.me/${telHref.replace(/\D/g, "")}${text ? `?text=${encodeURIComponent(text)}` : ""}`;
+
 export const otherCity = "Other city in India";
 export const cityOptions = [...cities, otherCity];
 

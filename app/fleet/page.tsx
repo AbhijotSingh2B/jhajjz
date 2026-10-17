@@ -45,7 +45,7 @@ export default function FleetPage() {
             <Reveal className="mx-auto flex max-w-[1200px] flex-wrap items-center justify-between gap-8 px-6">
               <div className="min-w-0 flex-[1_1_480px]">
                 <h2 className="font-serif text-[clamp(28px,3.4vw,40px)] leading-[1.1]">Need a car for a month or more?</h2>
-                <p className="mt-3 max-w-[480px] text-[17px] text-[#45423c]">
+                <p className="mt-3 max-w-[480px] text-[17px] text-body">
                   Long-term hire is flexible: choose the car, the chauffeur and the terms.
                 </p>
               </div>

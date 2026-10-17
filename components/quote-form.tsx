@@ -2,58 +2,61 @@
 
 import { useState } from "react";
 import { useSearchParams } from "next/navigation";
-import { AnimatePresence, motion } from "motion/react";
+import { motion } from "motion/react";
 import { cityOptions, fleet, occasions } from "@/lib/site";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Button } from "@/components/ui/button";
+import { minToday } from "@/lib/utils";
+import { ContactDialog } from "@/components/contact-dialog";
 
 const NOT_SURE = "Not sure — recommend one";
 const OTHER_VEHICLE = "Other";
 
 /**
  * Quote request form. Pre-fills from the booking bar's query params.
- * TODO(client): `submit` only shows a thank-you state. Wire it to email /
- * WhatsApp / a form service before launch (see CLAUDE.md, "Open items").
+ * Submitting opens the WhatsApp popup with the details already written, so the
+ * visitor picks a number and sends them. Nothing is stored on a server.
  */
 export function QuoteForm() {
   const params = useSearchParams();
-  const [sent, setSent] = useState(false);
-  const [occasion, setOccasion] = useState(params.get("occasion") ?? "");
-  const [vehicle, setVehicle] = useState(params.get("vehicle") ?? "");
-  const [city, setCity] = useState(params.get("city") ?? "");
+  const pick = (key: string, allowed: string[]) => {
+    const v = params.get(key) ?? "";
+    return allowed.includes(v) ? v : "";
+  };
+  const [open, setOpen] = useState(false);
+  const [message, setMessage] = useState("");
+  const [occasion, setOccasion] = useState(pick("occasion", occasions));
+  const [vehicle, setVehicle] = useState(pick("vehicle", [NOT_SURE, OTHER_VEHICLE, ...fleet.map((v) => v.name)]));
+  const [city, setCity] = useState(pick("city", cityOptions));
 
   const inputClass =
     "h-12 w-full border-b border-white/30 bg-transparent text-[17px] text-cream outline-none transition-colors placeholder:text-muted-dark hover:border-white/60 focus:border-gold";
 
   return (
-    <div className="relative min-h-[560px]">
-      <AnimatePresence mode="wait" initial={false}>
-        {sent ? (
-          <motion.div
-            key="sent"
-            initial={{ opacity: 0, y: 16 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -16 }}
-            transition={{ duration: 0.5, ease: [0.2, 0.7, 0.2, 1] }}
-            className="flex min-h-[560px] flex-col justify-center gap-4"
-            role="status"
-          >
-            <h2 className="font-serif text-4xl leading-tight md:text-5xl">Thank you. We&apos;ll call you shortly.</h2>
-            <p className="max-w-sm text-[#cfcac0]">Our team will confirm the vehicle, timing and price.</p>
-            <Button type="button" variant="outlineLight" className="mt-4 self-start" onClick={() => setSent(false)}>
-              Send another enquiry
-            </Button>
-          </motion.div>
-        ) : (
+    <div className="relative">
           <motion.form
-            key="form"
             initial={{ opacity: 0, y: 16 }}
             animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -16 }}
             transition={{ duration: 0.5, ease: [0.2, 0.7, 0.2, 1] }}
             onSubmit={(e) => {
               e.preventDefault();
-              setSent(true);
+              const f = new FormData(e.currentTarget);
+              const line = (label: string, v: FormDataEntryValue | null) => (v ? `${label}: ${v}` : "");
+              setMessage(
+                [
+                  "Hello Jhajj'z, I'd like a quote.",
+                  line("Name", f.get("name")),
+                  line("Phone", f.get("phone")),
+                  line("Occasion", occasion),
+                  line("Vehicle", vehicle),
+                  line("City", city),
+                  line("Date", f.get("date")),
+                  line("Notes", f.get("notes")),
+                ]
+                  .filter(Boolean)
+                  .join("\n"),
+              );
+              setOpen(true);
             }}
             aria-label="Quote request"
             className="grid grid-cols-[repeat(auto-fit,minmax(220px,1fr))] gap-7"
@@ -114,6 +117,7 @@ export function QuoteForm() {
                 name="date"
                 type="date"
                 defaultValue={params.get("date") ?? ""}
+                ref={minToday}
                 className={`${inputClass} [color-scheme:dark]`}
               />
             </DarkField>
@@ -131,9 +135,11 @@ export function QuoteForm() {
             <Button type="submit" variant="gold" className="col-span-full h-14">
               Request a quote
             </Button>
+            <p className="col-span-full -mt-2 text-[14px] text-muted-dark">
+              Next you&apos;ll choose a number to send these details to on WhatsApp.
+            </p>
           </motion.form>
-        )}
-      </AnimatePresence>
+      <ContactDialog channel="whatsapp" open={open} onOpenChange={setOpen} message={message} />
     </div>
   );
 }

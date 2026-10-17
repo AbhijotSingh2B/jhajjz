@@ -5,7 +5,7 @@ import { ContactDialog } from "@/components/contact-dialog";
 
 export function SiteFooter() {
   return (
-    <footer className="bg-[#0e0e0d] pb-[calc(56px+env(safe-area-inset-bottom))] text-[15px] text-[#cfcac0] md:pb-0">
+    <footer className="bg-ink-deep pb-[calc(56px+env(safe-area-inset-bottom))] text-[15px] text-on-dark md:pb-0">
       <div className="mx-auto grid max-w-[1200px] grid-cols-[repeat(auto-fit,minmax(220px,1fr))] gap-10 px-6 pt-16 pb-8">
         <div>
           <Link href="/" className="font-serif text-2xl text-cream">
@@ -51,7 +51,7 @@ export function SiteFooter() {
           </ul>
         </div>
       </div>
-      <div className="mx-auto flex max-w-[1200px] flex-wrap justify-between gap-3 border-t border-ink-soft px-6 py-5 text-sm text-[#8e8a81]">
+      <div className="mx-auto flex max-w-[1200px] flex-wrap justify-between gap-3 border-t border-ink-soft px-6 py-5 text-sm text-footer-muted">
         <span>© 2026 Jhajj&apos;z</span>
         <Link href="/privacy-policy" className="hover:text-cream">
           Privacy policy

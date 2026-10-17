@@ -4,7 +4,7 @@ import { useLayoutEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { AnimatePresence, motion } from "motion/react";
 import { ArrowLeft, Check, ChevronRight, Copy, FileText, Mail, MapPin, MessageCircle, Phone } from "lucide-react";
-import { contact } from "@/lib/site";
+import { contact, whatsappUrl } from "@/lib/site";
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogClose, DialogContent, DialogDescription, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 
@@ -13,7 +13,7 @@ const ease = [0.2, 0.7, 0.2, 1] as const;
 export type ContactChannel = "call" | "whatsapp" | "email";
 type View = ContactChannel | "all";
 
-const whatsappQuote = `${contact.whatsapp}?text=${encodeURIComponent("Hello Jhajj'z, I'd like a quote.")}`;
+const defaultMessage = "Hello Jhajj'z, I'd like a quote.";
 const icons = { call: Phone, whatsapp: MessageCircle, email: Mail };
 
 /**
@@ -22,8 +22,38 @@ const icons = { call: Phone, whatsapp: MessageCircle, email: Mail };
  *   <ContactDialog channel="call"><button>Call us</button></ContactDialog>
  *
  * Each channel ends with "Other ways to reach us", which lists every option.
+ *
+ * To open it from code (e.g. after a form submit) leave out the trigger and control it:
+ *
+ *   <ContactDialog channel="whatsapp" open={open} onOpenChange={setOpen} message="Hello, ..." />
+ *
+ * `message` prefills the WhatsApp chat and the email body.
  */
-export function ContactDialog({ channel, children }: { channel: ContactChannel; children: React.ReactNode }) {
+export function ContactDialog({
+  channel,
+  children,
+  open,
+  onOpenChange,
+  message,
+}: {
+  channel: ContactChannel;
+  children?: React.ReactNode;
+  open?: boolean;
+  onOpenChange?: (open: boolean) => void;
+  message?: string;
+}) {
+  return (
+    <Dialog open={open} onOpenChange={onOpenChange}>
+      {children && <DialogTrigger asChild>{children}</DialogTrigger>}
+      <DialogContent>
+        <Panel channel={channel} message={message} />
+      </DialogContent>
+    </Dialog>
+  );
+}
+
+/** Mounted only while the dialog is open, so it starts on the requested channel every time. */
+function Panel({ channel, message }: { channel: ContactChannel; message?: string }) {
   const [view, setView] = useState<View>(channel);
   // +1 when moving to the "all" list, -1 when coming back, so the slide direction matches.
   const [dir, setDir] = useState(1);
@@ -34,39 +64,34 @@ export function ContactDialog({ channel, children }: { channel: ContactChannel; 
   }
 
   return (
-    <Dialog onOpenChange={(open) => open && setView(channel)}>
-      <DialogTrigger asChild>{children}</DialogTrigger>
-      <DialogContent>
-        <AutoHeight>
-          <AnimatePresence mode="wait" initial={false} custom={dir}>
-            <motion.div
-              key={view}
-              custom={dir}
-              variants={{
-                enter: (d: number) => ({ opacity: 0, x: 24 * d }),
-                center: { opacity: 1, x: 0 },
-                exit: (d: number) => ({ opacity: 0, x: -24 * d }),
-              }}
-              initial="enter"
-              animate="center"
-              exit="exit"
-              transition={{ duration: 0.28, ease }}
-              className="px-6 pt-8 pb-6 sm:px-10 sm:pt-10 sm:pb-8"
-            >
-              {view === "all" ? (
-                <AllOptions onPick={go} onBack={() => go(channel)} />
-              ) : (
-                <ChannelView channel={view} onOther={() => go("all")} />
-              )}
-            </motion.div>
-          </AnimatePresence>
-        </AutoHeight>
-      </DialogContent>
-    </Dialog>
+    <AutoHeight>
+      <AnimatePresence mode="wait" initial={false} custom={dir}>
+        <motion.div
+          key={view}
+          custom={dir}
+          variants={{
+            enter: (d: number) => ({ opacity: 0, x: 24 * d }),
+            center: { opacity: 1, x: 0 },
+            exit: (d: number) => ({ opacity: 0, x: -24 * d }),
+          }}
+          initial="enter"
+          animate="center"
+          exit="exit"
+          transition={{ duration: 0.28, ease }}
+          className="px-6 pt-8 pb-6 sm:px-10 sm:pt-10 sm:pb-8"
+        >
+          {view === "all" ? (
+            <AllOptions onPick={go} onBack={() => go(channel)} />
+          ) : (
+            <ChannelView channel={view} message={message} onOther={() => go("all")} />
+          )}
+        </motion.div>
+      </AnimatePresence>
+    </AutoHeight>
   );
 }
 
-function ChannelView({ channel, onOther }: { channel: ContactChannel; onOther: () => void }) {
+function ChannelView({ channel, message, onOther }: { channel: ContactChannel; message?: string; onOther: () => void }) {
   const content = {
     call: {
       title: "Call us",
@@ -77,19 +102,20 @@ function ChannelView({ channel, onOther }: { channel: ContactChannel; onOther: (
     },
     whatsapp: {
       title: "WhatsApp us",
-      text: "Send the date, city and occasion, and we'll reply with a quote.",
-      rows: [
+      text: message
+        ? "Your details are filled in. Pick a number to open the chat and send them."
+        : "Pick a number to open the chat. Send the date, city and occasion and we'll reply with a quote.",
+      rows: contact.phones.map((p) => (
         <Row
-          key="wa"
-          value={contact.phones[0].label}
-          href={whatsappQuote}
-          copy={contact.phones[0].label}
+          key={p.href}
+          value={p.label}
+          href={whatsappUrl(p.href, message ?? defaultMessage)}
+          copy={p.label}
           action="Open chat"
           actionIcon={MessageCircle}
           external
-          stack
-        />,
-      ],
+        />
+      )),
     },
     email: {
       title: "Email us",
@@ -98,7 +124,7 @@ function ChannelView({ channel, onOther }: { channel: ContactChannel; onOther: (
         <Row
           key="mail"
           value={contact.email}
-          href={`mailto:${contact.email}?subject=${encodeURIComponent("Quote request")}`}
+          href={`mailto:${contact.email}?subject=${encodeURIComponent("Quote request")}${message ? `&body=${encodeURIComponent(message)}` : ""}`}
           copy={contact.email}
           action="Write email"
           actionIcon={Mail}
