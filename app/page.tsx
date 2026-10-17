@@ -131,7 +131,7 @@ export default function Home() {
           <section id="weddings" className="relative isolate flex min-h-[560px] scroll-mt-16 items-end overflow-hidden bg-ink text-cream md:min-h-[640px]">
             <Image
               src={weddingPhoto}
-              alt="Decorated wedding car from the Jhajj'z fleet"
+              alt="Silver Rolls-Royce Ghost from the Jhajj'z fleet"
               fill
               sizes="100vw"
               className="-z-20 object-cover object-center"

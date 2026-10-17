@@ -19,8 +19,8 @@ export const contact = {
     { label: "Instagram (Delhi)", href: "https://www.instagram.com/jhajjz_limos_delhi/" },
     { label: "LinkedIn", href: "https://in.linkedin.com/company/jhajjz" },
     { label: "YouTube", href: "https://www.youtube.com/@JhajjzTheTransporters" },
-    { label: "Facebook", href: "http://facebook.com/HIRE.CONVERTIBLES.LUXURY.WEDDING.CORPORATE.CARS" },
-    { label: "X", href: "http://twitter.com/Jhajjztransport" },
+    { label: "Facebook", href: "https://www.facebook.com/HIRE.CONVERTIBLES.LUXURY.WEDDING.CORPORATE.CARS" },
+    { label: "X", href: "https://x.com/Jhajjztransport" },
   ],
 };
 
