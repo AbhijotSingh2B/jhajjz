@@ -54,7 +54,7 @@ export default function Home() {
                     type="button"
                     className="inline-flex min-h-11 items-center text-[15px] font-medium text-cream/90 underline decoration-white/40 underline-offset-[6px] transition-colors hover:text-cream hover:decoration-cream"
                   >
-                    or WhatsApp us
+                    or talk to us on WhatsApp
                   </button>
                 </ContactDialog>
               </Enter>

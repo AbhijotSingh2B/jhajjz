@@ -101,7 +101,7 @@ function ChannelView({ channel, message, onOther }: { channel: ContactChannel; m
       )),
     },
     whatsapp: {
-      title: "WhatsApp us",
+      title: "Talk on WhatsApp",
       text: message
         ? "Your details are filled in. Pick a number to open the chat and send them."
         : "Pick a number to open the chat. Send the date, city and occasion and we'll reply with a quote.",

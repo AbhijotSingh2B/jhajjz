@@ -210,7 +210,7 @@ function MobileMenu() {
             {(
               [
                 ["call", Phone, "Call us"],
-                ["whatsapp", MessageCircle, "WhatsApp us"],
+                ["whatsapp", MessageCircle, "Talk to us on WhatsApp"],
                 ["email", Mail, "Email us"],
               ] as const
             ).map(([channel, Icon, label]) => (

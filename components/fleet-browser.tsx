@@ -117,7 +117,7 @@ export function FleetBrowser() {
               Ask about this car
             </Link>
             <a href={contact.whatsapp} className="inline-flex min-h-11 items-center px-2 text-[15px] font-semibold underline underline-offset-[6px]">
-              WhatsApp us
+              Talk to us on WhatsApp
             </a>
           </div>
         </div>
