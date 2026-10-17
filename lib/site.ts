@@ -80,7 +80,6 @@ export type Vehicle = {
   name: string;
   group: FleetGroup;
   text: string;
-  seats: string;
   image: string;
   imageAlt: string;
 };
@@ -91,7 +90,6 @@ export const fleet: Vehicle[] = [
     name: "Luxury cars",
     group: "cars",
     text: "Rolls-Royce, Mercedes-Benz, BMW and Audi, for business, celebrations and everything in between.",
-    seats: "Up to 4 guests",
     image: wix("171684_e2b3a2de810b49f1bd9066aa63ea5b47"),
     imageAlt: "Luxury car from the Jhajj'z fleet",
   },
@@ -100,7 +98,6 @@ export const fleet: Vehicle[] = [
     name: "Wedding cars",
     group: "wedding",
     text: "Decorated to your theme and driven by our chauffeurs, so the arrival is part of the memory.",
-    seats: "Couple's car",
     image: wixJpeg("171684_d0d46c5c136c43b6a41d577ba308dc77"),
     imageAlt: "Decorated wedding car",
   },
@@ -109,7 +106,6 @@ export const fleet: Vehicle[] = [
     name: "Vintage cars",
     group: "wedding",
     text: "Classic cars for weddings, anniversaries and themed photoshoots.",
-    seats: "Up to 2 guests",
     image: wix("171684_274fc280da2a49fb8271fb19015aac77"),
     imageAlt: "Vintage car",
   },
@@ -118,7 +114,6 @@ export const fleet: Vehicle[] = [
     name: "Convertibles",
     group: "cars",
     text: "Roof down, for photoshoots and days that call for open sky.",
-    seats: "Up to 2 guests",
     image: wixJpeg("171684_b92c4c7fbc4544efaa3155a9e1b7ea5a"),
     imageAlt: "Convertible car",
   },
@@ -127,7 +122,6 @@ export const fleet: Vehicle[] = [
     name: "Limousines",
     group: "wedding",
     text: "For red carpets, weddings and the meetings that matter most.",
-    seats: "[SEATS]",
     image: wix("171684_230878eccc5e4a129225562dc3625aa5"),
     imageAlt: "Limousine",
   },
@@ -136,7 +130,6 @@ export const fleet: Vehicle[] = [
     name: "SUVs",
     group: "suv",
     text: "Range Rover and more, with space for families, luggage and hill trips.",
-    seats: "Up to 6 guests",
     image: wix("171684_96f78bb8e63b4a268e76e533cd6eb5af"),
     imageAlt: "Luxury SUV",
   },
@@ -145,7 +138,6 @@ export const fleet: Vehicle[] = [
     name: "Executive cabs",
     group: "cars",
     text: "Comfortable sedans for meetings, corporate events and airport runs.",
-    seats: "Up to 4 guests",
     image: wix("171684_1c9a798a6e444d7493d964f19512fbe7"),
     imageAlt: "Executive sedan",
   },
@@ -154,7 +146,6 @@ export const fleet: Vehicle[] = [
     name: "Luxury coaches",
     group: "group",
     text: "Volvo and Mercedes-Benz coaches for delegations, baraat and large groups.",
-    seats: "[SEATS]",
     image: wix("171684_0af879bb5488447795fdb167404077b1"),
     imageAlt: "Luxury coach",
   },
@@ -163,7 +154,6 @@ export const fleet: Vehicle[] = [
     name: "Mini vans",
     group: "group",
     text: "Flexible seating and room for luggage, for families and small groups.",
-    seats: "[SEATS]",
     image: wixJpeg("171684_1371098b103945e981bf18c1563c7087"),
     imageAlt: "Mini van",
   },

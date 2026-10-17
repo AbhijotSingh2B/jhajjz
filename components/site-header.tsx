@@ -132,7 +132,6 @@ function FleetMenu() {
                     className="size-3.5 -translate-x-1 opacity-0 transition-[opacity,transform] duration-200 group-hover:translate-x-0 group-hover:opacity-100"
                   />
                 </span>
-                <span className="text-[13px] text-muted">{v.seats}</span>
               </Link>
             </NavigationMenuLink>
           </motion.li>

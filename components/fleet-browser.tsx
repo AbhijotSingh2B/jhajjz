@@ -65,10 +65,7 @@ export function FleetBrowser() {
                   className="object-cover saturate-[0.85] transition-[transform,filter] duration-700 ease-out group-hover:scale-[1.04] group-hover:saturate-100"
                 />
               </div>
-              <div className="mt-4 flex items-baseline justify-between gap-4">
-                <h2 className="font-serif text-[28px] leading-tight">{v.name}</h2>
-                <span className="shrink-0 text-[13px] text-muted">{v.seats}</span>
-              </div>
+              <h2 className="mt-4 font-serif text-[28px] leading-tight">{v.name}</h2>
               <p className="mt-1.5 text-[15px] text-muted">{v.text}</p>
               <Link
                 href={`/contact?vehicle=${encodeURIComponent(v.name)}`}
