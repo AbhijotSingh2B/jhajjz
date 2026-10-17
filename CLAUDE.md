@@ -100,6 +100,10 @@ The v0 reference design (`redesign-jhajjz-in.zip`) got several facts wrong — n
 
 ## Changelog
 
+- 2026-10-17 — WhatsApp logo (`components/icons.tsx`, Simple Icons glyph) replaces the chat-bubble icon; buttons
+  stay ink, not WhatsApp green, to keep the palette. Popup rows: on phones the number sits on its own line with
+  the buttons full-width under it, so rows never wrap unevenly.
+
 - 2026-10-17 — "Who we drive for" rebuilt as three equal columns split by hairlines; stations list removed
   from the About section, then restored as "Pan-India, including" (no "stations" wording in that section).
 

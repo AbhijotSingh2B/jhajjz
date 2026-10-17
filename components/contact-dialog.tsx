@@ -3,7 +3,8 @@
 import { useLayoutEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { AnimatePresence, motion } from "motion/react";
-import { ArrowLeft, Check, ChevronRight, Copy, FileText, Mail, MapPin, MessageCircle, Phone } from "lucide-react";
+import { ArrowLeft, Check, ChevronRight, Copy, FileText, Mail, MapPin, Phone } from "lucide-react";
+import { WhatsAppIcon } from "@/components/icons";
 import { contact, whatsappUrl } from "@/lib/site";
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogClose, DialogContent, DialogDescription, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
@@ -14,7 +15,8 @@ export type ContactChannel = "call" | "whatsapp" | "email";
 type View = ContactChannel | "all";
 
 const defaultMessage = "Hello Jhajj'z, I'd like a quote.";
-const icons = { call: Phone, whatsapp: MessageCircle, email: Mail };
+type Icon = React.ComponentType<React.SVGProps<SVGSVGElement>>;
+const icons: Record<ContactChannel, Icon> = { call: Phone, whatsapp: WhatsAppIcon, email: Mail };
 
 /**
  * Wrap any button to open the contact popup on one channel:
@@ -112,7 +114,7 @@ function ChannelView({ channel, message, onOther }: { channel: ContactChannel; m
           href={whatsappUrl(p.href, message ?? defaultMessage)}
           copy={p.label}
           action="Open chat"
-          actionIcon={MessageCircle}
+          actionIcon={WhatsAppIcon}
           external
         />
       )),
@@ -129,7 +131,6 @@ function ChannelView({ channel, message, onOther }: { channel: ContactChannel; m
           action="Write email"
           actionIcon={Mail}
           small
-          stack
         />,
       ],
     },
@@ -161,7 +162,7 @@ function ChannelView({ channel, message, onOther }: { channel: ContactChannel; m
 function AllOptions({ onPick, onBack }: { onPick: (v: ContactChannel) => void; onBack: () => void }) {
   const itemClass =
     "group flex min-h-16 w-full items-center gap-4 px-2 py-3 text-left transition-colors duration-200 hover:bg-sand";
-  const inner = (Icon: typeof Phone, label: string, sub: string) => (
+  const inner = (Icon: Icon, label: string, sub: string) => (
     <>
       <span className="flex size-11 shrink-0 items-center justify-center bg-sand text-gold-deep transition-colors duration-200 group-hover:bg-paper">
         <Icon className="size-[18px]" aria-hidden="true" />
@@ -182,7 +183,7 @@ function AllOptions({ onPick, onBack }: { onPick: (v: ContactChannel) => void; o
       {inner(Phone, "Call", contact.phones.map((p) => p.label).join(" · "))}
     </button>,
     <button key="wa" type="button" className={itemClass} onClick={() => onPick("whatsapp")}>
-      {inner(MessageCircle, "WhatsApp", contact.phones[0].label)}
+      {inner(WhatsAppIcon, "WhatsApp", contact.phones[0].label)}
     </button>,
     <button key="mail" type="button" className={itemClass} onClick={() => onPick("email")}>
       {inner(Mail, "Email", contact.email)}
@@ -225,7 +226,7 @@ function AllOptions({ onPick, onBack }: { onPick: (v: ContactChannel) => void; o
   );
 }
 
-function Heading({ icon: Icon, title, text }: { icon?: typeof Phone; title: string; text: string }) {
+function Heading({ icon: Icon, title, text }: { icon?: Icon; title: string; text: string }) {
   return (
     <div className="pr-10">
       {Icon && (
@@ -252,21 +253,19 @@ function Row({
   actionIcon: ActionIcon,
   external = false,
   small = false,
-  stack = false,
 }: {
   value: string;
   href: string;
   copy: string;
   action: string;
-  actionIcon: typeof Phone;
+  actionIcon: Icon;
   external?: boolean;
   small?: boolean;
-  /** Single-row channels: on phones the action button takes the full width under the value. */
-  stack?: boolean;
 }) {
   const ext = external ? { target: "_blank", rel: "noreferrer" } : {};
   return (
-    <div className="flex flex-wrap items-center justify-between gap-x-4 gap-y-3 py-4">
+    // Phones: value on its own line, buttons in a full-width row under it, the same for every row.
+    <div className="flex flex-col gap-3 py-4 sm:flex-row sm:items-center sm:justify-between sm:gap-4">
       <a
         href={href}
         {...ext}
@@ -274,9 +273,9 @@ function Row({
       >
         {value}
       </a>
-      <div className={`flex shrink-0 items-center gap-2 ${stack ? "w-full sm:w-auto" : ""}`}>
+      <div className="flex shrink-0 items-center gap-2">
         <CopyButton value={copy} />
-        <Button asChild variant="ink" size="sm" className={`h-11 ${stack ? "flex-1 sm:flex-none" : ""}`}>
+        <Button asChild variant="ink" size="sm" className="h-11 flex-1 sm:flex-none">
           <a href={href} {...ext}>
             <ActionIcon aria-hidden="true" />
             {action}

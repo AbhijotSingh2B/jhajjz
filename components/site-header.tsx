@@ -5,7 +5,8 @@ import Link from "next/link";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { motion } from "motion/react";
-import { ArrowRight, Mail, Menu, MessageCircle, Phone } from "lucide-react";
+import { ArrowRight, Mail, Menu, Phone } from "lucide-react";
+import { WhatsAppIcon } from "@/components/icons";
 import { cn } from "@/lib/utils";
 import { contact, fleet, heroImage } from "@/lib/site";
 import {
@@ -210,7 +211,7 @@ function MobileMenu() {
             {(
               [
                 ["call", Phone, "Call us"],
-                ["whatsapp", MessageCircle, "Talk to us on WhatsApp"],
+                ["whatsapp", WhatsAppIcon, "Talk to us on WhatsApp"],
                 ["email", Mail, "Email us"],
               ] as const
             ).map(([channel, Icon, label]) => (

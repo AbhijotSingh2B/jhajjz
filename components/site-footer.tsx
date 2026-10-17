@@ -1,5 +1,6 @@
 import Link from "next/link";
-import { MessageCircle, Phone } from "lucide-react";
+import { Phone } from "lucide-react";
+import { WhatsAppIcon } from "@/components/icons";
 import { contact, founded } from "@/lib/site";
 import { ContactDialog } from "@/components/contact-dialog";
 
@@ -77,7 +78,7 @@ function MobileContactBar() {
           type="button"
           className="flex h-14 items-center justify-center gap-2 border-l border-white/10 text-[15px] font-medium"
         >
-          <MessageCircle className="size-4 text-gold" aria-hidden="true" />
+          <WhatsAppIcon className="size-4 text-gold" aria-hidden="true" />
           WhatsApp
         </button>
       </ContactDialog>
