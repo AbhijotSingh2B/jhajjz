@@ -7,7 +7,7 @@ import { Enter, Reveal } from "@/components/motion";
 import { Button } from "@/components/ui/button";
 import { PageTransition } from "@/components/page-transition";
 import { BreadcrumbStructuredData } from "@/components/structured-data";
-import { openGraphBase, previewImage } from "@/lib/seo";
+import { openGraphBase } from "@/lib/seo";
 
 const fleetDescription =
   "Rent a Rolls-Royce, Bentley, Mercedes-Benz, BMW, Audi, Jaguar or Range Rover with a chauffeur: luxury cars, wedding cars, vintage cars, limousines, SUVs, luxury MPVs like the Toyota Vellfire, Volvo coaches and mini vans. Chandigarh and pan-India.";
@@ -21,7 +21,6 @@ export const metadata: Metadata = {
     url: "/fleet",
     title: "The Jhajj'z fleet: luxury cars, wedding cars and coaches",
     description: fleetDescription,
-    images: [previewImage("fleet", "The Jhajj'z fleet")],
   },
 };
 

@@ -13,7 +13,7 @@ import { CarGallery } from "@/components/car-gallery";
 import { BreadcrumbStructuredData, CarStructuredData } from "@/components/structured-data";
 import { FleetClassPage } from "@/components/fleet-class-page";
 import { carName, cars, carsInClass, classHref, fleet, inSentence } from "@/lib/site";
-import { openGraphBase, previewImage } from "@/lib/seo";
+import { openGraphBase } from "@/lib/seo";
 
 type Props = { params: Promise<{ car: string }> };
 
@@ -44,7 +44,6 @@ function classMetadata(v: NonNullable<ReturnType<typeof classWithCars>>): Metada
       url: path,
       title: `${v.name} with chauffeur | Jhajj'z`,
       description,
-      images: [previewImage(v.slug, `${v.name} from Jhajj'z`)],
     },
   };
 }
@@ -65,7 +64,6 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       url: path,
       title: `${name} with chauffeur | Jhajj'z`,
       description,
-      images: [previewImage(car.slug, `${name} from Jhajj'z`)],
     },
   };
 }

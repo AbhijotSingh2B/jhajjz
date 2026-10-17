@@ -7,7 +7,7 @@ import { Enter } from "@/components/motion";
 import { contact } from "@/lib/site";
 import { PageTransition } from "@/components/page-transition";
 import { BreadcrumbStructuredData } from "@/components/structured-data";
-import { openGraphBase, previewImage } from "@/lib/seo";
+import { openGraphBase } from "@/lib/seo";
 import { ContactDialog, type ContactChannel } from "@/components/contact-dialog";
 
 const contactDescription =
@@ -22,7 +22,6 @@ export const metadata: Metadata = {
     url: "/contact",
     title: "Get a quote from Jhajj'z",
     description: contactDescription,
-    images: [previewImage("contact", "Get a quote from Jhajj'z")],
   },
 };
 
