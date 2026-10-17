@@ -1,10 +1,11 @@
 import type { MetadataRoute } from "next";
-import { siteUrl } from "@/lib/site";
+import { cars, siteUrl } from "@/lib/site";
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const pages: { path: string; priority: number; changeFrequency: "weekly" | "monthly" | "yearly" }[] = [
     { path: "", priority: 1, changeFrequency: "weekly" },
     { path: "/fleet", priority: 0.9, changeFrequency: "weekly" },
+    ...cars.map((c) => ({ path: `/fleet/${c.slug}`, priority: 0.7, changeFrequency: "monthly" as const })),
     { path: "/contact", priority: 0.8, changeFrequency: "monthly" },
     { path: "/privacy-policy", priority: 0.2, changeFrequency: "yearly" },
   ];

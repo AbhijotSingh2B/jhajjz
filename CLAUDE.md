@@ -57,6 +57,9 @@ app/
   page.tsx                 Home: hero, booking bar, fleet preview, weddings photo band, "Who we drive for"
                            (rate-card rows), "Chandigarh, since 1998" about + city list
   fleet/page.tsx           Full fleet with search + filter tabs (components/fleet-browser.tsx)
+  fleet/[car]/page.tsx     One page per car in `cars` (lib/site.ts), e.g. /fleet/rolls-royce-ghost. Unknown
+                           details/photos show a highlighted [CONFIRM] (components/confirm.tsx). The car is linked
+                           from its class card on /fleet and found by the fleet search. Add a car = add an entry.
   contact/page.tsx         Quote form (components/quote-form.tsx) + contact details
   privacy-policy/page.tsx  Drafted policy; 3 highlighted [CONFIRM] items for the client
   not-found.tsx            Branded 404
@@ -125,6 +128,8 @@ The v0 reference design (`redesign-jhajjz-in.zip`) got several facts wrong — n
       **Prerequisite:** photos committed to `/public/fleet/`, OR the cloud environment allows
       `static.wixstatic.com` + `jhajjz.in` + `www.jhajjz.in`. As of 2026-10-17 all three are blocked (proxy 403),
       including for WebFetch.
+- [ ] **Car pages**: Rolls-Royce Ghost page is a template with [CONFIRM] for photos, passengers, colour, model year
+      and base city. Client to confirm the Ghost is in the fleet and supply those; then list the other cars.
 - [ ] **Hero**: currently the client's Wix sharing image. `/public/rolls-royce-hero.webp` (from the v0
       reference, probably AI-generated) is the alternative — swap `heroImage` in `lib/site.ts`.
 - [ ] **Quote form** opens the WhatsApp popup (`ContactDialog`) with the details prefilled; nothing is stored
@@ -172,6 +177,10 @@ pin for the office. Needs the office's exact coordinates (client, or Google Maps
 (an embed loads Google cookies, so the privacy policy would need a line). Still ask the client for photos and logo.
 
 ## Changelog
+
+- 2026-10-17 — Individual car pages: `/fleet/rolls-royce-ghost` (photo, details as ruled rows, quote link that
+  prefills the form, WhatsApp popup with a message about the car, "See all luxury cars" band). Car JSON-LD +
+  3-level breadcrumbs, sitemap entry. Fleet cards list their cars; fleet search matches car names.
 
 - 2026-10-17 — Overscroll: `html` and `body` are ink and the paper page background moved to the wrapper div in
   layout.tsx, so the iPhone bounce past the top or bottom shows the dark header/footer colour. Setting only `html`

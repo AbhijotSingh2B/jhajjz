@@ -208,3 +208,36 @@ export const fleetGroups: { id: "all" | FleetGroup; label: string }[] = [
   { id: "suv", label: "SUVs" },
   { id: "group", label: "Coaches & vans" },
 ];
+
+// Individual cars, each with its own page at /fleet/<slug>. Only add a car the client has confirmed is in the
+// fleet. `null` details and an empty `photos` list show a highlighted [CONFIRM] on the page until filled in;
+// never fill them from the manufacturer's brochure or a guess.
+export type Car = {
+  slug: string;
+  brand: string;
+  model: string;
+  /** Slug of the vehicle class in `fleet` this car belongs to. */
+  fleetClass: string;
+  text: string;
+  photos: { src: string; alt: string }[];
+  details: { label: string; value: string | null }[];
+};
+
+export const cars: Car[] = [
+  {
+    slug: "rolls-royce-ghost",
+    brand: "Rolls-Royce",
+    model: "Ghost",
+    fleetClass: "luxury-cars",
+    text: "Our Rolls-Royce Ghost comes with a trained Jhajj'z chauffeur. Ask us about it for a wedding, a business visit or a day you want to remember.",
+    photos: [],
+    details: [
+      { label: "Passengers", value: null },
+      { label: "Colour", value: null },
+      { label: "Model year", value: null },
+      { label: "Based in", value: null },
+    ],
+  },
+];
+
+export const carName = (c: Car) => `${c.brand} ${c.model}`;

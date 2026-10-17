@@ -5,6 +5,7 @@ import { PageTransition } from "@/components/page-transition";
 import { contact } from "@/lib/site";
 import { ContactDialog } from "@/components/contact-dialog";
 import { Button } from "@/components/ui/button";
+import { Confirm } from "@/components/confirm";
 
 export const metadata: Metadata = {
   title: "Privacy policy",
@@ -18,11 +19,6 @@ export const metadata: Metadata = {
 // If the client prefers the text from jhajjz.in/privacy-policy, replace this.
 
 const updated = "17 October 2026";
-
-/** Highlights text the client still has to confirm, so it can't slip through unnoticed. */
-function Confirm({ children }: { children: React.ReactNode }) {
-  return <mark className="bg-gold/25 px-1 text-ink">[CONFIRM: {children}]</mark>;
-}
 
 const sections: { title: string; body: React.ReactNode }[] = [
   {

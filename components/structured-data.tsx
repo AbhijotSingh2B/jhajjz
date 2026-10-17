@@ -1,4 +1,4 @@
-import { cities, contact, fleet, founded, heroImage, postalAddress, serviceGroups, siteName, siteUrl } from "@/lib/site";
+import { type Car, carName, cities, contact, fleet, founded, heroImage, postalAddress, serviceGroups, siteName, siteUrl } from "@/lib/site";
 
 /**
  * Schema.org data for search engines (Google's business panel, rich results).
@@ -58,17 +58,43 @@ export function BusinessStructuredData() {
   return <JsonLd data={[business, website]} />;
 }
 
-/** Breadcrumb trail for inner pages, e.g. Home › Fleet. */
-export function BreadcrumbStructuredData({ name, path }: { name: string; path: string }) {
+/** Breadcrumb trail for inner pages, e.g. Home › Fleet, or Home › Fleet › Rolls-Royce Ghost with `parent`. */
+export function BreadcrumbStructuredData({
+  name,
+  path,
+  parent,
+}: {
+  name: string;
+  path: string;
+  parent?: { name: string; path: string };
+}) {
+  const trail = [{ name: "Home", item: siteUrl }];
+  if (parent) trail.push({ name: parent.name, item: `${siteUrl}${parent.path}` });
+  trail.push({ name, item: `${siteUrl}${path}` });
   return (
     <JsonLd
       data={{
         "@context": "https://schema.org",
         "@type": "BreadcrumbList",
-        itemListElement: [
-          { "@type": "ListItem", position: 1, name: "Home", item: siteUrl },
-          { "@type": "ListItem", position: 2, name, item: `${siteUrl}${path}` },
-        ],
+        itemListElement: trail.map((t, i) => ({ "@type": "ListItem", position: i + 1, ...t })),
+      }}
+    />
+  );
+}
+
+/** One car's page. Only the facts we have: no price, rating or specs the client hasn't confirmed. */
+export function CarStructuredData({ car }: { car: Car }) {
+  return (
+    <JsonLd
+      data={{
+        "@context": "https://schema.org",
+        "@type": "Car",
+        name: carName(car),
+        brand: { "@type": "Brand", name: car.brand },
+        model: car.model,
+        description: car.text,
+        url: `${siteUrl}/fleet/${car.slug}`,
+        ...(car.photos.length > 0 && { image: car.photos.map((p) => p.src) }),
       }}
     />
   );

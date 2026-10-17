@@ -6,9 +6,11 @@ import Link from "next/link";
 import { AnimatePresence, motion } from "motion/react";
 import { Search, X } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { contact, fleet, fleetGroups, type FleetGroup } from "@/lib/site";
+import { carName, cars, contact, fleet, fleetGroups, type FleetGroup } from "@/lib/site";
 
 const ease = [0.2, 0.7, 0.2, 1] as const;
+
+const carsIn = (slug: string) => cars.filter((c) => c.fleetClass === slug);
 
 export function FleetBrowser() {
   const [filter, setFilter] = useState<"all" | FleetGroup>("all");
@@ -17,7 +19,7 @@ export function FleetBrowser() {
   const shown = fleet.filter(
     (v) =>
       (filter === "all" || v.group === filter) &&
-      terms.every((t) => `${v.name} ${v.text}`.toLowerCase().includes(t)),
+      terms.every((t) => `${v.name} ${v.text} ${carsIn(v.slug).map(carName).join(" ")}`.toLowerCase().includes(t)),
   );
 
   return (
@@ -101,6 +103,21 @@ export function FleetBrowser() {
               </div>
               <h2 className="mt-4 font-serif text-[28px] leading-tight">{v.name}</h2>
               <p className="mt-1.5 text-[15px] text-muted">{v.text}</p>
+              {carsIn(v.slug).length > 0 && (
+                // Above the card-wide quote link (its ::after), so these stay clickable on their own.
+                <ul className="relative z-10 mt-1 flex flex-wrap gap-x-5">
+                  {carsIn(v.slug).map((c) => (
+                    <li key={c.slug}>
+                      <Link
+                        href={`/fleet/${c.slug}`}
+                        className="inline-flex min-h-11 items-center text-[15px] text-ink underline decoration-ink/30 underline-offset-[5px] transition-colors hover:decoration-ink"
+                      >
+                        {carName(c)}
+                      </Link>
+                    </li>
+                  ))}
+                </ul>
+              )}
               {/* The ::after stretches the link over the whole card, so the photo is clickable too. */}
               <Link
                 href={`/contact?vehicle=${encodeURIComponent(v.name)}`}
