@@ -6,7 +6,8 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "save-photos": "node scripts/save-photos.mjs"
   },
   "dependencies": {
     "@fontsource-variable/dm-sans": "^5.3.0",

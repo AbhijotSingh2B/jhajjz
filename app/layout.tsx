@@ -2,7 +2,7 @@ import type { Metadata, Viewport } from "next";
 import "./globals.css";
 import { MotionProvider } from "@/components/motion";
 import { BusinessStructuredData } from "@/components/structured-data";
-import { heroImage, siteName, siteUrl } from "@/lib/site";
+import { absoluteUrl, heroImage, siteName, siteUrl } from "@/lib/site";
 import { openGraphBase } from "@/lib/seo";
 
 const description =
@@ -46,7 +46,7 @@ export const metadata: Metadata = {
     site: "@Jhajjztransport",
     title: "Jhajj'z | Luxury car, wedding car & coach rental since 1998",
     description,
-    images: [heroImage],
+    images: [absoluteUrl(heroImage)],
   },
   robots: {
     index: true,

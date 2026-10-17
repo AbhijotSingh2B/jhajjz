@@ -12,7 +12,7 @@ import { ShareButton } from "@/components/share-button";
 import { CarGallery } from "@/components/car-gallery";
 import { BreadcrumbStructuredData, CarStructuredData } from "@/components/structured-data";
 import { FleetClassPage } from "@/components/fleet-class-page";
-import { carName, cars, carsInClass, classHref, fleet, inSentence } from "@/lib/site";
+import { absoluteUrl, carName, cars, carsInClass, classHref, fleet, inSentence } from "@/lib/site";
 import { openGraphBase } from "@/lib/seo";
 
 type Props = { params: Promise<{ car: string }> };
@@ -61,7 +61,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       url: path,
       title: `${name} with chauffeur | Jhajj'z`,
       description,
-      ...(ownPhoto && { images: [{ url: ownPhoto.src, alt: ownPhoto.alt }] }),
+      ...(ownPhoto && { images: [{ url: absoluteUrl(ownPhoto.src), alt: ownPhoto.alt }] }),
     },
   };
 }

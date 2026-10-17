@@ -1,3 +1,5 @@
+import savedPhotos from "./saved-photos.json";
+
 // Single source of truth for the client's facts. Everything here comes from
 // jhajjz.in (Oct 2026). Don't invent stats, models or contact details — use
 // [BRACKETS] for anything the client still has to confirm.
@@ -29,6 +31,26 @@ export const founded = 1998;
 // The live domain (currently the Wix site; this build replaces it at launch). Canonical URLs, the sitemap and
 // structured data all point here. Search engines are told not to index any other host (see proxy.ts).
 export const siteUrl = "https://www.jhajjz.in";
+
+// Every photo is saved in /public/photos and served from this site. The original URLs stay in this file as the
+// backup: `saved()` swaps each one for its local copy (lib/saved-photos.json), and falls back to the original for a
+// photo that hasn't been saved yet. After adding or changing a photo URL, run `npm run save-photos`.
+// To go back to loading from the original hosts, empty lib/saved-photos.json to `{}`.
+/** Original URLs of every photo, for scripts/save-photos.mjs. */
+export const photoSources = new Set<string>();
+const saved = (url: string) => {
+  photoSources.add(url);
+  return (savedPhotos as Record<string, string>)[url] ?? url;
+};
+/**
+ * Absolute URL of a local photo, for link previews and structured data (they need one). Uses the domain the site is
+ * deployed on (Vercel sets it: jhajjz.vercel.app now, www.jhajjz.in once that points at Vercel), so preview links
+ * show their image before launch. Server-side only; falls back to `siteUrl`.
+ */
+export const absoluteUrl = (src: string) => {
+  const host = process.env.VERCEL_PROJECT_PRODUCTION_URL;
+  return src.startsWith("/") ? `${host ? `https://${host}` : siteUrl}${src}` : src;
+};
 export const siteName = "Jhajj'z";
 
 // Structured address for search engines. Same facts as `contact.address`; no postcode, it isn't on jhajjz.in.
@@ -45,9 +67,9 @@ export const postalAddress = {
 // `heroImage` (JPEG) is the sharing image for link previews, which don't all accept WebP; the page shows the WebP
 // copies. Images aren't optimized by Next/Vercel (next.config.ts), so these URLs are what visitors download.
 const hero = "https://static.wixstatic.com/media/171684_54ce935d2c1143669a4ad9a04866731d~mv2.jpg/v1/fill";
-export const heroImage = `${hero}/w_2400,h_1600,al_c,q_85/hero.jpg`;
-export const heroPhoto = `${hero}/w_2400,h_1600,al_c,q_80/hero.webp`;
-export const heroThumb = `${hero}/w_640,h_640,al_c,q_80/hero.webp`;
+export const heroImage = saved(`${hero}/w_2400,h_1600,al_c,q_85/hero.jpg`);
+export const heroPhoto = saved(`${hero}/w_2400,h_1600,al_c,q_80/hero.webp`);
+export const heroThumb = saved(`${hero}/w_640,h_640,al_c,q_80/hero.webp`);
 
 export const cities = [
   "Chandigarh",
@@ -77,7 +99,7 @@ export const cityOptions = [...cities, otherCity];
 
 // The same 9 services as jhajjz.in, grouped by who books them.
 // One of the client's own photos per group (from jhajjz.in), shown in the "Who we drive for" rows.
-const groupPhoto = (id: string) => `https://static.wixstatic.com/media/${id}~mv2.jpg/v1/fill/w_1200,h_800,al_c,q_80/photo.webp`;
+const groupPhoto = (id: string) => saved(`https://static.wixstatic.com/media/${id}~mv2.jpg/v1/fill/w_1200,h_800,al_c,q_80/photo.webp`);
 
 export const serviceGroups = [
   {
@@ -124,10 +146,10 @@ export const occasions = [
 // taken from the order on the live homepage and has NOT been visually checked
 // — confirm each one with the client (see CLAUDE.md, "Open items").
 // Wix converts to WebP when the URL ends in .webp (about 45% smaller than its JPEG at this size).
-const wix = (id: string) => `https://static.wixstatic.com/media/${id}~mv2.jpg/v1/fill/w_1600,h_1067,al_c,q_80/photo.webp`;
+const wix = (id: string) => saved(`https://static.wixstatic.com/media/${id}~mv2.jpg/v1/fill/w_1600,h_1067,al_c,q_80/photo.webp`);
 // Whole photo, uncropped (for portrait shots; the page crops them with `position`).
-const wixFit = (file: string) => `https://static.wixstatic.com/media/${file}/v1/fit/w_1600,h_1600,q_80/photo.webp`;
-const wixJpeg = (id: string) => `https://static.wixstatic.com/media/${id}~mv2.jpeg/v1/fill/w_1600,h_1067,al_c,q_80/photo.webp`;
+const wixFit = (file: string) => saved(`https://static.wixstatic.com/media/${file}/v1/fit/w_1600,h_1600,q_80/photo.webp`);
+const wixJpeg = (id: string) => saved(`https://static.wixstatic.com/media/${id}~mv2.jpeg/v1/fill/w_1600,h_1067,al_c,q_80/photo.webp`);
 
 export type FleetGroup = "cars" | "classic" | "suv" | "group";
 
@@ -207,9 +229,9 @@ export const photos = {
 // PLACEHOLDER: CarWale studio shots on white (from each model's colours page), matched to the generation and colour
 // of the client's own car. CarWale/maker copyright: remove before public launch (see "Launch checklist" in CLAUDE.md).
 // Leaving out `wm=1` from CarWale's URL gives the photo without their watermark.
-const carwaleColour = (id: string) => `https://imgd.aeplcdn.com/1280x720/n/${id}.jpg?q=80`;
+const carwaleColour = (id: string) => saved(`https://imgd.aeplcdn.com/1280x720/n/${id}.jpg?q=80`);
 // CarDekho's colours pages work the same way (studio shot on white); used where CarWale has no match.
-const cardekhoColour = (path: string) => `https://stimg.cardekho.com/images/car-images/930x620/${path}`;
+const cardekhoColour = (path: string) => saved(`https://stimg.cardekho.com/images/car-images/930x620/${path}`);
 export const studio = {
   ghost: cardekhoColour("Rolls-Royce/Ghost/8051/1602847337627/235_silver_7b7d7f.jpg"), // Ghost 2014–2020 (CarDekho), Silver
   sClass: carwaleColour("y2ehbua_1541075"), // S-Class 2021 generation, Onyx Black
@@ -338,7 +360,7 @@ export const fleetGroups: { id: "all" | FleetGroup; label: string }[] = [
 // Nirmal's instruction for the preview: on every car that has one, in the generation and colour the client has. Remove
 // every one before public launch (see "Launch checklist" in CLAUDE.md). They're kept out of Open Graph and JSON-LD.
 // Car pages show the photos as carousels, one per `generation`, in the order they first appear: list newer first.
-const carwale = (path: string) => `https://imgd.aeplcdn.com/1280x720/n/cw/ec/${path}?isig=0&q=80`;
+const carwale = (path: string) => saved(`https://imgd.aeplcdn.com/1280x720/n/cw/ec/${path}?isig=0&q=80`);
 
 export type CarPhoto = {
   src: string;

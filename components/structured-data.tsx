@@ -1,4 +1,4 @@
-import { type Car, carName, cities, contact, fleet, founded, heroImage, postalAddress, serviceGroups, siteName, siteUrl } from "@/lib/site";
+import { absoluteUrl, type Car, carName, cities, contact, fleet, founded, heroImage, postalAddress, serviceGroups, siteName, siteUrl } from "@/lib/site";
 
 /**
  * Schema.org data for search engines (Google's business panel, rich results).
@@ -16,7 +16,7 @@ export function BusinessStructuredData() {
       "Chauffeur-driven luxury cars, wedding cars, SUVs, limousines and coaches. Head office in Chandigarh, serving pan-India since 1998.",
     url: siteUrl,
     logo: `${siteUrl}/icon-512.png`,
-    image: heroImage,
+    image: absoluteUrl(heroImage),
     telephone: contact.phones.map((p) => p.href.replace("tel:", "")),
     email: contact.email,
     foundingDate: String(founded),
@@ -96,7 +96,7 @@ export function CarStructuredData({ car }: { car: Car }) {
         description: car.text,
         url: `${siteUrl}/fleet/${car.slug}`,
         // Placeholder (CarWale) photos aren't the client's cars, so they stay out of structured data.
-        ...(ownPhotos.length > 0 && { image: ownPhotos.map((p) => p.src) }),
+        ...(ownPhotos.length > 0 && { image: ownPhotos.map((p) => absoluteUrl(p.src)) }),
       }}
     />
   );

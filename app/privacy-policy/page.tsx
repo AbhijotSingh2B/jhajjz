@@ -27,8 +27,7 @@ const sections: { title: string; body: React.ReactNode }[] = [
       <>
         <p>
           Nothing, on its own. The site doesn&apos;t use cookies, analytics, advertising or tracking of any kind. Fonts
-          are served from our own server. Car photos load from the image service that stores them, which sees your IP
-          address and that the request came from this site, as with any image online; we don&apos;t send it anything else.
+          and photos are served from our own server.
         </p>
         <p>
           Like any website, our hosting provider keeps standard technical logs (such as IP address, browser and the

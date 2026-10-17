@@ -4,9 +4,8 @@ const nextConfig: NextConfig = {
   cacheComponents: true,
   partialPrefetching: true,
   images: {
-    // Nirmal: nothing goes through Vercel's image optimization or its cache. Every <Image> is served as-is from its
-    // URL: car photos straight from the client's Wix site (sized and WebP'd by Wix's URL, see lib/site.ts) and the
-    // PLACEHOLDER CarWale photos straight from CarWale.
+    // Nirmal: nothing goes through Vercel's image optimization. Every <Image> is served as-is: the photos are saved
+    // copies in public/photos (already sized and WebP'd when saved, see `saved()` in lib/site.ts).
     unoptimized: true,
   },
   // The old Wix site's URLs (from jhajjz.in/sitemap.xml, Oct 2026), sent permanently to their new pages so search

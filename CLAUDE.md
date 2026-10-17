@@ -34,11 +34,13 @@ before pushing, and merge (never force-push) if someone else's commit arrives.
 - Network: since 2026-10-17 jhajjz.in, static.wixstatic.com, carwale/aeplcdn and cardekho load (Nirmal opened the
   environment's network). `vercel.app` untested. Images are `unoptimized` (no `/_next/image`), so photos load
   straight from their hosts in Playwright too; no stand-in needed.
-- **Images: no Vercel image optimization or caching (Nirmal).** `images.unoptimized: true` in next.config.ts, so every
-  photo is downloaded as-is from its URL. Size and format therefore come from the URL: Wix photos use `.../photo.webp`
-  at 1600px (Wix converts), the hero is WebP on the page (`heroPhoto`, `heroThumb`) and JPEG only as the sharing
-  image (`heroImage`). Keep new photos sized this way; don't turn optimization back on. The privacy policy says photos
-  load from the service that stores them.
+- **Images: no Vercel image optimization (Nirmal).** `images.unoptimized: true` in next.config.ts, so every
+  photo is served as-is. **All photos are saved in `public/photos/`** (Nirmal, so the site doesn't depend on Wix or
+  CarWale); lib/site.ts keeps the original URLs as the backup and `saved()` maps each to its copy via
+  `lib/saved-photos.json`. After adding/changing a photo URL run `NODE_USE_ENV_PROXY=1 npm run save-photos` (Node's
+  fetch ignores the sandbox proxy without it). Size and format still come from the original URL: Wix photos use
+  `.../photo.webp` at 1600px, the hero is WebP on the page (`heroPhoto`, `heroThumb`) and JPEG only as the sharing
+  image (`heroImage`). Don't turn optimization back on. The privacy policy says fonts and photos come from our server.
 - Playwright: `require('/opt/node22/lib/node_modules/playwright')`; Chromium only (no WebKit, so iPhone Safari
   behaviour can't be reproduced — ask Nirmal to check on his phone). Don't run `playwright install`.
 - Verify against a production build (`npm run build && npx next start -p 3001`), not a long-running `next dev`:
@@ -133,8 +135,9 @@ The v0 reference design (`redesign-jhajjz-in.zip`) got several facts wrong — n
 
 ## Photos (all in lib/site.ts)
 
-- **Client photos**: hot-linked from Wix (`photos`; helpers `wix`/`wixJpeg` = 3:2 crop, `wixFit` = uncropped for
-  portrait shots). Identified by eye from jhajjz.in; no captions there. Originals should move into /public one day.
+- **Client photos**: from jhajjz.in's Wix, saved in public/photos (`photos`; helpers `wix`/`wixJpeg` = 3:2 crop,
+  `wixFit` = uncropped for portrait shots). Identified by eye from jhajjz.in; no captions there. These are Wix's 1600px
+  copies; the client's full-size originals would be better.
 - **Studio shots** (`studio`): CarWale *colours* pages (`imgd.aeplcdn.com/1280x720/n/<id>.jpg?q=80`, no `wm=1` = no
   watermark) or CarDekho colours pages; car on white. Always matched to the **generation and colour the client
   has** (older generations live at slugs like `7-series-2019-2023`, `old-generation-s-class-2021`). Nirmal prefers
@@ -143,8 +146,8 @@ The v0 reference design (`redesign-jhajjz-in.zip`) got several facts wrong — n
 - `CarPhoto` flags: `cutout` (shown whole on sand, multiply blend on a wrapper), `zoom` (studio shot with wide
   margins), `portrait` (letterboxed), `position`, `generation` ("Newer model"/"Older model" → separate carousels,
   newer on top). Fleet cards: `imageCutout`, `imagePlaceholder`, `imageZoom`.
-- `images.unoptimized: true` — **no Vercel image optimization or caching (Nirmal)**. Size/format come from the URL:
-  Wix photos are requested as `.webp` at 1600px; hero WebP on the page, JPEG (`heroImage`) only for link previews.
+- `images.unoptimized: true` — **no Vercel image optimization (Nirmal)**. Photos are saved copies (see above); size/format
+  come from the original URL: Wix as `.webp` at 1600px; hero WebP on the page, JPEG (`heroImage`) only for link previews.
 
 ## Open items (need the client)
 
@@ -162,7 +165,8 @@ The v0 reference design (`redesign-jhajjz-in.zip`) got several facts wrong — n
 ## Launch checklist
 
 - [ ] Remove placeholder photos: search `PLACEHOLDER` in lib/site.ts (and the `carwale`, `carwaleColour`,
-      `cardekhoColour` helpers); replace with the client's photos.
+      `cardekhoColour` helpers); replace with the client's photos. Delete public/photos/carwale and /cardekho too
+      and re-run `npm run save-photos`.
 - [ ] Point www.jhajjz.in at Vercel (noindex on other hosts switches off automatically, proxy.ts).
 - [ ] Old Wix URLs already redirect (`redirects()` in next.config.ts). After launch check Search Console → Pages.
 - [ ] Search Console: verify domain, submit /sitemap.xml. Google Business Profile for the Mohali office (same
