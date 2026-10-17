@@ -115,49 +115,71 @@
   }
 }
 
-/* Header logo opening (components/logo.tsx LogoMark): "Jhajj'z" folds into the JJ monogram. Once per visit.
-   The resting styles are the finished monogram, so reduced motion (animation: none) just shows that. */
+/* Header logo opening (components/logo.tsx LogoMark): "Jhajj'z" turns into the JJ monogram. Once per visit.
+   "'z" fades, "haj" slides in behind the gold J, the last j turns gold and moves into place as the second J
+   while the whole grows. The resting styles are the finished monogram, so reduced motion just shows that. */
 .logo-intro .logo-word {
   transform-box: view-box;
   transform-origin: 0 0;
-  animation: logo-grow 900ms cubic-bezier(0.6, 0, 0.2, 1) 800ms both;
+  animation: logo-grow 850ms cubic-bezier(0.65, 0, 0.25, 1) 1250ms both;
 }
-.logo-intro .logo-letter {
+.logo-intro .logo-tail {
   opacity: 0;
-  animation: logo-fold 450ms cubic-bezier(0.5, 0, 0.3, 1) var(--delay) both;
+  animation: logo-tail 380ms cubic-bezier(0.4, 0, 0.6, 1) 600ms both;
 }
-/* Same timing as logo-grow so the j and J2 travel together while one fades into the other. */
+.logo-intro .logo-tuck {
+  opacity: 0;
+  transform: translateX(-1110px);
+  animation: logo-tuck 700ms cubic-bezier(0.65, 0, 0.35, 1) 720ms both;
+}
+/* The j and J2 move together on the same curve; the j is gold by then, so one reads as becoming the other. */
 .logo-intro .logo-last-j {
   opacity: 0;
-  animation: logo-j-out 900ms cubic-bezier(0.6, 0, 0.2, 1) 800ms both;
+  fill: var(--color-gold);
+  animation:
+    logo-gild 450ms ease 950ms both,
+    logo-j-out 850ms cubic-bezier(0.65, 0, 0.25, 1) 1250ms both;
 }
 .logo-intro .logo-j2 {
-  animation: logo-j2-in 900ms cubic-bezier(0.6, 0, 0.2, 1) 800ms both;
+  animation: logo-j2-in 850ms cubic-bezier(0.65, 0, 0.25, 1) 1250ms both;
 }
 @keyframes logo-grow {
   from {
     transform: translate(0, 200px) scale(0.657);
   }
 }
-@keyframes logo-fold {
+@keyframes logo-tail {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+    transform: translateX(-40px);
+  }
+}
+@keyframes logo-tuck {
   from {
     opacity: 1;
     transform: none;
   }
-  to {
-    opacity: 0;
-    transform: translateX(var(--dx));
+  45% {
+    opacity: 1;
+  }
+}
+@keyframes logo-gild {
+  from {
+    fill: var(--color-cream);
   }
 }
 @keyframes logo-j-out {
   0%,
-  35% {
+  30% {
     opacity: 1;
   }
   0% {
     transform: none;
   }
-  75%,
+  70%,
   100% {
     opacity: 0;
   }
@@ -167,13 +189,13 @@
 }
 @keyframes logo-j2-in {
   0%,
-  35% {
+  30% {
     opacity: 0;
   }
   0% {
     transform: translate(1189px, -150px);
   }
-  75%,
+  70%,
   100% {
     opacity: 1;
   }

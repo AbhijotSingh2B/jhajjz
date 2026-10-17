@@ -1,4 +1,3 @@
-import type { CSSProperties } from "react";
 import { cn } from "@/lib/utils";
 
 /**
@@ -88,32 +87,23 @@ export function LogoMark({ intro = false }: { intro?: boolean }) {
   }
   // Wide enough for the name at text size (26px type in a 40px-high mark).
   return (
-    <svg
-      viewBox="0 0 1460 1011"
-      aria-hidden="true"
-      className="logo-intro h-10 w-auto overflow-visible"
-    >
+    <svg viewBox="0 0 1460 1011" aria-hidden="true" className="logo-intro h-10 w-auto overflow-visible">
       <g className="logo-word">
+        {/* "haj" slides left behind the J's stem: everything left of it is clipped away. */}
+        <clipPath id="logo-tuck">
+          <rect x="265" y="-500" width="3000" height="2000" />
+        </clipPath>
+        <g clipPath="url(#logo-tuck)">
+          {letters.slice(0, lastJ).map((l) => (
+            <path key={l.x} className="logo-tuck fill-cream" d={l.d} />
+          ))}
+        </g>
+        {letters.slice(lastJ + 1).map((l) => (
+          <path key={l.x} className="logo-tail fill-cream" d={l.d} />
+        ))}
+        <path className="logo-last-j" d={letters[lastJ].d} />
         <path className="fill-gold" d={J1} />
         <path className="logo-j2 fill-gold" d={J2} />
-        {letters.map((l, i) => (
-          <path
-            key={i}
-            d={l.d}
-            className={cn(
-              "fill-cream",
-              i === lastJ ? "logo-last-j" : "logo-letter",
-            )}
-            style={
-              i === lastJ
-                ? undefined
-                : ({
-                    "--dx": `${(54 - l.x) * 0.6}px`,
-                    "--delay": `${650 + (5 - i) * 40}ms`,
-                  } as CSSProperties)
-            }
-          />
-        ))}
       </g>
     </svg>
   );

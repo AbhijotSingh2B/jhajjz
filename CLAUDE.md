@@ -74,8 +74,8 @@ app/
   not-found.tsx            Branded 404
 components/
   logo.tsx                 JJ monogram (two Caslon Js, the second lower-right). `Logo` = mark + name (footer);
-                           `LogoMark intro` = header opening (Nirmal's idea): "Jhajj'z" with a gold J, the other
-                           letters fold into it and the last j becomes the second J. Outlines from the font, CSS
+                           `LogoMark intro` = header opening (Nirmal's idea): "Jhajj'z" with a gold J; "'z" fades,
+                           "haj" slides behind the J's stem (clipped), the last j turns gold and becomes the second J. Outlines from the font, CSS
                            keyframes in globals.css, first page of a visit only; header shows the monogram only.
   site-header.tsx          Fixed header (Home, Fleet, Weddings, Services, About, Contact); transparent over the home hero until scroll; Fleet mega-menu; mobile sheet
   site-footer.tsx          Also renders the phone-only sticky Call / WhatsApp bar
