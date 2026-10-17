@@ -93,6 +93,9 @@ The v0 reference design (`redesign-jhajjz-in.zip`) got several facts wrong — n
 
 ## Changelog
 
+- 2026-10-17 — Quote form: choosing "Other" (occasion / vehicle / city) slides open a text box for details
+  (`occasionOther`, `vehicleOther`, `cityOther`) and moves focus into it.
+
 - 2026-10-17 — Dropdowns start empty with placeholders ("Choose a city" etc.); "Other" added to occasion and
   vehicle (city already has "Other city in India"). Booking bar only passes on fields the visitor filled.
 
