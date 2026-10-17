@@ -92,7 +92,7 @@ export function FleetBrowser() {
               exit={{ opacity: 0, scale: 0.96, transition: { duration: 0.25 } }}
               className="group relative scroll-mt-28"
             >
-              <div className="relative flex aspect-[3/2] items-center justify-center overflow-hidden bg-stone">
+              <div className={`relative flex aspect-[3/2] items-center justify-center overflow-hidden ${v.imageCutout ? "bg-sand" : "bg-stone"}`}>
                 {v.image ? (
                   <Image
                     src={v.image}
@@ -100,7 +100,7 @@ export function FleetBrowser() {
                     fill
                     priority={i < 3}
                     sizes="(max-width: 768px) 100vw, 400px"
-                    className="object-cover transition-transform duration-700 ease-out group-hover:scale-[1.03]"
+                    className={`transition-transform duration-700 ease-out group-hover:scale-[1.03] ${v.imageCutout ? "object-contain p-5 mix-blend-multiply" : "object-cover"}`}
                   />
                 ) : (
                   <span className="text-[15px]">

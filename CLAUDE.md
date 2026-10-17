@@ -78,6 +78,7 @@ components/
                            ("all" opens on the "Get in touch" list; used by the "Contact us" buttons)
                            (both numbers / WhatsApp / email, copy buttons, "Other ways to reach us" list)
   page-transition.tsx      Fade-and-lift between pages (React <ViewTransition>); wraps each page's <main>
+  car-gallery.tsx          Car-page photo carousel (scroll-snap swipe, prev/next, "2 / 5" counter); one per model generation
   india-map.tsx            India outline (lib/india-map.ts, Survey of India boundary) + city dots, beside "Pan-India, including"
   motion.tsx               Reveal, Enter, Stagger, StaggerItem, MotionProvider (respects reduced motion)
   icons.tsx                WhatsApp glyph (Simple Icons) + social icons (Tabler, MIT); lucide has no brand icons
@@ -137,14 +138,15 @@ The v0 reference design (`redesign-jhajjz-in.zip`) got several facts wrong — n
       Toyota Vellfire. Ghost, 7 Series, Defender, limousine, Audi and Vellfire have real Jhajj'z photos; the others
       need photos. Model year and "Based in" were dropped (Nirmal); details without a value are hidden. Confirm with
       the client: the limousine is a Chrysler 300C (identified from the photo); passengers for every car.
-      **Photos for the 6 newer car pages (2026-10-17):** jhajjz.in has the client's own photos of the S-Class (black,
-      W223), two white Range Rovers (older L405 and current L460 "Jhajj'z Limos"; confirm which is the Autobiography)
-      and the GLS; those pages use them. GLE, Land Cruiser and black Fortuner have no clear photo there, so they show
-      **placeholder** CarWale studio shots with no background (Nirmal prefers these, e.g. the transparent
-      `...-three-quarter-N.png` cut-outs; the small "carwale" badge on some bumpers is fine with him), flagged
-      `placeholder: true` + `cutout: true` (shown whole on sand with multiply blending). The Fortuner is a white-
-      background studio JPEG because the transparent one is dark blue, not black. Placeholders stay out of Open Graph and JSON-LD; remove before launch (Launch checklist). They're
-      CarWale/CarDekho/maker copyright and jhajjz.vercel.app is public (only noindex).
+      **Car photos (2026-10-17, Nirmal):** every car page has a carousel: a CarWale studio shot on white (from the
+      model's CarWale *colours* page, `studio` in lib/site.ts, matched to the generation and colour the client has; no
+      `wm=1` so no watermark) first, then the client's own photos from jhajjz.in. Where the client has two generations
+      (S-Class, Range Rover, 7 Series) each gets its own carousel, "Newer model" on top, "Older model" below
+      (`generation` on the photo). No studio shot where CarWale has none for the client's generation/colour: Ghost
+      (generations not told apart from the photos), Audi (no red), limousine. GLE, Land Cruiser, Fortuner have only the
+      studio shot. Fleet cards / home use studio shots for luxury cars (S-Class), SUVs (Range Rover), executive cabs
+      (E-Class), MPVs (Vellfire); vintage, convertibles, limousines, coaches keep real photos; mini vans got the client's
+      HiAce photo. All studio shots are `placeholder: true` / `imagePlaceholder: true`: the client will send their own.
       **More cars in jhajjz.in's photos, not on the new site** (identified by eye; client must confirm they're in the
       fleet before adding pages): Mercedes-Maybach S-Class, Mercedes G-Class (black and white), Mercedes-Maybach GLS
       (red), Range Rover Sport (white, blue), BMW X7, BMW X5, BMW i8, Bentley Flying Spur, Jaguar XJ, Jaguar F-Pace,
@@ -203,6 +205,12 @@ pin for the office. Needs the office's exact coordinates (client, or Google Maps
 (an embed loads Google cookies, so the privacy policy would need a line). Still ask the client for photos and logo.
 
 ## Changelog
+
+- 2026-10-17 — Car pages: photo carousel (components/car-gallery.tsx), one per model generation, newer on top.
+  CarWale studio shots (white background) on every car and on the luxury cars / SUVs / executive cabs / MPVs cards,
+  matched to the client's generation and colour; more of the client's jhajjz.in photos in the carousels; mini vans
+  card gets the HiAce photo. Car texts no longer repeat "comes with a trained Jhajj'z chauffeur" (the fleet intro says
+  every vehicle comes with one).
 
 - 2026-10-17 — No Vercel image optimization or caching: `images.unoptimized: true`; photos load straight from Wix /
   CarWale. Wix photos now WebP via their URLs (about 45% smaller); hero WebP on the page, JPEG for link previews.

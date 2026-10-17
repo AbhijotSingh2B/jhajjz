@@ -11,7 +11,7 @@ import { IndiaMap } from "@/components/india-map";
 import { cities, fleet, heroPhoto, photos, serviceGroups } from "@/lib/site";
 import { PageTransition } from "@/components/page-transition";
 
-// Home only shows classes that have a real photo.
+// Home only shows classes that have a photo.
 const withPhoto = (slug: string) => {
   const v = fleet.find((x) => x.slug === slug);
   return v?.image ? { ...v, image: v.image, imageAlt: v.imageAlt ?? v.name } : undefined;
@@ -102,13 +102,15 @@ export default function Home() {
                     className={i === 0 ? "w-[82%] shrink-0 snap-start md:col-span-2 md:row-span-2 md:w-auto" : "w-[82%] shrink-0 snap-start md:w-auto"}
                   >
                     <Link href={`/fleet#${v.slug}`} className="group flex h-full flex-col gap-3.5">
-                      <div className={i === 0 ? "relative aspect-[3/2] overflow-hidden bg-stone md:aspect-auto md:min-h-[360px] md:flex-1" : "relative aspect-[3/2] overflow-hidden bg-stone"}>
+                      <div
+                        className={`relative aspect-[3/2] overflow-hidden ${v.imageCutout ? "bg-sand" : "bg-stone"} ${i === 0 ? "md:aspect-auto md:min-h-[360px] md:flex-1" : ""}`}
+                      >
                         <Image
                           src={v.image}
                           alt={v.imageAlt}
                           fill
                           sizes={i === 0 ? "(max-width: 768px) 85vw, 800px" : "(max-width: 768px) 85vw, 400px"}
-                          className="object-cover"
+                          className={v.imageCutout ? "object-contain p-5 mix-blend-multiply md:p-8" : "object-cover"}
                         />
                       </div>
                       <div>

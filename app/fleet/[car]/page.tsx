@@ -1,5 +1,4 @@
 import type { Metadata } from "next";
-import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { SiteHeader } from "@/components/site-header";
@@ -9,6 +8,7 @@ import { Button } from "@/components/ui/button";
 import { PageTransition } from "@/components/page-transition";
 import { ContactDialog } from "@/components/contact-dialog";
 import { Confirm } from "@/components/confirm";
+import { CarGallery } from "@/components/car-gallery";
 import { BreadcrumbStructuredData, CarStructuredData } from "@/components/structured-data";
 import { carName, cars, fleet } from "@/lib/site";
 import { openGraphBase } from "@/lib/seo";
@@ -54,7 +54,12 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 export default async function CarPage({ params }: Props) {
   const { car, fleetClass } = await getCar(params);
   const name = carName(car);
-  const [photo, ...morePhotos] = car.photos;
+  // One carousel per model generation, in the order listed (newer first); most cars have just one.
+  const generations = [...new Set(car.photos.map((p) => p.generation))].map((generation) => ({
+    generation,
+    photos: car.photos.filter((p) => p.generation === generation),
+  }));
+  const [first, ...older] = generations;
   // Only details we actually know; unknown ones are left out rather than shown as blanks.
   const known = car.details.filter((d) => d.value);
   const sameClass = cars.filter((c) => c.fleetClass === car.fleetClass && c.slug !== car.slug);
@@ -93,15 +98,11 @@ export default async function CarPage({ params }: Props) {
 
               <div className="mt-4 grid gap-x-16 gap-y-10 md:mt-6 lg:grid-cols-[minmax(0,7fr)_minmax(0,5fr)]">
                 <Enter>
-                  {photo ? (
-                    <figure>
-                      <div className={`relative aspect-[3/2] overflow-hidden ${photo.cutout ? "bg-sand" : "bg-stone"}`}>
-                        <Image src={photo.src} alt={photo.alt} fill priority sizes="(max-width: 1024px) 100vw, 680px" className={photo.cutout ? "object-contain p-4 mix-blend-multiply md:p-8" : "object-cover"} style={{ objectPosition: photo.position }} />
-                      </div>
-                      {photo.credit && (
-                        <figcaption className="mt-2 text-[13px] text-muted">Representative photo · {photo.credit}</figcaption>
-                      )}
-                    </figure>
+                  {first ? (
+                    <>
+                      {first.generation && <p className="mb-3 text-[15px] text-muted">{first.generation}</p>}
+                      <CarGallery photos={first.photos} label={`Photos of the ${name}`} priority sizes="(max-width: 1024px) 100vw, 680px" />
+                    </>
                   ) : (
                     <div className="flex aspect-[3/2] items-center justify-center bg-sand p-6 text-center text-[15px]">
                       <Confirm>photos of our {name}</Confirm>
@@ -141,18 +142,14 @@ export default async function CarPage({ params }: Props) {
                 </Enter>
               </div>
 
-              {morePhotos.length > 0 && (
-                <Reveal className="mt-6 grid grid-cols-2 gap-6 md:grid-cols-3">
-                  {morePhotos.map((p) => (
-                    <figure key={p.src}>
-                      <div className={`relative aspect-[3/2] overflow-hidden ${p.cutout ? "bg-sand" : "bg-stone"}`}>
-                        <Image src={p.src} alt={p.alt} fill sizes="(max-width: 768px) 50vw, 380px" className={p.cutout ? "object-contain p-3 mix-blend-multiply" : "object-cover"} style={{ objectPosition: p.position }} />
-                      </div>
-                      {p.credit && <figcaption className="mt-2 text-[13px] text-muted">Representative photo · {p.credit}</figcaption>}
-                    </figure>
-                  ))}
+              {older.map((g) => (
+                <Reveal key={g.generation} className="mt-16 grid gap-x-16 lg:grid-cols-[minmax(0,7fr)_minmax(0,5fr)]">
+                  <div>
+                    <h2 className="mb-5 font-serif text-[clamp(26px,3vw,34px)] leading-[1.1]">{g.generation}</h2>
+                    <CarGallery photos={g.photos} label={`Photos of the ${name}, ${g.generation?.toLowerCase()}`} sizes="(max-width: 1024px) 100vw, 680px" />
+                  </div>
                 </Reveal>
-              )}
+              ))}
             </div>
           </section>
 
