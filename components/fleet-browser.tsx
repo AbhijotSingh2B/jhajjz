@@ -6,8 +6,9 @@ import Link from "next/link";
 import { AnimatePresence, motion } from "motion/react";
 import { Search, X } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { carName, carsInClass as carsIn, contact, fleet, fleetGroups, inSentence, type FleetGroup } from "@/lib/site";
+import { carName, carsInClass as carsIn, classHref, contact, fleet, fleetGroups, inSentence, type FleetGroup } from "@/lib/site";
 import { Confirm } from "@/components/confirm";
+import { ShareButton } from "@/components/share-button";
 
 const ease = [0.2, 0.7, 0.2, 1] as const;
 
@@ -126,19 +127,27 @@ export function FleetBrowser() {
                 </ul>
               )}
               {/* The ::after stretches the link over the whole card, so the photo is clickable too. */}
-              {/* A class with cars opens its own page listing them; one without (coaches) goes to the quote form. */}
-              <Link
-                href={carsIn(v.slug).length > 0 ? `/fleet/${v.slug}` : `/contact?vehicle=${encodeURIComponent(v.name)}`}
-                className="mt-3 inline-flex min-h-11 items-center text-[15px] font-medium text-gold-deep underline decoration-transparent underline-offset-[5px] transition-colors duration-300 group-hover:decoration-gold-deep after:absolute after:inset-0"
-              >
-                {carsIn(v.slug).length > 0 ? (
-                  `See all ${inSentence(v.name)}`
-                ) : (
-                  <>
-                    Ask for a quote<span className="sr-only">: {v.name}</span>
-                  </>
-                )}
-              </Link>
+              <div className="mt-3 flex flex-wrap items-center justify-between gap-x-6">
+                {/* A class with cars opens its own page listing them; one without (coaches) goes to the quote form. */}
+                <Link
+                  href={carsIn(v.slug).length > 0 ? `/fleet/${v.slug}` : `/contact?vehicle=${encodeURIComponent(v.name)}`}
+                  className="inline-flex min-h-11 items-center text-[15px] font-medium text-gold-deep underline decoration-transparent underline-offset-[5px] transition-colors duration-300 group-hover:decoration-gold-deep after:absolute after:inset-0"
+                >
+                  {carsIn(v.slug).length > 0 ? (
+                    `See all ${inSentence(v.name)}`
+                  ) : (
+                    <>
+                      Ask for a quote<span className="sr-only">: {v.name}</span>
+                    </>
+                  )}
+                </Link>
+                {/* Above the card-wide link, like the car names. */}
+                <ShareButton
+                  path={classHref(v.slug)}
+                  title={`${v.name} | Jhajj'z`}
+                  className="relative z-10"
+                />
+              </div>
             </motion.article>
           ))}
         </AnimatePresence>

@@ -8,6 +8,7 @@ import { Button } from "@/components/ui/button";
 import { PageTransition } from "@/components/page-transition";
 import { ContactDialog } from "@/components/contact-dialog";
 import { Confirm } from "@/components/confirm";
+import { ShareButton } from "@/components/share-button";
 import { CarGallery } from "@/components/car-gallery";
 import { BreadcrumbStructuredData, CarStructuredData } from "@/components/structured-data";
 import { FleetClassPage } from "@/components/fleet-class-page";
@@ -154,6 +155,7 @@ export default async function CarPage({ params }: Props) {
                         Talk to us on WhatsApp
                       </Button>
                     </ContactDialog>
+                    <ShareButton path={`/fleet/${car.slug}`} title={`${name} | Jhajj'z`} />
                   </div>
                 </Enter>
               </div>

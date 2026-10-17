@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/button";
 import { PageTransition } from "@/components/page-transition";
 import { ContactDialog } from "@/components/contact-dialog";
 import { Confirm } from "@/components/confirm";
+import { ShareButton } from "@/components/share-button";
 import { BreadcrumbStructuredData } from "@/components/structured-data";
 import { cn } from "@/lib/utils";
 import { carName, carsInClass, inSentence, type Vehicle } from "@/lib/site";
@@ -76,6 +77,7 @@ export function FleetClassPage({ fleetClass }: { fleetClass: Vehicle }) {
                         </h2>
                         <p className="mt-1.5 text-[15px] text-muted">{car.text}</p>
                       </Link>
+                      <ShareButton path={`/fleet/${car.slug}`} title={`${name} | Jhajj'z`} className="mt-1" />
                     </StaggerItem>
                   );
                 })}
