@@ -28,3 +28,6 @@ export const cityPoints: Record<string, [number, number]> = {
   "Haridwar": [138.9, 106.8],
   "Ropar": [116.8, 92.0],
 };
+
+/** Head office, Sector 63, Mohali (approx. 30.704°N 76.717°E). Sits almost on top of Chandigarh at this scale. */
+export const headOfficePoint: [number, number] = [119.4, 95.8];

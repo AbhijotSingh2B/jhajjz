@@ -86,7 +86,7 @@ lib/site.ts                ALL client facts: contact, cities, services, fleet, p
 ## Client facts (from jhajjz.in — do not change without the client)
 
 - Founded **1998** in Chandigarh. Office: SSS-106, 107, PCA Stadium Road, Sector 63, Mohali (SAS Nagar), Punjab
-- Phones +91 98036 00001, +91 98144 00019 · info.jhajjz@gmail.com · WhatsApp on the first number
+- Phones +91 98036 00001 (the Mohali office's number, per Nirmal), +91 98144 00019 · info.jhajjz@gmail.com · WhatsApp on the first number
 - **Pan-India service** (confirmed by Nirmal); stations in **14 cities**: Chandigarh, New Delhi, Gurgaon, Jaipur, Udaipur, Mumbai, Chennai, Kolkata, Bhubaneswar,
   Dehradun, Mussoorie, Rishikesh, Haridwar, Ropar
 - Brands: Rolls-Royce, Mercedes-Benz, BMW, Audi, Range Rover; coaches by Volvo and Mercedes-Benz
@@ -172,6 +172,9 @@ pin for the office. Needs the office's exact coordinates (client, or Google Maps
 (an embed loads Google cookies, so the privacy policy would need a line). Still ask the client for photos and logo.
 
 ## Changelog
+
+- 2026-10-17 — Map: head-office dot placed at Mohali (Sector 63), not Chandigarh; caption "Head office, Mohali"
+  with its number +91 98036 00001 as a call link.
 
 - 2026-10-17 — About section: fine-line map of India (official Survey of India outline) beside the "Pan-India,
   including" list, gold dots for the 14 cities, ink ringed dot for the Mohali head office. Call / WhatsApp / Email

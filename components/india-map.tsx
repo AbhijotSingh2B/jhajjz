@@ -1,17 +1,18 @@
-import { cities } from "@/lib/site";
-import { cityPoints, indiaMap, indiaOutline } from "@/lib/india-map";
+import { cities, contact } from "@/lib/site";
+import { cityPoints, headOfficePoint, indiaMap, indiaOutline } from "@/lib/india-map";
 
-// The head office is in Mohali, next to Chandigarh; at this scale they share one dot.
-const headOffice = "Chandigarh";
+// The Mohali head office's number (the client gave +91 98036 00001 for it).
+const officePhone = contact.phones[0];
 
-/** Fine-line outline of India with a dot for each city in `cities` and a heavier one for the head office. */
+/** Fine-line outline of India with a dot for each city in `cities` and a heavier one for the Mohali head office. */
 export function IndiaMap({ className }: { className?: string }) {
+  const [hx, hy] = headOfficePoint;
   return (
     <figure className={className}>
       <svg
         viewBox={`0 0 ${indiaMap.width} ${indiaMap.height}`}
         role="img"
-        aria-label={`Map of India marking ${cities.join(", ")}, with the head office in Mohali, near Chandigarh`}
+        aria-label={`Map of India marking ${cities.join(", ")}, and the head office in Mohali`}
         className="h-auto w-full"
       >
         <path
@@ -22,23 +23,27 @@ export function IndiaMap({ className }: { className?: string }) {
           vectorEffect="non-scaling-stroke"
         />
         {cities
-          .filter((c) => c !== headOffice && cityPoints[c])
+          .filter((c) => cityPoints[c])
           .map((c) => {
             const [x, y] = cityPoints[c];
             return <circle key={c} cx={x} cy={y} r={5.5} className="fill-gold-deep" />;
           })}
-        {cityPoints[headOffice] && (
-          <g>
-            <circle cx={cityPoints[headOffice][0]} cy={cityPoints[headOffice][1]} r={11} className="fill-none stroke-ink" strokeWidth={1.5} vectorEffect="non-scaling-stroke" />
-            <circle cx={cityPoints[headOffice][0]} cy={cityPoints[headOffice][1]} r={6.5} className="fill-ink" />
-          </g>
-        )}
+        <circle cx={hx} cy={hy} r={11} className="fill-paper stroke-ink" strokeWidth={1.5} vectorEffect="non-scaling-stroke" />
+        <circle cx={hx} cy={hy} r={6.5} className="fill-ink" />
       </svg>
-      <figcaption className="mt-3 flex items-center gap-2.5 text-[14px] text-muted">
-        <span aria-hidden="true" className="relative inline-flex size-[13px] items-center justify-center rounded-full border border-ink">
-          <span className="size-[7px] rounded-full bg-ink" />
+      <figcaption className="mt-3 text-[14px] text-muted">
+        <span className="flex items-center gap-2.5">
+          <span aria-hidden="true" className="inline-flex size-[13px] items-center justify-center rounded-full border border-ink">
+            <span className="size-[7px] rounded-full bg-ink" />
+          </span>
+          Head office, Mohali
         </span>
-        Head office, Mohali
+        <a
+          href={officePhone.href}
+          className="inline-flex min-h-11 items-center pl-[23px] tabular-nums underline-offset-4 transition-colors hover:text-ink hover:underline"
+        >
+          {officePhone.label}
+        </a>
       </figcaption>
     </figure>
   );
