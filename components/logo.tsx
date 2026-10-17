@@ -68,10 +68,9 @@ export function Logo({
 }
 
 /**
- * Header logo. With `intro` it opens as the name "Jhajj'z" (gold J, cream "hajj'z") at text size: the other
- * letters fold into the J, the last "j" slides down into place as the second J, and the whole grows into the
- * monogram. CSS keyframes in globals.css, so it starts with the first paint; reduced motion shows the
- * monogram straight away.
+ * Header logo (plain monogram). With `intro` (the entry screen, components/splash.tsx) it opens as the name
+ * "Jhajj'z" (gold J, cream "hajj'z") at text size: the other letters fold into the J, the last "j" slides down
+ * into place as the second J, and the whole grows into the monogram. CSS keyframes in globals.css.
  */
 export function LogoMark({
   intro = false,
@@ -81,7 +80,6 @@ export function LogoMark({
 }: {
   intro?: boolean;
   className?: string;
-  /** Unique per page: the header and the entry screen (components/splash.tsx) both draw one. */
   clipId?: string;
   /** End with the monogram in the middle of the box instead of at its left edge (entry screen). */
   centred?: boolean;

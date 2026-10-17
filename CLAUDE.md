@@ -74,9 +74,10 @@ app/
   not-found.tsx            Branded 404
 components/
   logo.tsx                 JJ monogram (two Caslon Js, the second lower-right). `Logo` = mark + name (footer);
-                           `LogoMark intro` = header opening (Nirmal's idea): "Jhajj'z" with a gold J; "'z" fades,
-                           "haj" slides behind the J's stem (clipped), the last j turns gold and becomes the second J. Outlines from the font, CSS
-                           keyframes in globals.css, first page of a visit only; header shows the monogram only.
+                           `LogoMark` = header (monogram only); `LogoMark intro` = the entry screen's opening
+                           (Nirmal's idea): "Jhajj'z" with a gold J; "'z" fades, "haj" slides behind the J's stem
+                           (clipped), the last j turns gold and becomes the second J. The header itself never
+                           animates (on reload it reset the logo, Nirmal).
   splash.tsx               Entry screen (Nirmal): ink screen, "Jhajj'z" turns into the monogram, which flies to the
                            header logo. 3–4s (leaves once the page has loaded, never before 3s or after 4s). Once per
                            tab (sessionStorage), decided by a script in layout.tsx <head>; skipped for reduced motion;

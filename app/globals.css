@@ -115,7 +115,7 @@
   }
 }
 
-/* Header logo opening (components/logo.tsx LogoMark): "Jhajj'z" turns into the JJ monogram. Once per visit.
+/* Logo opening on the entry screen (components/logo.tsx LogoMark intro): "Jhajj'z" turns into the JJ monogram.
    "'z" fades, "haj" slides in behind the gold J, the last j turns gold and moves into place as the second J
    while the whole grows. The resting styles are the finished monogram, so reduced motion just shows that. */
 .logo-intro .logo-word {

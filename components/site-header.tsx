@@ -44,17 +44,9 @@ function scrollHomeToTop(e: MouseEvent<HTMLAnchorElement>) {
  * `overlay` = sits transparent on top of a hero photo until the visitor
  * scrolls, then turns solid. Other pages get the solid bar straight away.
  */
-/** Every page renders its own header, so this keeps the logo opening to the first page of a visit. */
-let logoIntroPlayed = false;
-
 export function SiteHeader({ overlay = false }: { overlay?: boolean }) {
   const [scrolled, setScrolled] = useState(false);
-  const [logoIntro] = useState(() => !logoIntroPlayed);
   const pathname = usePathname();
-
-  useEffect(() => {
-    logoIntroPlayed = true;
-  }, []);
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 40);
@@ -85,7 +77,7 @@ export function SiteHeader({ overlay = false }: { overlay?: boolean }) {
           aria-label="Jhajj'z home"
           className="header-logo flex h-11 items-center"
         >
-          <LogoMark intro={logoIntro} />
+          <LogoMark />
         </Link>
 
         <div className="hidden items-center gap-2 md:flex">
