@@ -74,7 +74,8 @@ components/
   site-header.tsx          Fixed header (Home, Fleet, Weddings, Services, About, Contact); transparent over the home hero until scroll; Fleet mega-menu; mobile sheet
   site-footer.tsx          Also renders the phone-only sticky Call / WhatsApp bar
   booking-bar.tsx          "Start a quote": occasion / city / date (all start empty) → pushes to /contact?… as query params
-  quote-form.tsx           Pre-fills from those query params; "Other" opens a text box; submit opens the
+  quote-form.tsx           Pre-fills from those query params (car pages add ?car=<slug> for the optional
+                           "Exact vehicle" dropdown); "Other" opens a text box; submit opens the
                            WhatsApp popup with the details written out (nothing stored server-side)
   contact-dialog.tsx       <ContactDialog channel="call|whatsapp|email|all"> wraps any button → animated popup
                            ("all" opens on the "Get in touch" list; used by the "Contact us" buttons)
