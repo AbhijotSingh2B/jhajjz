@@ -133,7 +133,8 @@ The v0 reference design (`redesign-jhajjz-in.zip`) got several facts wrong — n
       an E-Class (Executive cabs), coaches, Toyota Vellfire (white). Mini vans has no photo ([CONFIRM: photo]).
       Still worth getting the originals into /public (Wix hot-links can break). The privacy policy text, logo file and
       real office list still need jhajjz.in access (blocked from the sandbox).
-- [ ] **Car pages** (26). The first 12 came from Nirmal: Rolls-Royce Ghost, Mercedes-Benz S-Class, BMW 7 Series, Range Rover Autobiography,
+- [ ] **Car pages** (29). Nirmal (2026-10-17): add every car seen on jhajjz.in now; each car is imported properly
+      (details, photos) when the client signs up. The first 12 came from Nirmal: Rolls-Royce Ghost, Mercedes-Benz S-Class, BMW 7 Series, Range Rover Autobiography,
       Mercedes-Benz GLS, bulletproof Mercedes-Benz GLE, Toyota Land Cruiser, black Toyota Fortuner, Land Rover
       Defender, Chrysler 300C stretch limousine, Audi Cabriolet (Nirmal; I think an A3 Cabriolet — confirm the model),
       Toyota Vellfire. Ghost, 7 Series, Defender, limousine, Audi and Vellfire have real Jhajj'z photos; the others
@@ -155,8 +156,10 @@ The v0 reference design (`redesign-jhajjz-in.zip`) got several facts wrong — n
       HiAce, Toyota Innova Crysta (mini vans). X5 and i8 only appear in one group photo (with a Range Rover). No studio
       shot for Flying Spur (CarWale has no silver), Maybach GLS (no red two-tone), V-Class and HiAce (none for the
       client's generation). Two silver/white photos that looked like a Maybach S-Class are the older S-Class (Maybach-
-      style wheels) and sit in its "Older model" carousel. Left out: a grey van (model unknown), a dark-blue GLE at a
-      wedding (not clearly the bulletproof one), vintage cars (make unknown).
+      style wheels) and sit in its "Older model" carousel. Then 3 more: Force Urbania (grey van; no CarWale page, it's
+      a commercial van), Mercedes-Benz GLE (black, pre-facelift, from a wedding line-up; kept separate from the
+      bulletproof GLE, could be the same car), "Vintage open tourer" (the blue and white replicas; make unknown, so
+      `brand: ""` and the Car JSON-LD leaves brand out).
       "Who we drive for" rows each have one of the client's photos (wedding line-up from above; chauffeur with the
       Taj-branded 7 Series; chauffeur with the Innova).
 - [ ] **Hero**: currently the client's Wix sharing image. `/public/rolls-royce-hero.webp` (from the v0
@@ -213,6 +216,9 @@ pin for the office. Needs the office's exact coordinates (client, or Google Maps
 (an embed loads Google cookies, so the privacy policy would need a line). Still ask the client for photos and logo.
 
 ## Changelog
+
+- 2026-10-17 — 3 more car pages: Force Urbania, Mercedes-Benz GLE (black), Vintage open tourer (no make; JSON-LD
+  brand omitted when `brand` is empty). 29 car pages in all.
 
 - 2026-10-17 — 14 more car pages from the car photos on jhajjz.in (Flying Spur, XJ, i8, E-Class, X7, X5, G-Class,
   Maybach GLS, Range Rover Sport, F-Pace, Q7, V-Class, HiAce, Innova Crysta), each with matching CarWale studio shots

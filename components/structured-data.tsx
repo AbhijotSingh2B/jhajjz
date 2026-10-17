@@ -91,7 +91,7 @@ export function CarStructuredData({ car }: { car: Car }) {
         "@context": "https://schema.org",
         "@type": "Car",
         name: carName(car),
-        brand: { "@type": "Brand", name: car.brand },
+        ...(car.brand && { brand: { "@type": "Brand", name: car.brand } }),
         model: car.model,
         description: car.text,
         url: `${siteUrl}/fleet/${car.slug}`,

@@ -196,6 +196,8 @@ export const photos = {
   jaguarXj: wix("171684_d6742c74994b45778c8f50bc0ed52817"),
   audiQ7: wixFit("171684_d95eac75e6314492bd61b5a29577a3f1~mv2.jpg"),
   bmwLineUp: wix("171684_ea339aad2cb8490cb5d8d1e38d055a29"), // BMW X5, BMW i8 and a Range Rover on the road
+  forceUrbania: wix("171684_93c797d72e81473ba9e78345d7a49391"),
+  weddingLineUpGle: wix("171684_12c0dc2805044efb842caad88abfe2f4"), // black GLE in front of a decorated wedding line-up
 };
 
 // PLACEHOLDER: CarWale studio shots on white (from each model's colours page), matched to the generation and colour
@@ -222,6 +224,7 @@ export const studio = {
   innovaCrysta: carwaleColour("p8d49jb_1950184"), // Innova Crysta, Attitude Black Mica
   audiQ7: carwaleColour("93c7oua_1555653"), // Q7 2022–2024, Carrara White
   rangeRoverSport: carwaleColour("2x5uqsa_1477733"), // Range Rover Sport 2018–2022, Fuji White
+  gleOlder: carwaleColour("stahtsa_1480771"), // GLE 2020–2023, Obsidian Black
 };
 
 // There is no separate "wedding cars" class: every car in the fleet can be booked for a wedding or any event.
@@ -347,6 +350,7 @@ export type CarPhoto = {
 
 export type Car = {
   slug: string;
+  /** "" when the make isn't known (the vintage cars); give a `name` then. */
   brand: string;
   model: string;
   /** What we call it on the site, when "brand model" reads wrong (e.g. "Range Rover Autobiography"). */
@@ -784,6 +788,47 @@ export const cars: Car[] = [
     details: [
       { label: "Passengers", value: null },
       { label: "Colour", value: "Black" },
+    ],
+  },
+  {
+    slug: "mercedes-benz-gle",
+    brand: "Mercedes-Benz",
+    model: "GLE",
+    fleetClass: "suvs",
+    text: "A Mercedes-Benz GLE for weddings, family travel and business visits.",
+    photos: [
+      // PLACEHOLDER: CarWale photo — remove before public launch
+      { src: studio.gleOlder, alt: "Black Mercedes-Benz GLE", placeholder: true, cutout: true },
+      { src: photos.weddingLineUpGle, alt: "Black Mercedes-Benz GLE decorated with flowers, leading a wedding line-up", position: "right" },
+    ],
+    details: [
+      { label: "Passengers", value: null },
+      { label: "Colour", value: "Black" },
+    ],
+  },
+  {
+    slug: "force-urbania",
+    brand: "Force",
+    model: "Urbania",
+    fleetClass: "mini-vans",
+    text: "A Force Urbania for groups, wedding guests and trips with plenty of luggage.",
+    photos: [{ src: photos.forceUrbania, alt: "Grey Force Urbania van with its sliding door open" }],
+    details: [
+      { label: "Passengers", value: null },
+      { label: "Colour", value: "Grey" },
+    ],
+  },
+  {
+    slug: "vintage-open-tourers",
+    brand: "",
+    model: "Open tourer",
+    name: "Vintage open tourer",
+    fleetClass: "vintage-cars",
+    text: "Our blue and white vintage open tourers, for weddings, anniversaries and themed photoshoots.",
+    photos: [{ src: photos.vintage, alt: "Blue and white vintage open tourers at the Jhajj'z transport yard" }],
+    details: [
+      { label: "Passengers", value: null },
+      { label: "Colour", value: "Blue, white" },
     ],
   },
 ];
