@@ -115,7 +115,7 @@ export const occasions = [
 const wix = (id: string) => `https://static.wixstatic.com/media/${id}~mv2.jpg/v1/fill/w_1600,h_1067,al_c,q_85/photo.jpg`;
 const wixJpeg = (id: string) => `https://static.wixstatic.com/media/${id}~mv2.jpeg/v1/fill/w_1600,h_1067,al_c,q_85/photo.jpeg`;
 
-export type FleetGroup = "cars" | "wedding" | "suv" | "group";
+export type FleetGroup = "cars" | "classic" | "suv" | "group";
 
 export type Vehicle = {
   slug: string;
@@ -127,78 +127,84 @@ export type Vehicle = {
   imageAlt?: string;
 };
 
+// Photos from jhajjz.in. Identified by eye from Nirmal's screenshots of the preview (Oct 2026); the cars carry
+// Jhajj'z plates and branding. Each class uses the photo that actually shows it.
+export const photos = {
+  bmw7Series: wix("171684_e2b3a2de810b49f1bd9066aa63ea5b47"),
+  ghost: wixJpeg("171684_d0d46c5c136c43b6a41d577ba308dc77"),
+  vintage: wix("171684_274fc280da2a49fb8271fb19015aac77"),
+  audiCabriolet: wixJpeg("171684_b92c4c7fbc4544efaa3155a9e1b7ea5a"),
+  limousine: wix("171684_230878eccc5e4a129225562dc3625aa5"),
+  defender: wix("171684_96f78bb8e63b4a268e76e533cd6eb5af"),
+  lineUp: wix("171684_1c9a798a6e444d7493d964f19512fbe7"),
+  coaches: wix("171684_0af879bb5488447795fdb167404077b1"),
+  vellfire: wixJpeg("171684_1371098b103945e981bf18c1563c7087"),
+};
+
+// There is no separate "wedding cars" class: every car in the fleet can be booked for a wedding or any event.
 export const fleet: Vehicle[] = [
   {
     slug: "luxury-cars",
     name: "Luxury cars",
     group: "cars",
     text: "Rolls-Royce, Mercedes-Benz, BMW and Audi, for business, celebrations and everything in between.",
-    image: wix("171684_e2b3a2de810b49f1bd9066aa63ea5b47"),
-    imageAlt: "Luxury car from the Jhajj'z fleet",
-  },
-  {
-    slug: "wedding-cars",
-    name: "Wedding cars",
-    group: "wedding",
-    text: "Decorated to your theme and driven by our chauffeurs, so the arrival is part of the memory.",
-    image: wixJpeg("171684_d0d46c5c136c43b6a41d577ba308dc77"),
-    imageAlt: "Decorated wedding car",
+    image: photos.bmw7Series,
+    imageAlt: "White BMW 7 Series from the Jhajj'z fleet",
   },
   {
     slug: "vintage-cars",
     name: "Vintage cars",
-    group: "wedding",
+    group: "classic",
     text: "Classic cars for weddings, anniversaries and themed photoshoots.",
-    image: wix("171684_274fc280da2a49fb8271fb19015aac77"),
-    imageAlt: "Vintage car",
+    image: photos.vintage,
+    imageAlt: "Blue and white vintage open tourers at the Jhajj'z transport yard",
   },
   {
     slug: "convertibles",
     name: "Convertibles",
-    group: "cars",
+    group: "classic",
     text: "Roof down, for photoshoots and days that call for open sky.",
-    image: wixJpeg("171684_b92c4c7fbc4544efaa3155a9e1b7ea5a"),
-    imageAlt: "Convertible car",
+    image: photos.audiCabriolet,
+    imageAlt: "Red Audi cabriolet decorated with flowers",
   },
   {
     slug: "limousines",
     name: "Limousines",
-    group: "wedding",
+    group: "classic",
     text: "For red carpets, weddings and the meetings that matter most.",
-    image: wix("171684_230878eccc5e4a129225562dc3625aa5"),
-    imageAlt: "Limousine",
+    image: photos.limousine,
+    imageAlt: "White Chrysler 300C stretch limousine with a red roof",
   },
   {
     slug: "suvs",
     name: "SUVs",
     group: "suv",
     text: "Range Rover and more, with space for families, luggage and hill trips.",
-    image: wix("171684_96f78bb8e63b4a268e76e533cd6eb5af"),
-    imageAlt: "Luxury SUV",
+    image: photos.defender,
+    imageAlt: "Black Land Rover Defender",
   },
   {
     slug: "executive-cabs",
     name: "Executive cabs",
     group: "cars",
     text: "Comfortable sedans for meetings, corporate events and airport runs.",
-    image: wix("171684_1c9a798a6e444d7493d964f19512fbe7"),
-    imageAlt: "Executive sedan",
+    image: photos.lineUp,
+    imageAlt: "A line-up of Jhajj'z cars",
   },
   {
     slug: "luxury-coaches",
     name: "Luxury coaches",
     group: "group",
     text: "Volvo and Mercedes-Benz coaches for delegations, baraat and large groups.",
-    image: wix("171684_0af879bb5488447795fdb167404077b1"),
-    imageAlt: "Luxury coach",
+    image: photos.coaches,
+    imageAlt: "Jhajj'z coaches",
   },
   {
     slug: "mini-vans",
     name: "Mini vans",
     group: "group",
     text: "Flexible seating and room for luggage, for families and small groups.",
-    image: wixJpeg("171684_1371098b103945e981bf18c1563c7087"),
-    imageAlt: "Mini van",
+    // The photo that used to sit here is the Toyota Vellfire, now under Luxury MPVs.
   },
   {
     // "MPV" is the term used in India for the Vellfire class (Toyota sells it here as a luxury MPV).
@@ -206,14 +212,16 @@ export const fleet: Vehicle[] = [
     name: "Luxury MPVs",
     group: "group",
     text: "The Toyota Vellfire, for families, small groups and business guests who need more room than a sedan.",
+    image: photos.vellfire,
+    imageAlt: "White Toyota Vellfire",
   },
 ];
 
 export const fleetGroups: { id: "all" | FleetGroup; label: string }[] = [
   { id: "all", label: "All" },
   { id: "cars", label: "Luxury & executive" },
-  { id: "wedding", label: "Weddings" },
   { id: "suv", label: "SUVs" },
+  { id: "classic", label: "Vintage, limousines & convertibles" },
   { id: "group", label: "MPVs, vans & coaches" },
 ];
 
@@ -243,10 +251,10 @@ export const cars: Car[] = [
     model: "Ghost",
     fleetClass: "luxury-cars",
     text: "Our Rolls-Royce Ghost comes with a trained Jhajj'z chauffeur. Ask us about it for a wedding, a business visit or a day you want to remember.",
-    photos: [],
+    photos: [{ src: photos.ghost, alt: "White Rolls-Royce Ghost with a JHAJJZ number plate" }],
     details: [
       { label: "Passengers", value: null },
-      { label: "Colour", value: null },
+      { label: "Colour", value: "White" },
     ],
   },
   {
@@ -330,10 +338,59 @@ export const cars: Car[] = [
     model: "Vellfire",
     fleetClass: "luxury-mpvs",
     text: "Our Toyota Vellfire comes with a trained Jhajj'z chauffeur. Ask us about it for families, small groups and business guests.",
-    photos: [],
+    photos: [{ src: photos.vellfire, alt: "White Toyota Vellfire" }],
+    details: [
+      { label: "Passengers", value: null },
+      { label: "Colour", value: "White" },
+    ],
+  },
+  {
+    slug: "bmw-7-series",
+    brand: "BMW",
+    model: "7 Series",
+    fleetClass: "luxury-cars",
+    text: "Our BMW 7 Series comes with a trained Jhajj'z chauffeur. Ask us about it for business travel, airport transfers or a wedding.",
+    photos: [{ src: photos.bmw7Series, alt: "White BMW 7 Series from the Jhajj'z fleet" }],
+    details: [
+      { label: "Passengers", value: null },
+      { label: "Colour", value: "White" },
+    ],
+  },
+  {
+    slug: "land-rover-defender",
+    brand: "Land Rover",
+    model: "Defender",
+    fleetClass: "suvs",
+    text: "Our Land Rover Defender comes with a trained Jhajj'z chauffeur. Ask us about it for hill trips, long drives or a wedding convoy.",
+    photos: [{ src: photos.defender, alt: "Black Land Rover Defender" }],
     details: [
       { label: "Passengers", value: null },
       { label: "Colour", value: null },
+    ],
+  },
+  {
+    slug: "chrysler-300c-limousine",
+    brand: "Chrysler",
+    model: "300C limousine",
+    name: "Chrysler 300C stretch limousine",
+    fleetClass: "limousines",
+    text: "Our white stretch limousine comes with a trained Jhajj'z chauffeur. Ask us about it for a wedding, a red-carpet arrival or a night out.",
+    photos: [{ src: photos.limousine, alt: "White Chrysler 300C stretch limousine with a red roof" }],
+    details: [
+      { label: "Passengers", value: null },
+      { label: "Colour", value: "White with a red roof" },
+    ],
+  },
+  {
+    slug: "audi-cabriolet",
+    brand: "Audi",
+    model: "Cabriolet",
+    fleetClass: "convertibles",
+    text: "Our red Audi Cabriolet comes with a trained Jhajj'z chauffeur. Ask us about it for a wedding, a photoshoot or a drive with the roof down.",
+    photos: [{ src: photos.audiCabriolet, alt: "Red Audi Cabriolet decorated with flowers" }],
+    details: [
+      { label: "Passengers", value: null },
+      { label: "Colour", value: "Red" },
     ],
   },
 ];

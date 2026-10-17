@@ -93,8 +93,8 @@ lib/site.ts                ALL client facts: contact, cities, services, fleet, p
 - **Pan-India service** (confirmed by Nirmal); stations in **14 cities**: Chandigarh, New Delhi, Gurgaon, Jaipur, Udaipur, Mumbai, Chennai, Kolkata, Bhubaneswar,
   Dehradun, Mussoorie, Rishikesh, Haridwar, Ropar
 - Brands: Rolls-Royce, Mercedes-Benz, BMW, Audi, Range Rover; coaches by Volvo and Mercedes-Benz
-- 10 vehicle classes and 9 services — see `lib/site.ts`. "Luxury MPVs" (Toyota Vellfire) was added by Nirmal; the
-  other 9 classes are from jhajjz.in
+- 9 vehicle classes and 9 services — see `lib/site.ts`. jhajjz.in's "Wedding cars" class was dropped (Nirmal:
+  every car can be booked for any event); "Luxury MPVs" (Toyota Vellfire) was added by Nirmal
 
 The v0 reference design (`redesign-jhajjz-in.zip`) got several facts wrong — never copy these from it:
 "Est. 2014", phone +91 98765 43210, hello@jhajjz.in, "a small fleet", Chandigarh-only.
@@ -119,21 +119,19 @@ The v0 reference design (`redesign-jhajjz-in.zip`) got several facts wrong — n
 
 ## Open items
 
-- [ ] **Photos**: all fleet photos are hot-linked from Wix (`static.wixstatic.com`, allowed in
-      `next.config.ts`). The image→category mapping in `lib/site.ts` was inferred from page order and
-      **has not been visually checked**. Get originals from the client, put them in `/public`, fix the mapping.
-      **Photo pass (brief):** look at each real photo, identify the car, write the fleet entries and copy in
-      `lib/site.ts`, fix the photo→category mapping, write proper alt text. Anything that can't be told from the
-      photo is marked `[CONFIRM]` — never guess a model, year or spec. If jhajjz.in is reachable, do the privacy
-      policy text, logo file and real office list in the same pass.
-      **Prerequisite:** photos committed to `/public/fleet/`, OR the cloud environment allows
-      `static.wixstatic.com` + `jhajjz.in` + `www.jhajjz.in`. As of 2026-10-17 all three are blocked (proxy 403),
-      including for WebFetch.
-- [ ] **Car pages** (8, cars named by Nirmal): Rolls-Royce Ghost, Mercedes-Benz S-Class, Range Rover Autobiography,
-      Mercedes-Benz GLS, bulletproof Mercedes-Benz GLE, Toyota Land Cruiser, black Toyota Fortuner, Toyota Vellfire
-      (Luxury MPVs). Model year and "Based in" were dropped (Nirmal); details without a value are hidden, so only the
-      Fortuner shows one (Colour: Black). Passengers, colour and the GLE's protection level stay hidden until the
-      client gives them.
+- [ ] **Photos**: fleet photos are hot-linked from Wix (`static.wixstatic.com`, allowed in `next.config.ts`), named in
+      `photos` in lib/site.ts. **Identified by eye** (Oct 2026, from Nirmal's screenshots): BMW 7 Series (white),
+      Rolls-Royce Ghost (white, "JHAJJZ" plate), two vintage open tourers (blue, white; make unknown), Audi cabriolet
+      (red), Chrysler 300C stretch limousine (white, red roof), Land Rover Defender (black), a line-up of Fortuners and
+      an E-Class (Executive cabs), coaches, Toyota Vellfire (white). Mini vans has no photo ([CONFIRM: photo]).
+      Still worth getting the originals into /public (Wix hot-links can break). The privacy policy text, logo file and
+      real office list still need jhajjz.in access (blocked from the sandbox).
+- [ ] **Car pages** (12): Rolls-Royce Ghost, Mercedes-Benz S-Class, BMW 7 Series, Range Rover Autobiography,
+      Mercedes-Benz GLS, bulletproof Mercedes-Benz GLE, Toyota Land Cruiser, black Toyota Fortuner, Land Rover
+      Defender, Chrysler 300C stretch limousine, Audi Cabriolet (Nirmal; I think an A3 Cabriolet — confirm the model),
+      Toyota Vellfire. Ghost, 7 Series, Defender, limousine, Audi and Vellfire have real Jhajj'z photos; the others
+      need photos. Model year and "Based in" were dropped (Nirmal); details without a value are hidden. Confirm with
+      the client: the limousine is a Chrysler 300C (identified from the photo); passengers for every car.
       **Stand-in photos** (Nirmal wants licensed web photos until the client's arrive): not done — every photo source
       is blocked from the sandbox (commons.wikimedia.org, upload.wikimedia.org, Unsplash, Pexels; WebFetch too), and
       picking photos blind risks the wrong model or an unlicensed image. Code is ready: add
@@ -188,6 +186,12 @@ pin for the office. Needs the office's exact coordinates (client, or Google Maps
 (an embed loads Google cookies, so the privacy policy would need a line). Still ask the client for photos and logo.
 
 ## Changelog
+
+- 2026-10-17 — Fleet rebuilt around what the Wix photos actually show (identified from Nirmal's screenshots):
+  "Wedding cars" class removed (every car can do any event; fleet intro says so), "Weddings" filter tab replaced by
+  "Vintage, limousines & convertibles". Vellfire photo moved from Mini vans to Luxury MPVs. New car pages: BMW 7
+  Series, Land Rover Defender, Chrysler 300C stretch limousine, Audi Cabriolet; Ghost and Vellfire got their photos.
+  Home preview: luxury cars, SUVs, limousines, vintage, coaches, MPVs; wedding band uses the Ghost photo.
 
 - 2026-10-17 — Car pages: "Model year" and "Based in" removed; details without a value are no longer shown (no
   [CONFIRM] rows). Photos can carry a `credit`, shown as "Representative photo · …" for licensed stand-ins.

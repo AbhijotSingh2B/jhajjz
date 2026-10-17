@@ -8,7 +8,7 @@ import { Enter, Reveal, Stagger, StaggerItem } from "@/components/motion";
 import { Button } from "@/components/ui/button";
 import { ContactDialog } from "@/components/contact-dialog";
 import { IndiaMap } from "@/components/india-map";
-import { cities, fleet, heroImage, serviceGroups } from "@/lib/site";
+import { cities, fleet, heroImage, photos, serviceGroups } from "@/lib/site";
 import { PageTransition } from "@/components/page-transition";
 
 // Home only shows classes that have a real photo.
@@ -16,10 +16,11 @@ const withPhoto = (slug: string) => {
   const v = fleet.find((x) => x.slug === slug);
   return v?.image ? { ...v, image: v.image, imageAlt: v.imageAlt ?? v.name } : undefined;
 };
-const preview = ["luxury-cars", "wedding-cars", "suvs", "vintage-cars", "luxury-coaches", "mini-vans"]
+const preview = ["luxury-cars", "suvs", "limousines", "vintage-cars", "luxury-coaches", "luxury-mpvs"]
   .map(withPhoto)
   .filter((v) => v !== undefined);
-const weddingPhoto = withPhoto("wedding-cars")?.image ?? heroImage;
+// Wedding band photo: the white Rolls-Royce Ghost.
+const weddingPhoto = photos.ghost;
 
 // The quote-form link under each group name (occasion names match lib/site.ts `occasions`).
 const groupLinks: Record<string, { label: string; href: string }> = {
