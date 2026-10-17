@@ -132,13 +132,17 @@ The v0 reference design (`redesign-jhajjz-in.zip`) got several facts wrong — n
       Toyota Vellfire. Ghost, 7 Series, Defender, limousine, Audi and Vellfire have real Jhajj'z photos; the others
       need photos. Model year and "Based in" were dropped (Nirmal); details without a value are hidden. Confirm with
       the client: the limousine is a Chrysler 300C (identified from the photo); passengers for every car.
-      **Stand-in photos** (Nirmal wants licensed web photos until the client's arrive): not done — every photo source
-      is blocked from the sandbox (commons.wikimedia.org, upload.wikimedia.org, Unsplash, Pexels; WebFetch too), and
-      picking photos blind risks the wrong model or an unlicensed image. Code is ready: add
-      `{ src, alt, credit }` to a car's `photos`; the page captions it "Representative photo · <credit>". To do it,
-      allow those hosts in the environment's network settings (and add `upload.wikimedia.org` to `images` in
-      next.config.ts), then choose Wikimedia Commons photos of the exact model/generation with CC BY/CC BY-SA/CC0
-      licences and put photographer + licence in `credit`. Avoid manufacturer press photos (copyright).
+      **Stand-in photos — Nirmal's latest instruction:** use professional photos from **CarWale / CarDekho** for the
+      6 cars without photos (S-Class, Range Rover Autobiography, GLS, bulletproof GLE, Land Cruiser, black Fortuner).
+      NOT done yet: carwale.com, imgd.aeplcdn.com, cardekho.com and stimg.cardekho.com are blocked from the sandbox
+      (WebFetch too). Asked Nirmal to allow those 4 hosts in the environment's network settings. When allowed:
+      look at each photo before using it (exact model/generation, clean exterior); add the image host to `images`
+      in next.config.ts; on each such photo put a `// PLACEHOLDER: CarWale/CarDekho photo — remove before public
+      launch` comment and a `placeholder: true` flag (add the flag to the photo type); add "remove placeholder photos"
+      to the launch checklist. Offered a small "Placeholder photo" caption under them (not yet agreed). Caution
+      raised: those photos are CarWale/CarDekho/manufacturer copyright, and jhajjz.vercel.app is public (only
+      noindex), so replace them before the client shares the preview widely. `credit` + "Representative photo"
+      caption already exists for licensed (e.g. Wikimedia Commons) stand-ins.
 - [ ] **Hero**: currently the client's Wix sharing image. `/public/rolls-royce-hero.webp` (from the v0
       reference, probably AI-generated) is the alternative — swap `heroImage` in `lib/site.ts`.
 - [ ] **Quote form** opens the WhatsApp popup (`ContactDialog`) with the details prefilled; nothing is stored
