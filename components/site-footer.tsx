@@ -27,15 +27,19 @@ export function SiteFooter() {
           <ul className="flex flex-col">
             {contact.phones.map((p) => (
               <li key={p.href}>
-                <a href={p.href} className="transition-colors hover:text-cream">
-                  {p.label}
-                </a>
+                <ContactDialog channel="call">
+                  <button type="button" className="text-left transition-colors hover:text-cream">
+                    {p.label}
+                  </button>
+                </ContactDialog>
               </li>
             ))}
             <li>
-              <a href={`mailto:${contact.email}`} className="transition-colors hover:text-cream">
-                {contact.email}
-              </a>
+              <ContactDialog channel="email">
+                <button type="button" className="text-left transition-colors hover:text-cream">
+                  {contact.email}
+                </button>
+              </ContactDialog>
             </li>
           </ul>
         </div>
