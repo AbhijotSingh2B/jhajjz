@@ -7,7 +7,7 @@ import { BookingBar } from "@/components/booking-bar";
 import { Enter, Reveal, Stagger, StaggerItem } from "@/components/motion";
 import { Button } from "@/components/ui/button";
 import { ContactDialog } from "@/components/contact-dialog";
-import { cities, fleet, heroImage, serviceGroups } from "@/lib/site";
+import { fleet, heroImage, serviceGroups } from "@/lib/site";
 import { PageTransition } from "@/components/page-transition";
 
 const preview = ["luxury-cars", "wedding-cars", "suvs", "vintage-cars", "luxury-coaches", "mini-vans"]
@@ -135,22 +135,30 @@ export default function Home() {
 
           {/* Services */}
           <section id="services" className="scroll-mt-16 py-[72px] md:py-28">
-            <div className="mx-auto grid max-w-[1200px] gap-x-16 gap-y-10 px-6 md:grid-cols-[minmax(0,5fr)_minmax(0,7fr)]">
-              <Reveal>
+            <div className="mx-auto max-w-[1200px] px-6">
+              <Reveal className="grid items-end gap-x-16 gap-y-5 md:grid-cols-2">
                 <h2 className="font-serif text-[clamp(32px,4vw,48px)] leading-[1.1] tracking-[-0.01em]">Who we drive for</h2>
-                <p className="mt-5 max-w-[360px] text-[17px] text-muted">
+                <p className="max-w-[420px] text-[17px] text-muted md:justify-self-end">
                   Families, companies, hotels, airlines and delegations. If yours isn&apos;t listed, ask us.
                 </p>
               </Reveal>
-              <Stagger className="flex flex-col gap-10">
-                {serviceGroups.map((g) => (
-                  <StaggerItem key={g.title}>
-                    <h3 className="font-serif text-2xl">{g.title}</h3>
-                    <ul className="mt-3 grid gap-x-8 gap-y-3 sm:grid-cols-2">
+              {/* Three equal columns split by hairlines; stacked with rules between on phones. */}
+              <Stagger className="mt-12 grid border-t border-ink md:grid-cols-3">
+                {serviceGroups.map((g, i) => (
+                  <StaggerItem
+                    key={g.title}
+                    className={
+                      i === 0
+                        ? "border-b border-line py-8 md:border-b-0 md:pr-10"
+                        : "border-b border-line py-8 last:border-b-0 md:border-b-0 md:border-l md:px-10 md:last:pr-0"
+                    }
+                  >
+                    <h3 className="font-serif text-[26px] leading-tight">{g.title}</h3>
+                    <ul className="mt-6 flex flex-col gap-5">
                       {g.items.map((s) => (
-                        <li key={s.title} className="text-[15px] text-muted">
-                          <span className="block text-[17px] font-semibold text-ink">{s.title}</span>
-                          {s.text}
+                        <li key={s.title}>
+                          <span className="block text-[16px] font-semibold">{s.title}</span>
+                          <span className="mt-0.5 block text-[15px] text-muted">{s.text}</span>
                         </li>
                       ))}
                     </ul>
@@ -162,12 +170,14 @@ export default function Home() {
 
           {/* About */}
           <section id="about" className="scroll-mt-16 bg-sand py-[72px] md:py-28">
-            <div className="mx-auto flex max-w-[1200px] flex-wrap gap-x-16 gap-y-12 px-6">
-              <Reveal className="min-w-0 flex-[1_1_440px]">
+            <div className="mx-auto grid max-w-[1200px] gap-x-16 gap-y-6 px-6 md:grid-cols-2">
+              <Reveal>
                 <h2 className="font-serif text-[clamp(32px,4vw,48px)] leading-[1.1] tracking-[-0.01em]">Chandigarh, since 1998</h2>
-                <p className="mt-5 max-w-[520px] text-[17px] text-body">
+              </Reveal>
+              <Reveal delay={0.1}>
+                <p className="max-w-[520px] text-[17px] text-body">
                   We started in Chandigarh in 1998. Today we run luxury cars, SUVs, coaches and mini vans across India,
-                  from stations with trained chauffeurs and a station manager you can call directly.
+                  with trained chauffeurs and a station manager you can call directly.
                 </p>
                 <p className="mt-4 max-w-[520px] text-[17px] text-body">
                   Need a car for a month or longer? Ask about long-term hire.
@@ -183,20 +193,8 @@ export default function Home() {
                   </ContactDialog>
                 </div>
               </Reveal>
-              <Reveal delay={0.1} className="min-w-0 flex-[1_1_400px]">
-                <h3 className="font-serif text-2xl">Pan-India, with stations in</h3>
-                <ul className="mt-4 grid grid-cols-2 gap-x-6 border-t border-ink/15 sm:grid-cols-3">
-                  {cities.map((c) => (
-                    <li key={c} className="border-b border-ink/15 py-2.5 text-[16px] text-body">
-                      {c}
-                    </li>
-                  ))}
-                </ul>
-                <p className="mt-4 text-[15px] text-muted">Travelling somewhere else in India? Ask us.</p>
-              </Reveal>
             </div>
           </section>
-
         </main>
       </PageTransition>
       <SiteFooter />
