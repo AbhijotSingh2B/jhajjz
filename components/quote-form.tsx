@@ -13,6 +13,7 @@ const NOT_SURE = "Not sure — recommend one";
 const OTHER_VEHICLE = "Other";
 const OTHER_OCCASION = "Other";
 const ANY_CAR = "No preference";
+const OTHER_CAR = "Other";
 
 /**
  * Quote request form. Pre-fills from the booking bar's query params.
@@ -29,7 +30,7 @@ export function QuoteForm() {
   const [message, setMessage] = useState("");
   const [occasion, setOccasion] = useState(pick("occasion", occasions));
   const [vehicle, setVehicle] = useState(pick("vehicle", [NOT_SURE, OTHER_VEHICLE, ...fleet.map((v) => v.name)]));
-  // The exact car, by slug (car pages link here with ?car=<slug>). Optional; ANY_CAR means none chosen.
+  // The exact car, by slug (car pages link here with ?car=<slug>), or OTHER_CAR to type it in. Optional; "" = none.
   const [car, setCar] = useState(() => (cars.some((c) => c.slug === params.get("car")) ? params.get("car")! : ""));
   const [city, setCity] = useState(pick("city", cityOptions));
   const vehicleClass = fleet.find((v) => v.name === vehicle);
@@ -39,6 +40,7 @@ export function QuoteForm() {
 
   const occasionOther = useRef<HTMLInputElement>(null);
   const vehicleOther = useRef<HTMLInputElement>(null);
+  const carOther = useRef<HTMLInputElement>(null);
   const cityOther = useRef<HTMLInputElement>(null);
   const justPicked = useRef("");
 
@@ -78,7 +80,7 @@ export function QuoteForm() {
                   line("Phone", f.get("phone")),
                   line("Occasion", withOther(occasion, OTHER_OCCASION, "occasionOther")),
                   line("Vehicle", withOther(vehicle, OTHER_VEHICLE, "vehicleOther")),
-                  line("Exact vehicle", chosenCar ? carName(chosenCar) : ""),
+                  line("Exact vehicle", chosenCar ? carName(chosenCar) : car === OTHER_CAR ? f.get("carOther") || OTHER_CAR : ""),
                   line("City", withOther(city, otherCity, "cityOther")),
                   line("Date", f.get("date")),
                   line("Notes", f.get("notes")),
@@ -157,7 +159,7 @@ export function QuoteForm() {
                 value={car}
                 onValueChange={(v) => {
                   const picked = cars.find((c) => c.slug === v);
-                  setCar(picked ? v : "");
+                  choose(setCar, picked || v === OTHER_CAR ? v : "");
                   // Picking a car fills in its class when none (or "Not sure") was chosen.
                   const cls = picked && fleet.find((f) => f.slug === picked.fleetClass);
                   if (cls && (vehicle === "" || vehicle === NOT_SURE)) setVehicle(cls.name);
@@ -166,15 +168,24 @@ export function QuoteForm() {
                 <SelectTrigger id="q-car" tone="dark">
                   <SelectValue placeholder={ANY_CAR} />
                 </SelectTrigger>
-                <SelectContent>
+                <SelectContent onCloseAutoFocus={(e) => focusOther(e, OTHER_CAR, carOther)}>
                   <SelectItem value={ANY_CAR}>{ANY_CAR}</SelectItem>
                   {carOptions.map((c) => (
                     <SelectItem key={c.slug} value={c.slug}>
                       {carName(c)}
                     </SelectItem>
                   ))}
+                  <SelectItem value={OTHER_CAR}>{OTHER_CAR}</SelectItem>
                 </SelectContent>
               </Select>
+              <OtherField
+                show={car === OTHER_CAR}
+                inputRef={carOther}
+                id="q-car-other"
+                name="carOther"
+                label="Make, model, colour or year"
+                className={inputClass}
+              />
             </DarkField>
             <DarkField label="City" id="q-city">
               <Select value={city} onValueChange={(v) => choose(setCity, v)} name="city">
