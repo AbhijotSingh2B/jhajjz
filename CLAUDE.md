@@ -32,9 +32,13 @@ before pushing, and merge (never force-push) if someone else's commit arrives.
 ## Working in the Claude cloud sandbox
 
 - Network: since 2026-10-17 jhajjz.in, static.wixstatic.com, carwale/aeplcdn and cardekho load (Nirmal opened the
-  environment's network). `vercel.app` untested. Next's image optimizer still fails locally (it does its own DNS
-  lookup, ENOTFOUND), so in Playwright fetch the originals yourself, run with `NODE_USE_ENV_PROXY=1`:
-  `page.route(/_next\/image\?url=https/, async r => { const res = await fetch(new URL(r.request().url()).searchParams.get('url')); r.fulfill({ status: res.status, contentType: res.headers.get('content-type'), body: Buffer.from(await res.arrayBuffer()) }) })`.
+  environment's network). `vercel.app` untested. Images are `unoptimized` (no `/_next/image`), so photos load
+  straight from their hosts in Playwright too; no stand-in needed.
+- **Images: no Vercel image optimization or caching (Nirmal).** `images.unoptimized: true` in next.config.ts, so every
+  photo is downloaded as-is from its URL. Size and format therefore come from the URL: Wix photos use `.../photo.webp`
+  at 1600px (Wix converts), the hero is WebP on the page (`heroPhoto`, `heroThumb`) and JPEG only as the sharing
+  image (`heroImage`). Keep new photos sized this way; don't turn optimization back on. The privacy policy says photos
+  load from the service that stores them.
 - Playwright: `require('/opt/node22/lib/node_modules/playwright')`; Chromium only (no WebKit, so iPhone Safari
   behaviour can't be reproduced — ask Nirmal to check on his phone). Don't run `playwright install`.
 - Verify against a production build (`npm run build && npx next start -p 3001`), not a long-running `next dev`:
@@ -136,10 +140,10 @@ The v0 reference design (`redesign-jhajjz-in.zip`) got several facts wrong — n
       **Photos for the 6 newer car pages (2026-10-17):** jhajjz.in has the client's own photos of the S-Class (black,
       W223), two white Range Rovers (older L405 and current L460 "Jhajj'z Limos"; confirm which is the Autobiography)
       and the GLS; those pages use them. GLE, Land Cruiser and black Fortuner have no clear photo there, so they show
-      **placeholder** studio shots with no background (Nirmal prefers those): CarDekho GLE, CarWale Land Cruiser and
-      Fortuner, flagged `placeholder: true` + `cutout: true` (shown whole on sand with multiply blending; `backdrop`
-      brightens a grey studio backdrop away). Skipped CarWale's transparent PNGs that carry a "carwale" badge on the
-      bumper. Placeholders stay out of Open Graph and JSON-LD; remove before launch (Launch checklist). They're
+      **placeholder** CarWale studio shots with no background (Nirmal prefers these, e.g. the transparent
+      `...-three-quarter-N.png` cut-outs; the small "carwale" badge on some bumpers is fine with him), flagged
+      `placeholder: true` + `cutout: true` (shown whole on sand with multiply blending). The Fortuner is a white-
+      background studio JPEG because the transparent one is dark blue, not black. Placeholders stay out of Open Graph and JSON-LD; remove before launch (Launch checklist). They're
       CarWale/CarDekho/maker copyright and jhajjz.vercel.app is public (only noindex).
       **More cars in jhajjz.in's photos, not on the new site** (identified by eye; client must confirm they're in the
       fleet before adding pages): Mercedes-Maybach S-Class, Mercedes G-Class (black and white), Mercedes-Maybach GLS
@@ -169,7 +173,7 @@ The v0 reference design (`redesign-jhajjz-in.zip`) got several facts wrong — n
 ## Launch checklist
 
 - [ ] **Remove placeholder photos**: every car photo with `placeholder: true` in lib/site.ts (search `PLACEHOLDER`),
-      and the `imgd.aeplcdn.com` and `stimg.cardekho.com` entries in next.config.ts. Replace with the client's own photos, or leave `photos: []`.
+      and the `carwale` helper in lib/site.ts. Replace with the client's own photos, or leave `photos: []`.
 - [ ] SEO steps under "SEO at launch" above.
 
 ## Ideas to replace icon-in-box design (agreed direction, not built yet)
@@ -199,6 +203,11 @@ pin for the office. Needs the office's exact coordinates (client, or Google Maps
 (an embed loads Google cookies, so the privacy policy would need a line). Still ask the client for photos and logo.
 
 ## Changelog
+
+- 2026-10-17 — No Vercel image optimization or caching: `images.unoptimized: true`; photos load straight from Wix /
+  CarWale. Wix photos now WebP via their URLs (about 45% smaller); hero WebP on the page, JPEG for link previews.
+  Privacy policy line updated (photos load from the service that stores them). GLE placeholder is now CarWale's
+  transparent cut-out.
 
 - 2026-10-17 — Real Jhajj'z photos (from jhajjz.in) on the S-Class, Range Rover Autobiography and GLS pages, replacing
   CarWale placeholders. GLE, Land Cruiser and Fortuner placeholders swapped for no-background studio shots (`cutout`),
