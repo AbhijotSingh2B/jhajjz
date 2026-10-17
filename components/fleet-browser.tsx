@@ -4,17 +4,38 @@ import { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { AnimatePresence, motion } from "motion/react";
+import { Search } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { fleet, fleetGroups, type FleetGroup } from "@/lib/site";
+import { contact, fleet, fleetGroups, type FleetGroup } from "@/lib/site";
 
 const ease = [0.2, 0.7, 0.2, 1] as const;
 
 export function FleetBrowser() {
   const [filter, setFilter] = useState<"all" | FleetGroup>("all");
-  const shown = fleet.filter((v) => filter === "all" || v.group === filter);
+  const [query, setQuery] = useState("");
+  const terms = query.toLowerCase().split(/\s+/).filter(Boolean);
+  const shown = fleet.filter(
+    (v) =>
+      (filter === "all" || v.group === filter) &&
+      terms.every((t) => `${v.name} ${v.text}`.toLowerCase().includes(t)),
+  );
 
   return (
     <>
+      <div className="relative mb-6 max-w-[480px]">
+        <label htmlFor="fleet-search" className="sr-only">
+          Search the fleet
+        </label>
+        <Search aria-hidden="true" className="pointer-events-none absolute top-1/2 left-4 size-4 -translate-y-1/2 text-muted" />
+        <input
+          id="fleet-search"
+          type="search"
+          value={query}
+          onChange={(e) => setQuery(e.target.value)}
+          placeholder="Search by brand or type, e.g. Rolls-Royce"
+          className="h-12 w-full border border-line bg-white pr-4 pl-11 text-base text-ink outline-none transition-colors hover:border-ink/40 focus:border-ink"
+        />
+      </div>
       <div role="tablist" aria-label="Filter the fleet" className="flex flex-wrap gap-2">
         {fleetGroups.map((g) => {
           const active = g.id === filter;
@@ -43,6 +64,9 @@ export function FleetBrowser() {
         })}
       </div>
 
+      <p className="sr-only" role="status">
+        {shown.length} {shown.length === 1 ? "vehicle" : "vehicles"} shown
+      </p>
       <motion.div layout className="mt-10 grid grid-cols-[repeat(auto-fill,minmax(320px,1fr))] gap-x-6 gap-y-10">
         <AnimatePresence mode="popLayout">
           {shown.map((v, i) => (
@@ -78,6 +102,35 @@ export function FleetBrowser() {
           ))}
         </AnimatePresence>
       </motion.div>
+      {shown.length === 0 && (
+        <div className="mt-10 max-w-[560px]">
+          <h2 className="font-serif text-[28px] leading-tight">Nothing matches &ldquo;{query.trim()}&rdquo;</h2>
+          <p className="mt-3 text-[17px] text-muted">
+            This page only shows our featured cars. Talk to us about the car you want and we&apos;ll tell you what we can
+            arrange.
+          </p>
+          <div className="mt-6 flex flex-wrap gap-3">
+            <Link
+              href={`/contact?occasion=Other&notes=${encodeURIComponent(query.trim())}`}
+              className="inline-flex min-h-11 items-center bg-ink px-6 text-[15px] font-semibold text-cream"
+            >
+              Ask about this car
+            </Link>
+            <a href={contact.whatsapp} className="inline-flex min-h-11 items-center px-2 text-[15px] font-semibold underline underline-offset-[6px]">
+              WhatsApp us
+            </a>
+          </div>
+        </div>
+      )}
+      {shown.length > 0 && (
+        <p className="mt-12 max-w-[560px] text-[15px] text-muted">
+          These are our featured cars. Looking for something else? Talk to us and we&apos;ll tell you what we can
+          arrange.{" "}
+          <Link href="/contact" className="font-semibold text-ink underline underline-offset-[6px]">
+            Talk to us
+          </Link>
+        </p>
+      )}
     </>
   );
 }
