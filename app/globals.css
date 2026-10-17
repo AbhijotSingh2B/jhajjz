@@ -44,7 +44,10 @@
   body {
     overscroll-behavior-x: none;
   }
+  /* Ink on html shows when a phone bounces past the top or bottom, matching the dark header and footer
+     instead of a pale strip. Body keeps the paper background for the page itself. */
   html {
+    background: var(--color-ink);
     scroll-behavior: smooth;
     -webkit-tap-highlight-color: transparent;
   }
