@@ -16,7 +16,7 @@ const OTHER_OCCASION = "Other";
 /**
  * Quote request form. Pre-fills from the booking bar's query params.
  * Submitting opens the WhatsApp popup with the details already written, so the
- * visitor picks a number and sends them. Nothing is stored on a server.
+ * visitor sends them in the chat. Nothing is stored on a server.
  */
 export function QuoteForm() {
   const params = useSearchParams();
@@ -182,7 +182,7 @@ export function QuoteForm() {
               Request a quote
             </Button>
             <p className="col-span-full -mt-2 text-[14px] text-muted-dark">
-              Next you&apos;ll choose a number to send these details to on WhatsApp.
+              Next, your details open in a WhatsApp chat with us, ready to send.
             </p>
           </motion.form>
       <ContactDialog channel="whatsapp" open={open} onOpenChange={setOpen} message={message} />

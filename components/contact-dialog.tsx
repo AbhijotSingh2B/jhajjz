@@ -98,7 +98,7 @@ function ChannelView({ channel, message, onOther }: { channel: ContactChannel; m
   const content = {
     call: {
       title: "Call us",
-      text: "Either number reaches the Jhajj'z team.",
+      text: "Call and you'll reach the Jhajj'z team.",
       rows: contact.phones.map((p) => (
         <Row key={p.href} value={p.label} href={p.href} copy={p.label} action="Call" actionIcon={Phone} />
       )),
@@ -106,8 +106,8 @@ function ChannelView({ channel, message, onOther }: { channel: ContactChannel; m
     whatsapp: {
       title: "Talk on WhatsApp",
       text: message
-        ? "Your details are filled in. Pick a number to open the chat and send them."
-        : "Pick a number to open the chat. Send the date, city and occasion and we'll reply with a quote.",
+        ? "Your details are filled in. Open the chat and send them."
+        : "Open the chat and send the date, city and occasion, and we'll reply with a quote.",
       rows: contact.phones.map((p) => (
         <Row
           key={p.href}

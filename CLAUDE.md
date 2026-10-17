@@ -97,7 +97,9 @@ lib/site.ts                ALL client facts: contact, cities, services, fleet, p
 ## Client facts (from jhajjz.in — do not change without the client)
 
 - Founded **1998** in Chandigarh. Office: SSS-106, 107, PCA Stadium Road, Sector 63, Mohali (SAS Nagar), Punjab
-- Phones +91 98036 00001 (the Mohali office's number, per Nirmal), +91 98144 00019 · info.jhajjz@gmail.com · WhatsApp on the first number
+- Phone +91 98036 00001 (the Mohali office's number, per Nirmal) · info.jhajjz@gmail.com · WhatsApp on that number.
+  The second number on the old site, +91 98144 00019, is hidden (commented out in `lib/site.ts`) because it doesn't
+  seem to be Jhajj'z's — restore only if the client confirms
 - **Pan-India service** (confirmed by Nirmal); stations in **14 cities**: Chandigarh, New Delhi, Gurgaon, Jaipur, Udaipur, Mumbai, Chennai, Kolkata, Bhubaneswar,
   Dehradun, Mussoorie, Rishikesh, Haridwar, Ropar
 - Brands: Rolls-Royce, Bentley, Mercedes-Benz (and Maybach), BMW, Audi, Jaguar, Land Rover / Range Rover, Toyota; coaches
@@ -151,7 +153,7 @@ The v0 reference design (`redesign-jhajjz-in.zip`) got several facts wrong — n
   black GLE and the bulletproof GLE are the same car, the make of the vintage open tourers (`brand: ""`).
 - **Logo file** (favicon is a placeholder "Jhajj'z" wordmark in gold Caslon; regenerate all 5 icon files).
 - **Privacy policy**: 3 highlighted `[CONFIRM]` items. jhajjz.in's own policy is only Wix template text.
-- Confirm +91 98144 00019 is on WhatsApp (only the first number is confirmed).
+- Second number +91 98144 00019 is hidden until the client confirms it is theirs.
 - Office map on /contact: needs the office's exact pin; an embed would need a privacy-policy line (Google cookies).
 - Names/proof (hotels, airlines, events they've driven for; real client quotes) only with client permission.
 - Hero: client's Wix sharing image. `/public/rolls-royce-hero.webp` (v0 reference, probably AI-made) is the alternative.
