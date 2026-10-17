@@ -53,7 +53,10 @@ export default function Home() {
             <div className="relative mx-auto mt-auto w-full max-w-[1200px] px-6 pt-36 pb-16 md:pb-20">
               <Enter delay={0.15}>
                 <h1 className="max-w-[720px] font-serif text-[clamp(38px,4.8vw,60px)] leading-[1.1] tracking-[-0.01em]">
-                  Luxury cars and coaches, chauffeur-driven since 1998.
+                  {/* nowrap keeps the hyphenated words from splitting across lines */}
+                  From a <span className="whitespace-nowrap">Rolls-Royce</span> to a Volvo coach,{" "}
+                  <span className="whitespace-nowrap">chauffeur-driven</span>{" "}
+                  <span className="whitespace-nowrap">since 1998.</span>
                 </h1>
               </Enter>
               <Enter delay={0.3}>
