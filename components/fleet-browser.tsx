@@ -86,7 +86,7 @@ export function FleetBrowser() {
                   fill
                   priority={i < 3}
                   sizes="(max-width: 768px) 100vw, 400px"
-                  className="object-cover saturate-[0.85] transition-[transform,filter] duration-700 ease-out group-hover:scale-[1.04] group-hover:saturate-100"
+                  className="object-cover transition-transform duration-700 ease-out group-hover:scale-[1.03]"
                 />
               </div>
               <h2 className="mt-4 font-serif text-[28px] leading-tight">{v.name}</h2>

@@ -73,7 +73,7 @@ export default function Home() {
           <section id="fleet" className="py-[72px] md:py-28">
             <div className="mx-auto max-w-[1200px] px-6">
               <Reveal className="mb-10 flex flex-wrap items-end justify-between gap-4">
-                <h2 className="font-serif text-[clamp(32px,4vw,48px)] leading-[1.1] tracking-[-0.01em]">Our fleet</h2>
+                <h2 className="font-serif text-[clamp(32px,4vw,48px)] leading-[1.1] tracking-[-0.01em]">The cars and coaches we run</h2>
                 <Link href="/fleet" className="group inline-flex min-h-11 items-center gap-2 font-medium text-gold-deep">
                   See all vehicles
                   <ArrowRight className="size-4 transition-transform duration-300 group-hover:translate-x-1" aria-hidden="true" />
@@ -93,7 +93,7 @@ export default function Home() {
                           alt={v.imageAlt}
                           fill
                           sizes={i === 0 ? "(max-width: 768px) 85vw, 800px" : "(max-width: 768px) 85vw, 400px"}
-                          className="object-cover saturate-[0.85] transition-[transform,filter] duration-700 ease-out group-hover:scale-[1.04] group-hover:saturate-100"
+                          className="object-cover"
                         />
                       </div>
                       <div>
@@ -108,45 +108,50 @@ export default function Home() {
           </section>
 
           {/* Weddings */}
-          <section id="weddings" className="scroll-mt-16 bg-ink py-[72px] text-cream md:py-28">
-            <div className="mx-auto flex max-w-[1200px] flex-wrap items-center gap-x-16 gap-y-12 px-6">
-              <Reveal className="relative aspect-[4/5] max-h-[600px] min-w-0 flex-[1_1_460px] overflow-hidden bg-ink-soft">
-                <Image
-                  src={fleet.find((v) => v.slug === "wedding-cars")!.image}
-                  alt="Decorated wedding car from the Jhajj'z fleet"
-                  fill
-                  sizes="(max-width: 768px) 100vw, 560px"
-                  className="object-cover"
-                />
-              </Reveal>
-              <Reveal delay={0.1} className="min-w-0 flex-[1_1_400px]">
-                <h2 className="font-serif text-[clamp(32px,4vw,48px)] leading-[1.1] tracking-[-0.01em]">Wedding cars</h2>
-                <p className="mt-5 max-w-[480px] text-[17px] text-[#cfcac0]">
-                  We&apos;ve done wedding cars for over 25 years. Pick a car for the couple, cars for family, and coaches
-                  for the baraat and guests. We handle decoration, timings and chauffeurs on the day.
-                </p>
-                <Button asChild className="mt-8">
-                  <Link href="/contact?occasion=Wedding">Plan wedding cars</Link>
-                </Button>
-              </Reveal>
-            </div>
+          <section id="weddings" className="relative isolate flex min-h-[560px] scroll-mt-16 items-end overflow-hidden bg-ink text-cream md:min-h-[640px]">
+            <Image
+              src={fleet.find((v) => v.slug === "wedding-cars")!.image}
+              alt="Decorated wedding car from the Jhajj'z fleet"
+              fill
+              sizes="100vw"
+              className="-z-20 object-cover object-center"
+            />
+            <div
+              aria-hidden="true"
+              className="absolute inset-0 -z-10 bg-[linear-gradient(0deg,rgba(10,10,9,0.88)_0%,rgba(10,10,9,0.55)_45%,rgba(10,10,9,0.05)_100%)]"
+            />
+            <Reveal className="mx-auto w-full max-w-[1200px] px-6 py-[72px] md:py-20">
+              <h2 className="max-w-[640px] font-serif text-[clamp(34px,4.6vw,56px)] leading-[1.08] tracking-[-0.01em]">
+                Cars for your wedding
+              </h2>
+              <p className="mt-5 max-w-[520px] text-[17px] text-[#e4dfd5]">
+                We&apos;ve done wedding cars for over 25 years. Pick a car for the couple, cars for family, and coaches
+                for the baraat and guests. We handle decoration, timings and chauffeurs on the day.
+              </p>
+              <Button asChild className="mt-8">
+                <Link href="/contact?occasion=Wedding">Plan wedding cars</Link>
+              </Button>
+            </Reveal>
           </section>
 
           {/* Services */}
           <section id="services" className="scroll-mt-16 py-[72px] md:py-28">
-            <div className="mx-auto max-w-[1200px] px-6">
+            <div className="mx-auto grid max-w-[1200px] gap-x-16 gap-y-10 px-6 md:grid-cols-[minmax(0,5fr)_minmax(0,7fr)]">
               <Reveal>
-                <h2 className="mb-10 font-serif text-[clamp(32px,4vw,48px)] leading-[1.1] tracking-[-0.01em]">What we do</h2>
+                <h2 className="font-serif text-[clamp(32px,4vw,48px)] leading-[1.1] tracking-[-0.01em]">Who we drive for</h2>
+                <p className="mt-5 max-w-[360px] text-[17px] text-muted">
+                  Families, companies, hotels, airlines and delegations. If yours isn&apos;t listed, ask us.
+                </p>
               </Reveal>
-              <Stagger className="grid gap-x-12 gap-y-12 md:grid-cols-3">
+              <Stagger className="flex flex-col gap-10">
                 {serviceGroups.map((g) => (
                   <StaggerItem key={g.title}>
-                    <h3 className="border-b border-ink/80 pb-3 font-serif text-2xl">{g.title}</h3>
-                    <ul>
+                    <h3 className="font-serif text-2xl">{g.title}</h3>
+                    <ul className="mt-3 grid gap-x-8 gap-y-3 sm:grid-cols-2">
                       {g.items.map((s) => (
-                        <li key={s.title} className="border-b border-line py-4">
-                          <h4 className="text-[17px] font-semibold">{s.title}</h4>
-                          <p className="mt-1 text-[15px] text-muted">{s.text}</p>
+                        <li key={s.title} className="text-[15px] text-muted">
+                          <span className="block text-[17px] font-semibold text-ink">{s.title}</span>
+                          {s.text}
                         </li>
                       ))}
                     </ul>
@@ -160,7 +165,7 @@ export default function Home() {
           <section id="about" className="scroll-mt-16 bg-sand py-[72px] md:py-28">
             <div className="mx-auto flex max-w-[1200px] flex-wrap gap-x-16 gap-y-12 px-6">
               <Reveal className="min-w-0 flex-[1_1_440px]">
-                <h2 className="font-serif text-[clamp(32px,4vw,48px)] leading-[1.1] tracking-[-0.01em]">About Jhajj&apos;z</h2>
+                <h2 className="font-serif text-[clamp(32px,4vw,48px)] leading-[1.1] tracking-[-0.01em]">Chandigarh, since 1998</h2>
                 <p className="mt-5 max-w-[520px] text-[17px] text-[#45423c]">
                   We started in Chandigarh in 1998. Today we run luxury cars, SUVs, coaches and mini vans across India,
                   from stations with trained chauffeurs and a station manager you can call directly.
