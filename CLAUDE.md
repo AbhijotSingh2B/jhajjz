@@ -115,8 +115,9 @@ The v0 reference design (`redesign-jhajjz-in.zip`) got several facts wrong — n
 
 ## Changelog
 
-- 2026-10-17 — "Who we drive for" as three equal-height cards: gold-on-ink icon, services with hairlines, and an
-  "Ask about…" link at the bottom that pre-selects the occasion on /contact. Subtle lift on hover.
+- 2026-10-17 — "Who we drive for" laid out like a printed rate card: one row per group (name + "Ask about…" link
+  left, services in two columns right), ink rules between rows. Replaced a three-card version with icons in
+  squares, which Nirmal rightly flagged as AI/template-looking — avoid icon-in-square feature cards.
 
 - 2026-10-17 — SEO: keyword titles/descriptions per page, canonicals to www.jhajjz.in, Open Graph/Twitter cards,
   JSON-LD (AutoRental + WebSite + breadcrumbs), sitemap, robots, web manifest, theme colour, noindex on previews

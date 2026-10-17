@@ -1,6 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
-import { ArrowRight, Briefcase, CarFront, Gem } from "lucide-react";
+import { ArrowRight } from "lucide-react";
 import { SiteHeader } from "@/components/site-header";
 import { SiteFooter } from "@/components/site-footer";
 import { BookingBar } from "@/components/booking-bar";
@@ -13,11 +13,11 @@ import { PageTransition } from "@/components/page-transition";
 const preview = ["luxury-cars", "wedding-cars", "suvs", "vintage-cars", "luxury-coaches", "mini-vans"]
   .map((slug) => fleet.find((v) => v.slug === slug)!);
 
-// Per-group icon and the quote-form link each card ends with (occasion names match lib/site.ts `occasions`).
-const groupExtras: Record<string, { icon: typeof Gem; cta: string; href: string }> = {
-  "Weddings & events": { icon: Gem, cta: "Ask about wedding cars", href: "/contact?occasion=Wedding" },
-  "Corporate & VIP": { icon: Briefcase, cta: "Ask about corporate travel", href: "/contact?occasion=Corporate%20%2F%20VIP" },
-  "Personal travel": { icon: CarFront, cta: "Book a chauffeur", href: "/contact" },
+// The quote-form link under each group name (occasion names match lib/site.ts `occasions`).
+const groupLinks: Record<string, { label: string; href: string }> = {
+  "Weddings & events": { label: "Ask about wedding cars", href: "/contact?occasion=Wedding" },
+  "Corporate & VIP": { label: "Ask about corporate travel", href: "/contact?occasion=Corporate%20%2F%20VIP" },
+  "Personal travel": { label: "Book a chauffeur", href: "/contact" },
 };
 
 export default function Home() {
@@ -149,33 +149,24 @@ export default function Home() {
                   Families, companies, hotels, airlines and delegations. If yours isn&apos;t listed, ask us.
                 </p>
               </Reveal>
-              {/* Three equal-height cards; the link sits at the bottom of each so they line up. */}
-              <Stagger className="mt-12 grid gap-4 md:grid-cols-3 md:gap-6">
+              {/* Laid out like a printed rate card: one row per group, name and link left, services right. */}
+              <Stagger className="mt-12 border-b border-ink/80">
                 {serviceGroups.map((g) => {
-                  const extra = groupExtras[g.title];
-                  const Icon = extra?.icon ?? CarFront;
+                  const link = groupLinks[g.title];
                   return (
-                    <StaggerItem key={g.title} className="h-full">
-                      <div className="group flex h-full flex-col border border-line bg-cream p-7 transition-[border-color,box-shadow,transform] duration-500 ease-out hover:-translate-y-1 hover:border-ink/25 hover:shadow-[0_24px_48px_-28px_rgba(21,21,20,0.35)] md:p-8">
-                        <span className="flex size-12 items-center justify-center bg-ink text-gold">
-                          <Icon className="size-5" aria-hidden="true" />
-                        </span>
-                        <h3 className="mt-6 font-serif text-[28px] leading-tight">{g.title}</h3>
-                        <ul className="mt-5 border-t border-line">
-                          {g.items.map((s) => (
-                            <li key={s.title} className="border-b border-line py-3.5">
-                              <span className="block text-[16px] font-semibold">{s.title}</span>
-                              <span className="mt-0.5 block text-[15px] text-muted">{s.text}</span>
-                            </li>
-                          ))}
-                        </ul>
-                        {extra && (
+                    <StaggerItem
+                      key={g.title}
+                      className="grid gap-x-16 gap-y-5 border-t border-ink/80 py-8 md:grid-cols-[minmax(0,4fr)_minmax(0,8fr)] md:py-10"
+                    >
+                      <div>
+                        <h3 className="font-serif text-[28px] leading-tight md:text-[32px]">{g.title}</h3>
+                        {link && (
                           <Link
-                            href={extra.href}
-                            className="mt-auto inline-flex min-h-11 items-center gap-2 pt-6 text-[15px] font-semibold text-gold-deep"
+                            href={link.href}
+                            className="group mt-3 inline-flex min-h-11 items-center gap-2 text-[15px] font-medium text-gold-deep"
                           >
-                            <span className="underline decoration-transparent underline-offset-[5px] transition-colors duration-300 group-hover:decoration-gold-deep">
-                              {extra.cta}
+                            <span className="underline decoration-gold-deep/30 underline-offset-[5px] transition-colors duration-300 group-hover:decoration-gold-deep">
+                              {link.label}
                             </span>
                             <ArrowRight
                               className="size-4 transition-transform duration-300 group-hover:translate-x-1"
@@ -184,6 +175,14 @@ export default function Home() {
                           </Link>
                         )}
                       </div>
+                      <ul className="grid gap-x-10 gap-y-5 sm:grid-cols-2 md:pt-2">
+                        {g.items.map((s) => (
+                          <li key={s.title}>
+                            <span className="block text-[16px] font-semibold">{s.title}</span>
+                            <span className="mt-0.5 block text-[15px] text-muted">{s.text}</span>
+                          </li>
+                        ))}
+                      </ul>
                     </StaggerItem>
                   );
                 })}
