@@ -73,6 +73,8 @@ app/
   privacy-policy/page.tsx  Drafted policy; 3 highlighted [CONFIRM] items for the client
   not-found.tsx            Branded 404
 components/
+  logo.tsx                 JJ monogram (two Caslon Js sharing one top bar) + "Jhajj'z"; `animated` = header opening
+                           (bar draws, Js run down, name fades in; CSS keyframes in globals.css, once per visit)
   site-header.tsx          Fixed header (Home, Fleet, Weddings, Services, About, Contact); transparent over the home hero until scroll; Fleet mega-menu; mobile sheet
   site-footer.tsx          Also renders the phone-only sticky Call / WhatsApp bar
   booking-bar.tsx          "Start a quote": occasion / city / date (all start empty) → pushes to /contact?… as query params
@@ -90,7 +92,7 @@ components/
   ui/                      button, select, navigation-menu, sheet, dialog (bottom sheet on phones)
 proxy.ts                   Adds `X-Robots-Tag: noindex` on every host except www.jhajjz.in / jhajjz.in (previews)
 app/sitemap.ts, robots.ts, manifest.ts   SEO files; all URLs use `siteUrl` from lib/site.ts
-app/icon.svg, favicon.ico, apple-icon.png, public/icon-192/512.png   Placeholder "Jhajj'z" wordmark favicon
+app/icon.svg, favicon.ico, apple-icon.png, public/icon-192/512.png   JJ monogram on ink (rendered from icon.svg)
 components/structured-data.tsx   Schema.org JSON-LD (AutoRental business, WebSite, breadcrumbs) from lib/site.ts
 lib/seo.ts                 `openGraphBase`: spread into every page's openGraph (Next doesn't deep-merge it)
 lib/india-map.ts           Map path + city positions (generated with mapshaper; source and method in the file header)
@@ -155,7 +157,8 @@ The v0 reference design (`redesign-jhajjz-in.zip`) got several facts wrong — n
   properly when the client signs up"). All identified by eye: confirm each is in the fleet, passengers for every car,
   the limousine is a Chrysler 300C, the Audi is an A3 Cabriolet, which Range Rover is the Autobiography, whether the
   black GLE and the bulletproof GLE are the same car, the make of the vintage open tourers (`brand: ""`).
-- **Logo file** (favicon is a placeholder "Jhajj'z" wordmark in gold Caslon; regenerate all 5 icon files).
+- **Logo**: JJ monogram made at Nirmal's request (components/logo.tsx, 2026-10-17); the client hasn't seen it yet.
+  If they send their own logo file, swap it there and regenerate all 5 icon files.
 - **Privacy policy**: 3 highlighted `[CONFIRM]` items. jhajjz.in's own policy is only Wix template text.
 - Second number +91 98144 00019 is hidden until the client confirms it is theirs.
 - Office map on /contact: needs the office's exact pin; an embed would need a privacy-policy line (Google cookies).

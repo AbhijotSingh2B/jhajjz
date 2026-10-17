@@ -18,6 +18,7 @@ import {
   NavigationMenuTrigger,
 } from "@/components/ui/navigation-menu";
 import { ContactDialog } from "@/components/contact-dialog";
+import { Logo } from "@/components/logo";
 import { Sheet, SheetContent, SheetDescription, SheetTitle, SheetTrigger, SheetClose } from "@/components/ui/sheet";
 
 const links = [
@@ -43,9 +44,17 @@ function scrollHomeToTop(e: MouseEvent<HTMLAnchorElement>) {
  * `overlay` = sits transparent on top of a hero photo until the visitor
  * scrolls, then turns solid. Other pages get the solid bar straight away.
  */
+/** Every page renders its own header, so this keeps the logo opening to the first page of a visit. */
+let logoIntroPlayed = false;
+
 export function SiteHeader({ overlay = false }: { overlay?: boolean }) {
   const [scrolled, setScrolled] = useState(false);
+  const [logoIntro] = useState(() => !logoIntroPlayed);
   const pathname = usePathname();
+
+  useEffect(() => {
+    logoIntroPlayed = true;
+  }, []);
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 40);
@@ -70,8 +79,13 @@ export function SiteHeader({ overlay = false }: { overlay?: boolean }) {
           solid ? "h-[72px]" : "h-[88px]",
         )}
       >
-        <Link href="/" onClick={scrollHomeToTop} className="font-serif text-[26px] leading-none tracking-tight">
-          Jhajj&apos;z
+        <Link
+          href="/"
+          onClick={scrollHomeToTop}
+          aria-label="Jhajj'z home"
+          className="font-serif text-[26px] leading-none tracking-tight"
+        >
+          <Logo animated={logoIntro} />
         </Link>
 
         <div className="hidden items-center gap-2 md:flex">

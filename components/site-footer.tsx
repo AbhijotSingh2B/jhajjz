@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { Logo } from "@/components/logo";
 import { Mail, MapPin, Phone } from "lucide-react";
 import {
   FacebookIcon,
@@ -30,8 +31,8 @@ export function SiteFooter() {
     <footer className="bg-ink-deep pb-[calc(56px+env(safe-area-inset-bottom))] text-[15px] text-on-dark md:pb-0">
       <div className="mx-auto grid max-w-[1200px] grid-cols-[repeat(auto-fit,minmax(220px,1fr))] gap-10 px-6 pt-16 pb-8">
         <div>
-          <Link href="/" className="font-serif text-2xl text-cream">
-            Jhajj&apos;z
+          <Link href="/" aria-label="Jhajj'z home" className="font-serif text-2xl text-cream">
+            <Logo markClassName="h-8" />
           </Link>
           <p className="mt-2 text-muted-dark">Luxury car and coach rental across India since {founded}.</p>
         </div>
