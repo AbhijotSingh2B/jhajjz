@@ -81,7 +81,6 @@ The v0 reference design (`redesign-jhajjz-in.zip`) got several facts wrong — n
       reference, probably AI-generated) is the alternative — swap `heroImage` in `lib/site.ts`.
 - [ ] **Quote form doesn't send anything yet** — only shows a thank-you state. Wire to email / WhatsApp /
       a form service (e.g. Netlify Forms, Resend, Formspree).
-- [ ] Seat counts for limousines, coaches and mini vans (`[SEATS]` in `lib/site.ts`)
 - [ ] Privacy policy text (copy from jhajjz.in/privacy-policy)
 - [ ] Favicon / logo — client has a logo on Wix; get the file
 - [ ] Deploy preview: Nirmal views the site at **https://jhajjz.vercel.app**. Claude's cloud sandbox can't load it
