@@ -81,6 +81,13 @@ The v0 reference design (`redesign-jhajjz-in.zip`) got several facts wrong — n
 - [ ] **Photos**: all fleet photos are hot-linked from Wix (`static.wixstatic.com`, allowed in
       `next.config.ts`). The image→category mapping in `lib/site.ts` was inferred from page order and
       **has not been visually checked**. Get originals from the client, put them in `/public`, fix the mapping.
+      **Photo pass (brief):** look at each real photo, identify the car, write the fleet entries and copy in
+      `lib/site.ts`, fix the photo→category mapping, write proper alt text. Anything that can't be told from the
+      photo is marked `[CONFIRM]` — never guess a model, year or spec. If jhajjz.in is reachable, do the privacy
+      policy text, logo file and real office list in the same pass.
+      **Prerequisite:** photos committed to `/public/fleet/`, OR the cloud environment allows
+      `static.wixstatic.com` + `jhajjz.in` + `www.jhajjz.in`. As of 2026-10-17 all three are blocked (proxy 403),
+      including for WebFetch.
 - [ ] **Hero**: currently the client's Wix sharing image. `/public/rolls-royce-hero.webp` (from the v0
       reference, probably AI-generated) is the alternative — swap `heroImage` in `lib/site.ts`.
 - [ ] **Quote form** opens the WhatsApp popup (`ContactDialog`) with the details prefilled; nothing is stored
