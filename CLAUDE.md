@@ -77,6 +77,10 @@ components/
                            `LogoMark intro` = header opening (Nirmal's idea): "Jhajj'z" with a gold J; "'z" fades,
                            "haj" slides behind the J's stem (clipped), the last j turns gold and becomes the second J. Outlines from the font, CSS
                            keyframes in globals.css, first page of a visit only; header shows the monogram only.
+  splash.tsx               Entry screen (Nirmal): ink screen, "Jhajj'z" turns into the monogram, which flies to the
+                           header logo. 3–4s (leaves once the page has loaded, never before 3s or after 4s). Once per
+                           tab (sessionStorage), decided by a script in layout.tsx <head>; skipped for reduced motion;
+                           CSS hides it at 4s if JavaScript never runs.
   site-header.tsx          Fixed header (Home, Fleet, Weddings, Services, About, Contact); transparent over the home hero until scroll; Fleet mega-menu; mobile sheet
   site-footer.tsx          Also renders the phone-only sticky Call / WhatsApp bar
   booking-bar.tsx          "Start a quote": occasion / city / date (all start empty) → pushes to /contact?… as query params

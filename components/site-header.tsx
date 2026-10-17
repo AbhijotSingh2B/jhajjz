@@ -83,7 +83,7 @@ export function SiteHeader({ overlay = false }: { overlay?: boolean }) {
           href="/"
           onClick={scrollHomeToTop}
           aria-label="Jhajj'z home"
-          className="flex h-11 items-center"
+          className="header-logo flex h-11 items-center"
         >
           <LogoMark intro={logoIntro} />
         </Link>

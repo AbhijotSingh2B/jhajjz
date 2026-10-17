@@ -1,3 +1,4 @@
+import type { CSSProperties } from "react";
 import { cn } from "@/lib/utils";
 
 /**
@@ -72,14 +73,22 @@ export function Logo({
  * monogram. CSS keyframes in globals.css, so it starts with the first paint; reduced motion shows the
  * monogram straight away.
  */
-export function LogoMark({ intro = false }: { intro?: boolean }) {
+export function LogoMark({
+  intro = false,
+  className = "h-10",
+  clipId = "logo-tuck",
+  centred = false,
+}: {
+  intro?: boolean;
+  className?: string;
+  /** Unique per page: the header and the entry screen (components/splash.tsx) both draw one. */
+  clipId?: string;
+  /** End with the monogram in the middle of the box instead of at its left edge (entry screen). */
+  centred?: boolean;
+}) {
   if (!intro) {
     return (
-      <svg
-        viewBox="0 0 497 1011"
-        aria-hidden="true"
-        className="h-10 w-auto fill-gold"
-      >
+      <svg viewBox="0 0 497 1011" aria-hidden="true" className={cn("w-auto fill-gold", className)}>
         <path d={J1} />
         <path d={J2} />
       </svg>
@@ -87,13 +96,18 @@ export function LogoMark({ intro = false }: { intro?: boolean }) {
   }
   // Wide enough for the name at text size (26px type in a 40px-high mark).
   return (
-    <svg viewBox="0 0 1460 1011" aria-hidden="true" className="logo-intro h-10 w-auto overflow-visible">
+    <svg
+      viewBox="0 0 1460 1011"
+      aria-hidden="true"
+      className={cn("logo-intro w-auto overflow-visible", className)}
+      style={centred ? ({ "--logo-end-x": "481px" } as CSSProperties) : undefined}
+    >
       <g className="logo-word">
         {/* "haj" slides left behind the J's stem: everything left of it is clipped away. */}
-        <clipPath id="logo-tuck">
+        <clipPath id={clipId}>
           <rect x="265" y="-500" width="3000" height="2000" />
         </clipPath>
-        <g clipPath="url(#logo-tuck)">
+        <g clipPath={`url(#${clipId})`}>
           {letters.slice(0, lastJ).map((l) => (
             <path key={l.x} className="logo-tuck fill-cream" d={l.d} />
           ))}

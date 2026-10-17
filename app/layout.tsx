@@ -1,6 +1,7 @@
 import type { Metadata, Viewport } from "next";
 import "./globals.css";
 import { MotionProvider } from "@/components/motion";
+import { Splash, splashScript } from "@/components/splash";
 import { BusinessStructuredData } from "@/components/structured-data";
 import { absoluteUrl, heroImage, siteName, siteUrl } from "@/lib/site";
 import { openGraphBase } from "@/lib/seo";
@@ -62,8 +63,13 @@ export const viewport: Viewport = {
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html lang="en-IN" data-scroll-behavior="smooth">
+    // The splash script sets a class on <html> before React loads, hence suppressHydrationWarning.
+    <html lang="en-IN" data-scroll-behavior="smooth" suppressHydrationWarning>
+      <head>
+        <script dangerouslySetInnerHTML={{ __html: splashScript }} />
+      </head>
       <body>
+        <Splash />
         <BusinessStructuredData />
         {/* iPhone Safari ignores overflow on html/body when you drag sideways, so the clip lives on a plain
             wrapper. `clip` (not `hidden`) keeps the fixed header and bottom bar pinned to the screen.

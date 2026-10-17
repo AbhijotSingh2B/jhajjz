@@ -121,6 +121,7 @@
 .logo-intro .logo-word {
   transform-box: view-box;
   transform-origin: 0 0;
+  transform: translateX(var(--logo-end-x, 0px));
   animation: logo-grow 850ms cubic-bezier(0.65, 0, 0.25, 1) 1250ms both;
 }
 .logo-intro .logo-tail {
@@ -145,7 +146,7 @@
 }
 @keyframes logo-grow {
   from {
-    transform: translate(0, 200px) scale(0.657);
+    transform: translate(0px, 200px) scale(0.657);
   }
 }
 @keyframes logo-tail {
@@ -203,5 +204,28 @@
 @media (prefers-reduced-motion: reduce) {
   .logo-intro * {
     animation: none !important;
+  }
+}
+
+/* Entry screen (components/splash.tsx). The script in app/layout.tsx puts `splash` on <html> when it will play
+   and `no-splash` when it won't (seen this visit, or reduced motion). Without JavaScript neither is set and
+   the screen fades by itself at 3.4s. */
+html.no-splash .splash-screen {
+  display: none;
+}
+html.splash {
+  overflow: hidden;
+}
+/* The header's own logo waits underneath until the entry screen's monogram has landed on it. */
+html.splash .header-logo {
+  visibility: hidden;
+}
+.splash-screen {
+  animation: splash-fallback 600ms ease 3400ms forwards;
+}
+@keyframes splash-fallback {
+  to {
+    opacity: 0;
+    visibility: hidden;
   }
 }
