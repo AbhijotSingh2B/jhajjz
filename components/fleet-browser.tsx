@@ -4,7 +4,7 @@ import { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { AnimatePresence, motion } from "motion/react";
-import { Search } from "lucide-react";
+import { Search, X } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { contact, fleet, fleetGroups, type FleetGroup } from "@/lib/site";
 
@@ -33,8 +33,18 @@ export function FleetBrowser() {
           value={query}
           onChange={(e) => setQuery(e.target.value)}
           placeholder="Search by brand or type, e.g. Rolls-Royce"
-          className="h-12 w-full border border-line bg-white pr-4 pl-11 text-base text-ink outline-none transition-colors hover:border-ink/40 focus:border-ink"
+          className="h-12 w-full border border-line bg-white pr-12 pl-11 text-base text-ink outline-none transition-colors hover:border-ink/40 focus:border-ink [&::-webkit-search-cancel-button]:appearance-none"
         />
+        {query && (
+          <button
+            type="button"
+            onClick={() => setQuery("")}
+            aria-label="Clear search"
+            className="absolute top-1/2 right-0.5 flex size-11 -translate-y-1/2 items-center justify-center text-muted transition-colors hover:text-ink"
+          >
+            <X className="size-4" aria-hidden="true" />
+          </button>
+        )}
       </div>
       <div role="tablist" aria-label="Filter the fleet" className="flex flex-wrap gap-2">
         {fleetGroups.map((g) => {

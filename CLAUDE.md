@@ -76,6 +76,9 @@ The v0 reference design (`redesign-jhajjz-in.zip`) got several facts wrong — n
   every heading, italic-gold second line in every headline, vertical "J / 1998" text, gold edge strips,
   ↗ arrows everywhere, 01–09 numbering, ALL-CAPS tracked buttons, slogan copy ("Quiet confidence",
   "The art of arrival"). Write plain, specific copy in the client's voice. Sentence-case buttons.
+  Also avoid (caught in a 2026-10-17 audit): icons inside coloured squares (feature cards, popup headers, option
+  lists), three-equal-cards feature grids, boxes with a gold left stripe, a → after every link (one per screen at
+  most), browser-default UI that clashes with the palette (e.g. the blue search clear ×).
 - Body text ≥15px (the reference used 9–11px). Touch targets ≥44px.
 - Animations: subtle and purposeful — fade/lift on scroll, staggered lists, animated dropdowns,
   hero slow zoom. Everything must respect `prefers-reduced-motion` (already wired).
@@ -114,6 +117,11 @@ The v0 reference design (`redesign-jhajjz-in.zip`) got several facts wrong — n
       `jhajjz-preview` also exists (empty). **Never touch the existing Vercel project "aethal".**
 
 ## Changelog
+
+- 2026-10-17 — AI-look audit of every page: contact popup header lost its icon square; "Other ways" list icons no
+  longer sit in squares; privacy "In short" is a plain lead paragraph (no gold-striped box); arrows removed from
+  the rate-card links; fleet search uses its own muted × instead of the browser's blue one; booking-bar
+  placeholders shortened to "Choose" so they don't truncate on phones.
 
 - 2026-10-17 — "Who we drive for" laid out like a printed rate card: one row per group (name + "Ask about…" link
   left, services in two columns right), ink rules between rows. Replaced a three-card version with icons in

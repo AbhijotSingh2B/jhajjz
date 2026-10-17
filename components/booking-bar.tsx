@@ -30,7 +30,7 @@ export function BookingBar() {
       <Field label="Occasion" id="bb-occasion">
         <Select value={occasion} onValueChange={setOccasion}>
           <SelectTrigger id="bb-occasion">
-            <SelectValue placeholder="Choose an occasion" />
+            <SelectValue placeholder="Choose" />
           </SelectTrigger>
           <SelectContent>
             {occasions.map((o) => (
@@ -44,7 +44,7 @@ export function BookingBar() {
       <Field label="City" id="bb-city">
         <Select value={city} onValueChange={setCity}>
           <SelectTrigger id="bb-city">
-            <SelectValue placeholder="Choose a city" />
+            <SelectValue placeholder="Choose" />
           </SelectTrigger>
           <SelectContent>
             {cityOptions.map((c) => (

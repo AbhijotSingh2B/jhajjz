@@ -16,7 +16,6 @@ type View = ContactChannel | "all";
 
 const defaultMessage = "Hello Jhajj'z, I'd like a quote.";
 type Icon = React.ComponentType<React.SVGProps<SVGSVGElement>>;
-const icons: Record<ContactChannel, Icon> = { call: Phone, whatsapp: WhatsAppIcon, email: Mail };
 
 /**
  * Wrap any button to open the contact popup on one channel:
@@ -138,7 +137,7 @@ function ChannelView({ channel, message, onOther }: { channel: ContactChannel; m
 
   return (
     <>
-      <Heading icon={icons[channel]} title={content.title} text={content.text} />
+      <Heading title={content.title} text={content.text} />
       <ul className="mt-6 border-t border-line">
         {content.rows.map((row, i) => (
           <motion.li
@@ -164,9 +163,7 @@ function AllOptions({ onPick, onBack }: { onPick: (v: ContactChannel) => void; o
     "group flex min-h-16 w-full items-center gap-4 px-2 py-3 text-left transition-colors duration-200 hover:bg-sand";
   const inner = (Icon: Icon, label: string, sub: string) => (
     <>
-      <span className="flex size-11 shrink-0 items-center justify-center bg-sand text-gold-deep transition-colors duration-200 group-hover:bg-paper">
-        <Icon className="size-[18px]" aria-hidden="true" />
-      </span>
+      <Icon className="size-[18px] shrink-0 text-gold-deep" aria-hidden="true" />
       <span className="min-w-0 flex-1">
         <span className="block text-[16px] font-semibold">{label}</span>
         <span className="block truncate text-[14px] text-muted">{sub}</span>
@@ -226,19 +223,9 @@ function AllOptions({ onPick, onBack }: { onPick: (v: ContactChannel) => void; o
   );
 }
 
-function Heading({ icon: Icon, title, text }: { icon?: Icon; title: string; text: string }) {
+function Heading({ title, text }: { title: string; text: string }) {
   return (
     <div className="pr-10">
-      {Icon && (
-        <motion.span
-          initial={{ scale: 0.6, opacity: 0 }}
-          animate={{ scale: 1, opacity: 1 }}
-          transition={{ type: "spring", stiffness: 420, damping: 24, delay: 0.05 }}
-          className="mb-5 flex size-12 items-center justify-center bg-ink text-gold"
-        >
-          <Icon className="size-5" aria-hidden="true" />
-        </motion.span>
-      )}
       <DialogTitle className="font-serif text-[32px] leading-[1.1]">{title}</DialogTitle>
       <DialogDescription className="mt-2 text-[15px] text-muted">{text}</DialogDescription>
     </div>

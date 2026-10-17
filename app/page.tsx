@@ -168,10 +168,6 @@ export default function Home() {
                             <span className="underline decoration-gold-deep/30 underline-offset-[5px] transition-colors duration-300 group-hover:decoration-gold-deep">
                               {link.label}
                             </span>
-                            <ArrowRight
-                              className="size-4 transition-transform duration-300 group-hover:translate-x-1"
-                              aria-hidden="true"
-                            />
                           </Link>
                         )}
                       </div>

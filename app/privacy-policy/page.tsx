@@ -114,13 +114,10 @@ export default function PrivacyPolicyPage() {
           <h1 className="font-serif text-[clamp(38px,4.8vw,56px)] leading-[1.08] tracking-[-0.01em]">Privacy policy</h1>
           <p className="mt-4 text-[15px] text-muted">Last updated {updated}</p>
 
-          <div className="mt-10 border-l-2 border-gold bg-sand px-6 py-5">
-            <p className="text-[17px] text-body">
-              <span className="font-semibold text-ink">In short:</span> this website doesn&apos;t use cookies or
-              tracking, and the quote form doesn&apos;t send anything until you send it yourself on WhatsApp or by
-              email.
-            </p>
-          </div>
+          <p className="mt-8 max-w-[640px] text-[19px] leading-relaxed text-ink">
+            In short: this website doesn&apos;t use cookies or tracking, and the quote form doesn&apos;t send anything
+            until you send it yourself on WhatsApp or by email.
+          </p>
 
           <div className="mt-12 flex flex-col gap-10">
             {sections.map((s) => (
