@@ -23,6 +23,10 @@ npm run dev     # http://localhost:3000
 npm run build
 ```
 
+## Git workflow
+
+Push straight to `main` (no feature branches or PRs) until the site launches to the client's customers.
+
 ## Structure
 
 ```
