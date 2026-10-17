@@ -173,6 +173,11 @@ pin for the office. Needs the office's exact coordinates (client, or Google Maps
 
 ## Changelog
 
+- 2026-10-17 — Map check: every dot re-projected from the DataMeet source and real city coordinates; all within
+  0.6 px (≈4 km) of where they should be. City dots gained a thin paper-coloured outline so close neighbours
+  (Delhi/Gurgaon, the four Uttarakhand towns) stay distinct instead of merging into a smudge. Chandigarh and
+  Ropar sit under the head-office marker at this scale; that's expected.
+
 - 2026-10-17 — Map: head-office dot placed at Mohali (Sector 63), not Chandigarh; caption "Head office, Mohali"
   with its number +91 98036 00001 as a call link.
 

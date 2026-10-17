@@ -26,7 +26,19 @@ export function IndiaMap({ className }: { className?: string }) {
           .filter((c) => cityPoints[c])
           .map((c) => {
             const [x, y] = cityPoints[c];
-            return <circle key={c} cx={x} cy={y} r={5.5} className="fill-gold-deep" />;
+            // The paper-coloured outline keeps neighbouring cities (Delhi/Gurgaon, the four Uttarakhand towns)
+            // reading as separate dots instead of merging into a smudge.
+            return (
+              <circle
+                key={c}
+                cx={x}
+                cy={y}
+                r={5.5}
+                className="fill-gold-deep stroke-paper"
+                strokeWidth={1}
+                vectorEffect="non-scaling-stroke"
+              />
+            );
           })}
         <circle cx={hx} cy={hy} r={11} className="fill-paper stroke-ink" strokeWidth={1.5} vectorEffect="non-scaling-stroke" />
         <circle cx={hx} cy={hy} r={6.5} className="fill-ink" />
