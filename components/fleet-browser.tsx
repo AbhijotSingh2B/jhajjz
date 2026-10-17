@@ -4,9 +4,10 @@ import { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { AnimatePresence, motion } from "motion/react";
-import { Search } from "lucide-react";
+import { Search, X } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { contact, fleet, fleetGroups, type FleetGroup } from "@/lib/site";
+import { carName, carsInClass as carsIn, contact, fleet, fleetGroups, inSentence, type FleetGroup } from "@/lib/site";
+import { Confirm } from "@/components/confirm";
 
 const ease = [0.2, 0.7, 0.2, 1] as const;
 
@@ -17,7 +18,7 @@ export function FleetBrowser() {
   const shown = fleet.filter(
     (v) =>
       (filter === "all" || v.group === filter) &&
-      terms.every((t) => `${v.name} ${v.text}`.toLowerCase().includes(t)),
+      terms.every((t) => `${v.name} ${v.text} ${carsIn(v.slug).map(carName).join(" ")}`.toLowerCase().includes(t)),
   );
 
   return (
@@ -33,8 +34,18 @@ export function FleetBrowser() {
           value={query}
           onChange={(e) => setQuery(e.target.value)}
           placeholder="Search by brand or type, e.g. Rolls-Royce"
-          className="h-12 w-full border border-line bg-white pr-4 pl-11 text-base text-ink outline-none transition-colors hover:border-ink/40 focus:border-ink"
+          className="h-12 w-full border border-line bg-white pr-12 pl-11 text-base text-ink outline-none transition-colors hover:border-ink/40 focus:border-ink [&::-webkit-search-cancel-button]:appearance-none"
         />
+        {query && (
+          <button
+            type="button"
+            onClick={() => setQuery("")}
+            aria-label="Clear search"
+            className="absolute top-1/2 right-0.5 flex size-11 -translate-y-1/2 items-center justify-center text-muted transition-colors hover:text-ink"
+          >
+            <X className="size-4" aria-hidden="true" />
+          </button>
+        )}
       </div>
       <div role="tablist" aria-label="Filter the fleet" className="flex flex-wrap gap-2">
         {fleetGroups.map((g) => {
@@ -79,24 +90,54 @@ export function FleetBrowser() {
               exit={{ opacity: 0, scale: 0.96, transition: { duration: 0.25 } }}
               className="group relative scroll-mt-28"
             >
-              <div className="relative aspect-[3/2] overflow-hidden bg-stone">
-                <Image
-                  src={v.image}
-                  alt={v.imageAlt}
-                  fill
-                  priority={i < 3}
-                  sizes="(max-width: 768px) 100vw, 400px"
-                  className="object-cover transition-transform duration-700 ease-out group-hover:scale-[1.03]"
-                />
+              <div className={`relative flex aspect-[3/2] items-center justify-center overflow-hidden ${v.imageCutout ? "bg-sand" : "bg-stone"}`}>
+                {v.image ? (
+                  <div className={`absolute inset-0 ${v.imageCutout ? "mix-blend-multiply" : ""}`} style={{ transform: v.imageZoom ? `scale(${v.imageZoom})` : undefined }}>
+                    <Image
+                      src={v.image}
+                      alt={v.imageAlt ?? v.name}
+                      fill
+                      priority={i < 3}
+                      sizes="(max-width: 768px) 100vw, 400px"
+                      className={`transition-transform duration-700 ease-out group-hover:scale-[1.03] ${v.imageCutout ? "object-contain p-5" : "object-cover"}`}
+                    />
+                  </div>
+                ) : (
+                  <span className="text-[15px]">
+                    <Confirm>photo</Confirm>
+                  </span>
+                )}
               </div>
               <h2 className="mt-4 font-serif text-[28px] leading-tight">{v.name}</h2>
               <p className="mt-1.5 text-[15px] text-muted">{v.text}</p>
+              {carsIn(v.slug).length > 0 && (
+                // Above the card-wide link (its ::after), so these stay clickable on their own.
+                <ul className="relative z-10 mt-1 flex flex-wrap gap-x-5">
+                  {carsIn(v.slug).map((c) => (
+                    <li key={c.slug}>
+                      <Link
+                        href={`/fleet/${c.slug}`}
+                        className="inline-flex min-h-11 items-center text-[15px] text-ink underline decoration-ink/30 underline-offset-[5px] transition-colors hover:decoration-ink"
+                      >
+                        {carName(c)}
+                      </Link>
+                    </li>
+                  ))}
+                </ul>
+              )}
               {/* The ::after stretches the link over the whole card, so the photo is clickable too. */}
+              {/* A class with cars opens its own page listing them; one without (coaches) goes to the quote form. */}
               <Link
-                href={`/contact?vehicle=${encodeURIComponent(v.name)}`}
+                href={carsIn(v.slug).length > 0 ? `/fleet/${v.slug}` : `/contact?vehicle=${encodeURIComponent(v.name)}`}
                 className="mt-3 inline-flex min-h-11 items-center text-[15px] font-medium text-gold-deep underline decoration-transparent underline-offset-[5px] transition-colors duration-300 group-hover:decoration-gold-deep after:absolute after:inset-0"
               >
-                Ask for a quote<span className="sr-only">: {v.name}</span>
+                {carsIn(v.slug).length > 0 ? (
+                  `See all ${inSentence(v.name)}`
+                ) : (
+                  <>
+                    Ask for a quote<span className="sr-only">: {v.name}</span>
+                  </>
+                )}
               </Link>
             </motion.article>
           ))}
@@ -117,7 +158,7 @@ export function FleetBrowser() {
               Ask about this car
             </Link>
             <a href={contact.whatsapp} className="inline-flex min-h-11 items-center px-2 text-[15px] font-semibold underline underline-offset-[6px]">
-              WhatsApp us
+              Talk to us on WhatsApp
             </a>
           </div>
         </div>

@@ -3,7 +3,8 @@
 import { useLayoutEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { AnimatePresence, motion } from "motion/react";
-import { ArrowLeft, Check, ChevronRight, Copy, FileText, Mail, MapPin, MessageCircle, Phone } from "lucide-react";
+import { ArrowLeft, Check, ChevronRight, Copy, FileText, Mail, MapPin, Phone } from "lucide-react";
+import { WhatsAppIcon } from "@/components/icons";
 import { contact, whatsappUrl } from "@/lib/site";
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogClose, DialogContent, DialogDescription, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
@@ -14,7 +15,7 @@ export type ContactChannel = "call" | "whatsapp" | "email";
 type View = ContactChannel | "all";
 
 const defaultMessage = "Hello Jhajj'z, I'd like a quote.";
-const icons = { call: Phone, whatsapp: MessageCircle, email: Mail };
+type Icon = React.ComponentType<React.SVGProps<SVGSVGElement>>;
 
 /**
  * Wrap any button to open the contact popup on one channel:
@@ -22,6 +23,7 @@ const icons = { call: Phone, whatsapp: MessageCircle, email: Mail };
  *   <ContactDialog channel="call"><button>Call us</button></ContactDialog>
  *
  * Each channel ends with "Other ways to reach us", which lists every option.
+ * `channel="all"` opens straight on that list (for general "Contact us" buttons).
  *
  * To open it from code (e.g. after a form submit) leave out the trigger and control it:
  *
@@ -36,7 +38,7 @@ export function ContactDialog({
   onOpenChange,
   message,
 }: {
-  channel: ContactChannel;
+  channel: View;
   children?: React.ReactNode;
   open?: boolean;
   onOpenChange?: (open: boolean) => void;
@@ -53,7 +55,7 @@ export function ContactDialog({
 }
 
 /** Mounted only while the dialog is open, so it starts on the requested channel every time. */
-function Panel({ channel, message }: { channel: ContactChannel; message?: string }) {
+function Panel({ channel, message }: { channel: View; message?: string }) {
   const [view, setView] = useState<View>(channel);
   // +1 when moving to the "all" list, -1 when coming back, so the slide direction matches.
   const [dir, setDir] = useState(1);
@@ -81,7 +83,8 @@ function Panel({ channel, message }: { channel: ContactChannel; message?: string
           className="px-6 pt-8 pb-6 sm:px-10 sm:pt-10 sm:pb-8"
         >
           {view === "all" ? (
-            <AllOptions onPick={go} onBack={() => go(channel)} />
+            // Opened on the list itself: nothing to go back to.
+            <AllOptions onPick={go} onBack={channel === "all" ? undefined : () => go(channel)} />
           ) : (
             <ChannelView channel={view} message={message} onOther={() => go("all")} />
           )}
@@ -101,7 +104,7 @@ function ChannelView({ channel, message, onOther }: { channel: ContactChannel; m
       )),
     },
     whatsapp: {
-      title: "WhatsApp us",
+      title: "Talk on WhatsApp",
       text: message
         ? "Your details are filled in. Open the chat and send them."
         : "Open the chat and send the date, city and occasion, and we'll reply with a quote.",
@@ -112,7 +115,7 @@ function ChannelView({ channel, message, onOther }: { channel: ContactChannel; m
           href={whatsappUrl(p.href, message ?? defaultMessage)}
           copy={p.label}
           action="Open chat"
-          actionIcon={MessageCircle}
+          actionIcon={WhatsAppIcon}
           external
         />
       )),
@@ -129,7 +132,6 @@ function ChannelView({ channel, message, onOther }: { channel: ContactChannel; m
           action="Write email"
           actionIcon={Mail}
           small
-          stack
         />,
       ],
     },
@@ -137,7 +139,7 @@ function ChannelView({ channel, message, onOther }: { channel: ContactChannel; m
 
   return (
     <>
-      <Heading icon={icons[channel]} title={content.title} text={content.text} />
+      <Heading title={content.title} text={content.text} />
       <ul className="mt-6 border-t border-line">
         {content.rows.map((row, i) => (
           <motion.li
@@ -151,21 +153,27 @@ function ChannelView({ channel, message, onOther }: { channel: ContactChannel; m
           </motion.li>
         ))}
       </ul>
-      <Button type="button" variant="outline" size="default" className="mt-8 w-full" onClick={onOther}>
+      <a
+        href={contact.mapsUrl}
+        target="_blank"
+        rel="noreferrer"
+        className="mt-2 inline-flex min-h-11 items-center text-[14px] text-muted underline-offset-4 transition-colors hover:text-ink hover:underline"
+      >
+        Office: {contact.address[0]}, Mohali
+      </a>
+      <Button type="button" variant="outline" size="default" className="mt-4 w-full" onClick={onOther}>
         Other ways to reach us
       </Button>
     </>
   );
 }
 
-function AllOptions({ onPick, onBack }: { onPick: (v: ContactChannel) => void; onBack: () => void }) {
+function AllOptions({ onPick, onBack }: { onPick: (v: ContactChannel) => void; onBack?: () => void }) {
   const itemClass =
     "group flex min-h-16 w-full items-center gap-4 px-2 py-3 text-left transition-colors duration-200 hover:bg-sand";
-  const inner = (Icon: typeof Phone, label: string, sub: string) => (
+  const inner = (Icon: Icon, label: string, sub: string) => (
     <>
-      <span className="flex size-11 shrink-0 items-center justify-center bg-sand text-gold-deep transition-colors duration-200 group-hover:bg-paper">
-        <Icon className="size-[18px]" aria-hidden="true" />
-      </span>
+      <Icon className="size-[18px] shrink-0 text-gold-deep" aria-hidden="true" />
       <span className="min-w-0 flex-1">
         <span className="block text-[16px] font-semibold">{label}</span>
         <span className="block truncate text-[14px] text-muted">{sub}</span>
@@ -182,7 +190,7 @@ function AllOptions({ onPick, onBack }: { onPick: (v: ContactChannel) => void; o
       {inner(Phone, "Call", contact.phones.map((p) => p.label).join(" · "))}
     </button>,
     <button key="wa" type="button" className={itemClass} onClick={() => onPick("whatsapp")}>
-      {inner(MessageCircle, "WhatsApp", contact.phones[0].label)}
+      {inner(WhatsAppIcon, "WhatsApp", contact.phones[0].label)}
     </button>,
     <button key="mail" type="button" className={itemClass} onClick={() => onPick("email")}>
       {inner(Mail, "Email", contact.email)}
@@ -213,31 +221,23 @@ function AllOptions({ onPick, onBack }: { onPick: (v: ContactChannel) => void; o
           </motion.li>
         ))}
       </ul>
-      <button
-        type="button"
-        onClick={onBack}
-        className="mt-6 inline-flex min-h-11 items-center gap-2 text-[15px] font-medium text-muted transition-colors hover:text-ink"
-      >
-        <ArrowLeft className="size-4" aria-hidden="true" />
-        Back
-      </button>
+      {onBack && (
+        <button
+          type="button"
+          onClick={onBack}
+          className="mt-6 inline-flex min-h-11 items-center gap-2 text-[15px] font-medium text-muted transition-colors hover:text-ink"
+        >
+          <ArrowLeft className="size-4" aria-hidden="true" />
+          Back
+        </button>
+      )}
     </>
   );
 }
 
-function Heading({ icon: Icon, title, text }: { icon?: typeof Phone; title: string; text: string }) {
+function Heading({ title, text }: { title: string; text: string }) {
   return (
     <div className="pr-10">
-      {Icon && (
-        <motion.span
-          initial={{ scale: 0.6, opacity: 0 }}
-          animate={{ scale: 1, opacity: 1 }}
-          transition={{ type: "spring", stiffness: 420, damping: 24, delay: 0.05 }}
-          className="mb-5 flex size-12 items-center justify-center bg-ink text-gold"
-        >
-          <Icon className="size-5" aria-hidden="true" />
-        </motion.span>
-      )}
       <DialogTitle className="font-serif text-[32px] leading-[1.1]">{title}</DialogTitle>
       <DialogDescription className="mt-2 text-[15px] text-muted">{text}</DialogDescription>
     </div>
@@ -252,21 +252,19 @@ function Row({
   actionIcon: ActionIcon,
   external = false,
   small = false,
-  stack = false,
 }: {
   value: string;
   href: string;
   copy: string;
   action: string;
-  actionIcon: typeof Phone;
+  actionIcon: Icon;
   external?: boolean;
   small?: boolean;
-  /** Single-row channels: on phones the action button takes the full width under the value. */
-  stack?: boolean;
 }) {
   const ext = external ? { target: "_blank", rel: "noreferrer" } : {};
   return (
-    <div className="flex flex-wrap items-center justify-between gap-x-4 gap-y-3 py-4">
+    // Phones: value on its own line, buttons in a full-width row under it, the same for every row.
+    <div className="flex flex-col gap-3 py-4 sm:flex-row sm:items-center sm:justify-between sm:gap-4">
       <a
         href={href}
         {...ext}
@@ -274,9 +272,9 @@ function Row({
       >
         {value}
       </a>
-      <div className={`flex shrink-0 items-center gap-2 ${stack ? "w-full sm:w-auto" : ""}`}>
+      <div className="flex shrink-0 items-center gap-2">
         <CopyButton value={copy} />
-        <Button asChild variant="ink" size="sm" className={`h-11 ${stack ? "flex-1 sm:flex-none" : ""}`}>
+        <Button asChild variant="ink" size="sm" className="h-11 flex-1 sm:flex-none">
           <a href={href} {...ext}>
             <ActionIcon aria-hidden="true" />
             {action}

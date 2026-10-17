@@ -6,22 +6,32 @@ import { QuoteForm } from "@/components/quote-form";
 import { Enter } from "@/components/motion";
 import { contact } from "@/lib/site";
 import { PageTransition } from "@/components/page-transition";
+import { BreadcrumbStructuredData } from "@/components/structured-data";
+import { openGraphBase } from "@/lib/seo";
+import { ContactDialog, type ContactChannel } from "@/components/contact-dialog";
+
+const contactDescription =
+  "Get a quote for a luxury car, wedding car or coach with chauffeur. Tell us the date, city and occasion, or call +91 98036 00001. Chandigarh and pan-India.";
 
 export const metadata: Metadata = {
-  title: "Get a quote",
-  description: "Tell us the date, city and occasion and we'll recommend a car and send a quote. Call or WhatsApp for urgent bookings.",
+  title: "Get a Quote for Luxury & Wedding Car Rental",
+  description: contactDescription,
+  alternates: { canonical: "/contact" },
+  openGraph: { ...openGraphBase, url: "/contact", title: "Get a quote from Jhajj'z", description: contactDescription },
 };
 
 export default function ContactPage() {
-  const rows = [
-    ...contact.phones.map((p) => ({ label: "Call", value: p.label, href: p.href })),
-    { label: "WhatsApp", value: "Message us", href: contact.whatsapp },
-    { label: "Email", value: contact.email, href: `mailto:${contact.email}` },
+  // Each row opens the matching contact popup (both numbers, copy buttons, other options).
+  const rows: { label: string; value: string; channel: ContactChannel }[] = [
+    ...contact.phones.map((p) => ({ label: "Call", value: p.label, channel: "call" as const })),
+    { label: "WhatsApp", value: "Message us", channel: "whatsapp" },
+    { label: "Email", value: contact.email, channel: "email" },
   ];
 
   return (
     <>
       <SiteHeader />
+      <BreadcrumbStructuredData name="Get a quote" path="/contact" />
       <PageTransition>
         <main className="pt-[72px]">
           {/* Phones: intro, form, then contact details. Desktop: intro + details left, form right. */}
@@ -44,13 +54,18 @@ export default function ContactPage() {
             <Enter delay={0.25}>
               <ul className="border-t border-line">
                 {rows.map((r) => (
-                  <li key={r.href} className="border-b border-line">
-                    <a href={r.href} className="group flex min-h-16 items-center justify-between gap-4 py-3">
-                      <span className="text-sm font-medium text-muted">{r.label}</span>
-                      <span className="text-right font-serif text-2xl decoration-gold-deep/60 underline-offset-[6px] transition-colors group-hover:text-gold-deep group-hover:underline">
-                        {r.value}
-                      </span>
-                    </a>
+                  <li key={r.value} className="border-b border-line">
+                    <ContactDialog channel={r.channel}>
+                      <button
+                        type="button"
+                        className="group flex min-h-16 w-full items-center justify-between gap-4 py-3 text-left"
+                      >
+                        <span className="text-sm font-medium text-muted">{r.label}</span>
+                        <span className="text-right font-serif text-2xl decoration-gold-deep/60 underline-offset-[6px] transition-colors group-hover:text-gold-deep group-hover:underline">
+                          {r.value}
+                        </span>
+                      </button>
+                    </ContactDialog>
                   </li>
                 ))}
                 <li className="border-b border-line">

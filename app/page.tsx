@@ -7,11 +7,28 @@ import { BookingBar } from "@/components/booking-bar";
 import { Enter, Reveal, Stagger, StaggerItem } from "@/components/motion";
 import { Button } from "@/components/ui/button";
 import { ContactDialog } from "@/components/contact-dialog";
-import { cities, fleet, heroImage, serviceGroups } from "@/lib/site";
+import { IndiaMap } from "@/components/india-map";
+import { cities, classHref, fleet, heroPhoto, photos, serviceGroups } from "@/lib/site";
 import { PageTransition } from "@/components/page-transition";
 
-const preview = ["luxury-cars", "wedding-cars", "suvs", "vintage-cars", "luxury-coaches", "mini-vans"]
-  .map((slug) => fleet.find((v) => v.slug === slug)!);
+// Home only shows classes that have a photo.
+const withPhoto = (slug: string) => {
+  const v = fleet.find((x) => x.slug === slug);
+  return v?.image ? { ...v, image: v.image, imageAlt: v.imageAlt ?? v.name } : undefined;
+};
+// Same order as the fleet page: luxury cars, executive cabs, SUVs and MPVs first.
+const preview = fleet
+  .map((v) => withPhoto(v.slug))
+  .filter((v) => v !== undefined);
+// Wedding band photo: the white Rolls-Royce Ghost.
+const weddingPhoto = photos.ghost;
+
+// The quote-form link under each group name (occasion names match lib/site.ts `occasions`).
+const groupLinks: Record<string, { label: string; href: string }> = {
+  "Weddings & events": { label: "Ask about wedding cars", href: "/contact?occasion=Wedding" },
+  "Corporate & VIP": { label: "Ask about corporate travel", href: "/contact?occasion=Corporate%20%2F%20VIP" },
+  "Personal travel": { label: "Book a chauffeur", href: "/contact" },
+};
 
 export default function Home() {
   return (
@@ -22,7 +39,7 @@ export default function Home() {
           {/* Hero */}
           <section className="relative flex min-h-[min(100svh,880px)] flex-col overflow-hidden bg-ink-deep text-cream">
             <Image
-              src={heroImage}
+              src={heroPhoto}
               alt="A car from the Jhajj'z fleet"
               fill
               priority
@@ -41,8 +58,8 @@ export default function Home() {
               </Enter>
               <Enter delay={0.3}>
                 <p className="mt-6 max-w-[480px] text-lg text-on-dark-hero">
-                  Weddings, VIP visits, corporate travel and airport transfers, anywhere in India. Head office in Mohali,
-                  with stations in 14 cities.
+                  Weddings, VIP visits, corporate travel and airport transfers. Head office in Chandigarh, serving
+                  pan-India.
                 </p>
               </Enter>
               <Enter delay={0.45} className="mt-8 flex flex-wrap items-center gap-x-6 gap-y-3">
@@ -54,7 +71,7 @@ export default function Home() {
                     type="button"
                     className="inline-flex min-h-11 items-center text-[15px] font-medium text-cream/90 underline decoration-white/40 underline-offset-[6px] transition-colors hover:text-cream hover:decoration-cream"
                   >
-                    or WhatsApp us
+                    or talk to us on WhatsApp
                   </button>
                 </ContactDialog>
               </Enter>
@@ -85,15 +102,19 @@ export default function Home() {
                     key={v.slug}
                     className={i === 0 ? "w-[82%] shrink-0 snap-start md:col-span-2 md:row-span-2 md:w-auto" : "w-[82%] shrink-0 snap-start md:w-auto"}
                   >
-                    <Link href={`/fleet#${v.slug}`} className="group flex h-full flex-col gap-3.5">
-                      <div className={i === 0 ? "relative aspect-[3/2] overflow-hidden bg-stone md:aspect-auto md:min-h-[360px] md:flex-1" : "relative aspect-[3/2] overflow-hidden bg-stone"}>
-                        <Image
-                          src={v.image}
-                          alt={v.imageAlt}
-                          fill
-                          sizes={i === 0 ? "(max-width: 768px) 85vw, 800px" : "(max-width: 768px) 85vw, 400px"}
-                          className="object-cover"
-                        />
+                    <Link href={classHref(v.slug)} className="group flex h-full flex-col gap-3.5">
+                      <div
+                        className={`relative aspect-[3/2] overflow-hidden ${v.imageCutout ? "bg-sand" : "bg-stone"} ${i === 0 ? "md:aspect-auto md:min-h-[360px] md:flex-1" : ""}`}
+                      >
+                        <div className={`absolute inset-0 ${v.imageCutout ? "mix-blend-multiply" : ""}`} style={{ transform: v.imageZoom ? `scale(${v.imageZoom})` : undefined }}>
+                          <Image
+                            src={v.image}
+                            alt={v.imageAlt}
+                            fill
+                            sizes={i === 0 ? "(max-width: 768px) 85vw, 800px" : "(max-width: 768px) 85vw, 400px"}
+                            className={v.imageCutout ? "object-contain p-5 md:p-8" : "object-cover"}
+                          />
+                        </div>
                       </div>
                       <div>
                         <h3 className={i === 0 ? "text-[19px] font-semibold md:font-serif md:text-[28px] md:font-normal" : "text-[19px] font-semibold"}>{v.name}</h3>
@@ -109,7 +130,7 @@ export default function Home() {
           {/* Weddings */}
           <section id="weddings" className="relative isolate flex min-h-[560px] scroll-mt-16 items-end overflow-hidden bg-ink text-cream md:min-h-[640px]">
             <Image
-              src={fleet.find((v) => v.slug === "wedding-cars")!.image}
+              src={weddingPhoto}
               alt="Decorated wedding car from the Jhajj'z fleet"
               fill
               sizes="100vw"
@@ -135,27 +156,49 @@ export default function Home() {
 
           {/* Services */}
           <section id="services" className="scroll-mt-16 py-[72px] md:py-28">
-            <div className="mx-auto grid max-w-[1200px] gap-x-16 gap-y-10 px-6 md:grid-cols-[minmax(0,5fr)_minmax(0,7fr)]">
-              <Reveal>
+            <div className="mx-auto max-w-[1200px] px-6">
+              <Reveal className="grid items-end gap-x-16 gap-y-5 md:grid-cols-2">
                 <h2 className="font-serif text-[clamp(32px,4vw,48px)] leading-[1.1] tracking-[-0.01em]">Who we drive for</h2>
-                <p className="mt-5 max-w-[360px] text-[17px] text-muted">
+                <p className="max-w-[420px] text-[17px] text-muted md:justify-self-end">
                   Families, companies, hotels, airlines and delegations. If yours isn&apos;t listed, ask us.
                 </p>
               </Reveal>
-              <Stagger className="flex flex-col gap-10">
-                {serviceGroups.map((g) => (
-                  <StaggerItem key={g.title}>
-                    <h3 className="font-serif text-2xl">{g.title}</h3>
-                    <ul className="mt-3 grid gap-x-8 gap-y-3 sm:grid-cols-2">
-                      {g.items.map((s) => (
-                        <li key={s.title} className="text-[15px] text-muted">
-                          <span className="block text-[17px] font-semibold text-ink">{s.title}</span>
-                          {s.text}
-                        </li>
-                      ))}
-                    </ul>
-                  </StaggerItem>
-                ))}
+              {/* Laid out like a printed rate card: one row per group, name and link left, services right. */}
+              <Stagger className="mt-12 border-b border-ink/80">
+                {serviceGroups.map((g) => {
+                  const link = groupLinks[g.title];
+                  return (
+                    <StaggerItem
+                      key={g.title}
+                      className="grid gap-x-16 gap-y-5 border-t border-ink/80 py-8 md:grid-cols-[minmax(0,4fr)_minmax(0,8fr)] md:py-10"
+                    >
+                      <div>
+                        <h3 className="font-serif text-[28px] leading-tight md:text-[32px]">{g.title}</h3>
+                        {link && (
+                          <Link
+                            href={link.href}
+                            className="group mt-3 inline-flex min-h-11 items-center gap-2 text-[15px] font-medium text-gold-deep"
+                          >
+                            <span className="underline decoration-gold-deep/30 underline-offset-[5px] transition-colors duration-300 group-hover:decoration-gold-deep">
+                              {link.label}
+                            </span>
+                          </Link>
+                        )}
+                        <div className="relative mt-5 aspect-[3/2] max-w-[420px] overflow-hidden bg-stone">
+                          <Image src={g.photo.src} alt={g.photo.alt} fill sizes="(max-width: 768px) 100vw, 360px" className="object-cover" />
+                        </div>
+                      </div>
+                      <ul className="grid gap-x-10 gap-y-5 sm:grid-cols-2 md:pt-2">
+                        {g.items.map((s) => (
+                          <li key={s.title}>
+                            <span className="block text-[16px] font-semibold">{s.title}</span>
+                            <span className="mt-0.5 block text-[15px] text-muted">{s.text}</span>
+                          </li>
+                        ))}
+                      </ul>
+                    </StaggerItem>
+                  );
+                })}
               </Stagger>
             </div>
           </section>
@@ -167,7 +210,7 @@ export default function Home() {
                 <h2 className="font-serif text-[clamp(32px,4vw,48px)] leading-[1.1] tracking-[-0.01em]">Chandigarh, since 1998</h2>
                 <p className="mt-5 max-w-[520px] text-[17px] text-body">
                   We started in Chandigarh in 1998. Today we run luxury cars, SUVs, coaches and mini vans across India,
-                  from stations with trained chauffeurs and a station manager you can call directly.
+                  with trained chauffeurs and a station manager you can call directly.
                 </p>
                 <p className="mt-4 max-w-[520px] text-[17px] text-body">
                   Need a car for a month or longer? Ask about long-term hire.
@@ -184,19 +227,23 @@ export default function Home() {
                 </div>
               </Reveal>
               <Reveal delay={0.1} className="min-w-0 flex-[1_1_400px]">
-                <h3 className="font-serif text-2xl">Pan-India, with stations in</h3>
-                <ul className="mt-4 grid grid-cols-2 gap-x-6 border-t border-ink/15 sm:grid-cols-3">
-                  {cities.map((c) => (
-                    <li key={c} className="border-b border-ink/15 py-2.5 text-[16px] text-body">
-                      {c}
-                    </li>
-                  ))}
-                </ul>
-                <p className="mt-4 text-[15px] text-muted">Travelling somewhere else in India? Ask us.</p>
+                <h3 className="font-serif text-2xl">Pan-India, including</h3>
+                <div className="mt-6 grid items-start gap-x-10 gap-y-8 sm:grid-cols-[minmax(0,5fr)_minmax(0,6fr)]">
+                  <IndiaMap className="mx-auto w-full max-w-[300px] sm:max-w-none" />
+                  <div>
+                    <ul className="grid grid-cols-2 gap-x-6 border-t border-ink/15">
+                      {cities.map((c) => (
+                        <li key={c} className="border-b border-ink/15 py-2.5 text-[16px] text-body">
+                          {c}
+                        </li>
+                      ))}
+                    </ul>
+                    <p className="mt-4 text-[15px] text-muted">Travelling somewhere else in India? Ask us.</p>
+                  </div>
+                </div>
               </Reveal>
             </div>
           </section>
-
         </main>
       </PageTransition>
       <SiteFooter />

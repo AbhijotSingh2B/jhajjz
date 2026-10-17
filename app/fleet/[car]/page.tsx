@@ -1,0 +1,204 @@
+import type { Metadata } from "next";
+import Link from "next/link";
+import { notFound } from "next/navigation";
+import { SiteHeader } from "@/components/site-header";
+import { SiteFooter } from "@/components/site-footer";
+import { Enter, Reveal } from "@/components/motion";
+import { Button } from "@/components/ui/button";
+import { PageTransition } from "@/components/page-transition";
+import { ContactDialog } from "@/components/contact-dialog";
+import { Confirm } from "@/components/confirm";
+import { CarGallery } from "@/components/car-gallery";
+import { BreadcrumbStructuredData, CarStructuredData } from "@/components/structured-data";
+import { FleetClassPage } from "@/components/fleet-class-page";
+import { carName, cars, carsInClass, classHref, fleet, inSentence } from "@/lib/site";
+import { openGraphBase } from "@/lib/seo";
+
+type Props = { params: Promise<{ car: string }> };
+
+// This route serves both class pages (/fleet/suvs) and car pages (/fleet/rolls-royce-ghost); slugs never overlap.
+const classWithCars = (slug: string) => fleet.find((v) => v.slug === slug && carsInClass(slug).length > 0);
+
+export function generateStaticParams() {
+  return [...fleet.filter((v) => classWithCars(v.slug)), ...cars].map((x) => ({ car: x.slug }));
+}
+
+async function getCar(params: Props["params"]) {
+  const { car: slug } = await params;
+  const car = cars.find((c) => c.slug === slug);
+  if (!car) notFound();
+  return { car, fleetClass: fleet.find((v) => v.slug === car.fleetClass) };
+}
+
+function classMetadata(v: NonNullable<ReturnType<typeof classWithCars>>): Metadata {
+  const names = carsInClass(v.slug).map(carName).join(", ");
+  const description = `${v.text} Chauffeur-driven ${inSentence(v.name)} from Jhajj'z: ${names}. Head office in Chandigarh, serving pan-India.`;
+  const path = `/fleet/${v.slug}`;
+  return {
+    title: `${v.name} on Rent with Chauffeur`,
+    description,
+    alternates: { canonical: path },
+    openGraph: { ...openGraphBase, url: path, title: `${v.name} with chauffeur | Jhajj'z`, description },
+  };
+}
+
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
+  const v = classWithCars((await params).car);
+  if (v) return classMetadata(v);
+  const { car } = await getCar(params);
+  const name = carName(car);
+  const description = `Hire a chauffeur-driven ${name} from Jhajj'z for weddings, business and special occasions. Head office in Chandigarh, serving pan-India.`;
+  const path = `/fleet/${car.slug}`;
+  // Placeholder (CarWale) photos aren't the client's cars, so they don't become the sharing image.
+  const ownPhoto = car.photos.find((p) => !p.placeholder);
+  return {
+    title: `${name} on Rent with Chauffeur`,
+    description,
+    alternates: { canonical: path },
+    openGraph: {
+      ...openGraphBase,
+      url: path,
+      title: `${name} with chauffeur | Jhajj'z`,
+      description,
+      ...(ownPhoto && { images: [{ url: ownPhoto.src, alt: ownPhoto.alt }] }),
+    },
+  };
+}
+
+export default async function CarPage({ params }: Props) {
+  const v = classWithCars((await params).car);
+  if (v) return <FleetClassPage fleetClass={v} />;
+  const { car, fleetClass } = await getCar(params);
+  const name = carName(car);
+  // One carousel per model generation, in the order listed (newer first); most cars have just one.
+  const generations = [...new Set(car.photos.map((p) => p.generation))].map((generation) => ({
+    generation,
+    photos: car.photos.filter((p) => p.generation === generation),
+  }));
+  const [first, ...older] = generations;
+  // Only details we actually know; unknown ones are left out rather than shown as blanks.
+  const known = car.details.filter((d) => d.value);
+  const sameClass = cars.filter((c) => c.fleetClass === car.fleetClass && c.slug !== car.slug);
+
+  return (
+    <>
+      <SiteHeader />
+      <BreadcrumbStructuredData name={name} path={`/fleet/${car.slug}`} parent={{ name: "Fleet", path: "/fleet" }} />
+      <CarStructuredData car={car} />
+      <PageTransition>
+        <main>
+          <section className="pt-[72px] pb-[72px] md:pb-28">
+            <div className="mx-auto max-w-[1200px] px-6 pt-8 md:pt-12">
+              <nav aria-label="Breadcrumb" className="text-[15px] text-muted">
+                <ol className="flex flex-wrap items-center gap-x-2">
+                  <li>
+                    <Link href="/fleet" className="inline-flex min-h-11 items-center underline-offset-4 hover:text-ink hover:underline">
+                      Fleet
+                    </Link>
+                  </li>
+                  {fleetClass && (
+                    <>
+                      <li aria-hidden="true">/</li>
+                      <li>
+                        <Link
+                          href={classHref(fleetClass.slug)}
+                          className="inline-flex min-h-11 items-center underline-offset-4 hover:text-ink hover:underline"
+                        >
+                          {fleetClass.name}
+                        </Link>
+                      </li>
+                    </>
+                  )}
+                </ol>
+              </nav>
+
+              <div className="mt-4 grid gap-x-16 gap-y-10 md:mt-6 grid-cols-[minmax(0,1fr)] lg:grid-cols-[minmax(0,7fr)_minmax(0,5fr)]">
+                <Enter>
+                  {first ? (
+                    <>
+                      {first.generation && <p className="mb-3 text-[15px] text-muted">{first.generation}</p>}
+                      <CarGallery photos={first.photos} label={`Photos of the ${name}`} priority sizes="(max-width: 1024px) 100vw, 680px" />
+                    </>
+                  ) : (
+                    <div className="flex aspect-[3/2] items-center justify-center bg-sand p-6 text-center text-[15px]">
+                      <Confirm>photos of our {name}</Confirm>
+                    </div>
+                  )}
+                </Enter>
+
+                <Enter delay={0.12}>
+                  <h1 className="font-serif text-[clamp(38px,4.8vw,56px)] leading-[1.08] tracking-[-0.01em]">{name}</h1>
+                  <p className="mt-5 max-w-[520px] text-[17px] text-body">{car.text}</p>
+
+                  {known.length > 0 && (
+                    <dl className="mt-8 border-t border-ink/15">
+                      {known.map((d) => (
+                        <div key={d.label} className="grid grid-cols-[minmax(0,2fr)_minmax(0,3fr)] gap-4 border-b border-ink/15 py-3 text-[16px]">
+                          <dt className="text-muted">{d.label}</dt>
+                          <dd className="text-ink">{d.value}</dd>
+                        </div>
+                      ))}
+                    </dl>
+                  )}
+
+                  <div className="mt-8 flex flex-wrap gap-3">
+                    <Button asChild variant="ink">
+                      <Link
+                        href={`/contact?${new URLSearchParams({ ...(fleetClass && { vehicle: fleetClass.name }), notes: name })}`}
+                      >
+                        Ask for a quote
+                      </Link>
+                    </Button>
+                    <ContactDialog channel="whatsapp" message={`Hello, I'd like to ask about the ${name}.`}>
+                      <Button type="button" variant="outline">
+                        Talk to us on WhatsApp
+                      </Button>
+                    </ContactDialog>
+                  </div>
+                </Enter>
+              </div>
+
+              {older.map((g) => (
+                <Reveal key={g.generation} className="mt-16 grid gap-x-16 grid-cols-[minmax(0,1fr)] lg:grid-cols-[minmax(0,7fr)_minmax(0,5fr)]">
+                  <div>
+                    <h2 className="mb-5 font-serif text-[clamp(26px,3vw,34px)] leading-[1.1]">{g.generation}</h2>
+                    <CarGallery photos={g.photos} label={`Photos of the ${name}, ${g.generation?.toLowerCase()}`} sizes="(max-width: 1024px) 100vw, 680px" />
+                  </div>
+                </Reveal>
+              ))}
+            </div>
+          </section>
+
+          {fleetClass && (
+            <section className="bg-sand py-[72px] md:py-24">
+              <Reveal className="mx-auto flex max-w-[1200px] flex-wrap items-center justify-between gap-8 px-6">
+                <div className="min-w-0 flex-[1_1_480px]">
+                  <h2 className="font-serif text-[clamp(28px,3.4vw,40px)] leading-[1.1]">Looking at other cars?</h2>
+                  <p className="mt-3 max-w-[480px] text-[17px] text-body">{fleetClass.text}</p>
+                  {sameClass.length > 0 && (
+                    <ul className="mt-3 flex flex-wrap gap-x-5">
+                      {sameClass.map((c) => (
+                        <li key={c.slug}>
+                          <Link
+                            href={`/fleet/${c.slug}`}
+                            className="inline-flex min-h-11 items-center text-[16px] text-ink underline decoration-ink/30 underline-offset-[5px] transition-colors hover:decoration-ink"
+                          >
+                            {carName(c)}
+                          </Link>
+                        </li>
+                      ))}
+                    </ul>
+                  )}
+                </div>
+                <Button asChild variant="outline">
+                  <Link href={classHref(fleetClass.slug)}>See all {inSentence(fleetClass.name)}</Link>
+                </Button>
+              </Reveal>
+            </section>
+          )}
+        </main>
+      </PageTransition>
+      <SiteFooter />
+    </>
+  );
+}

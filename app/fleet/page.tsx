@@ -6,17 +6,24 @@ import { FleetBrowser } from "@/components/fleet-browser";
 import { Enter, Reveal } from "@/components/motion";
 import { Button } from "@/components/ui/button";
 import { PageTransition } from "@/components/page-transition";
+import { BreadcrumbStructuredData } from "@/components/structured-data";
+import { openGraphBase } from "@/lib/seo";
+
+const fleetDescription =
+  "Rent a Rolls-Royce, Bentley, Mercedes-Benz, BMW, Audi, Jaguar or Range Rover with a chauffeur: luxury cars, wedding cars, vintage cars, limousines, SUVs, luxury MPVs like the Toyota Vellfire, Volvo coaches and mini vans. Chandigarh and pan-India.";
 
 export const metadata: Metadata = {
-  title: "Fleet",
-  description:
-    "Rolls-Royce, Mercedes-Benz, BMW, Audi and Range Rover, plus Volvo and Mercedes-Benz coaches. All chauffeur-driven.",
+  title: "Luxury Car, Wedding Car & Coach Fleet",
+  description: fleetDescription,
+  alternates: { canonical: "/fleet" },
+  openGraph: { ...openGraphBase, url: "/fleet", title: "The Jhajj'z fleet: luxury cars, wedding cars and coaches", description: fleetDescription },
 };
 
 export default function FleetPage() {
   return (
     <>
       <SiteHeader />
+      <BreadcrumbStructuredData name="Fleet" path="/fleet" />
       <PageTransition>
         <main>
           <section className="pt-[72px]">
@@ -28,8 +35,8 @@ export default function FleetPage() {
               </Enter>
               <Enter delay={0.12}>
                 <p className="mt-5 max-w-[560px] text-[17px] text-muted">
-                  Rolls-Royce, Mercedes-Benz, BMW, Audi and Range Rover, plus Volvo and Mercedes-Benz coaches. Every
-                  vehicle comes with a trained chauffeur, anywhere in India.
+                  Rolls-Royce, Bentley, Mercedes-Benz, BMW, Audi, Jaguar and Range Rover, plus Volvo and Mercedes-Benz coaches. Every
+                  vehicle comes with a trained chauffeur, anywhere in India, and any of them can be booked for a wedding or event.
                 </p>
               </Enter>
             </div>

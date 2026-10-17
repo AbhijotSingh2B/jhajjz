@@ -1,9 +1,9 @@
 "use client";
 
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { useSearchParams } from "next/navigation";
-import { motion } from "motion/react";
-import { cityOptions, fleet, occasions } from "@/lib/site";
+import { AnimatePresence, motion } from "motion/react";
+import { cityOptions, fleet, occasions, otherCity } from "@/lib/site";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Button } from "@/components/ui/button";
 import { minToday } from "@/lib/utils";
@@ -11,11 +11,12 @@ import { ContactDialog } from "@/components/contact-dialog";
 
 const NOT_SURE = "Not sure — recommend one";
 const OTHER_VEHICLE = "Other";
+const OTHER_OCCASION = "Other";
 
 /**
  * Quote request form. Pre-fills from the booking bar's query params.
  * Submitting opens the WhatsApp popup with the details already written, so the
- * visitor picks a number and sends them. Nothing is stored on a server.
+ * visitor sends them in the chat. Nothing is stored on a server.
  */
 export function QuoteForm() {
   const params = useSearchParams();
@@ -28,6 +29,24 @@ export function QuoteForm() {
   const [occasion, setOccasion] = useState(pick("occasion", occasions));
   const [vehicle, setVehicle] = useState(pick("vehicle", [NOT_SURE, OTHER_VEHICLE, ...fleet.map((v) => v.name)]));
   const [city, setCity] = useState(pick("city", cityOptions));
+
+  const occasionOther = useRef<HTMLInputElement>(null);
+  const vehicleOther = useRef<HTMLInputElement>(null);
+  const cityOther = useRef<HTMLInputElement>(null);
+  const justPicked = useRef("");
+
+  function choose(set: (v: string) => void, v: string) {
+    justPicked.current = v;
+    set(v);
+  }
+  // When "Other" was just picked, send focus to its text box instead of back to the dropdown.
+  function focusOther(e: Event, other: string, ref: React.RefObject<HTMLInputElement | null>) {
+    if (justPicked.current === other && ref.current) {
+      e.preventDefault();
+      ref.current.focus();
+    }
+    justPicked.current = "";
+  }
 
   const inputClass =
     "h-12 w-full border-b border-white/30 bg-transparent text-[17px] text-cream outline-none transition-colors placeholder:text-muted-dark hover:border-white/60 focus:border-gold";
@@ -42,14 +61,17 @@ export function QuoteForm() {
               e.preventDefault();
               const f = new FormData(e.currentTarget);
               const line = (label: string, v: FormDataEntryValue | null) => (v ? `${label}: ${v}` : "");
+              // "Other" plus whatever the visitor typed in its box, e.g. "Other (Amritsar)".
+              const withOther = (v: string, other: string, key: string) =>
+                v === other && f.get(key) ? `${v} (${f.get(key)})` : v;
               setMessage(
                 [
                   "Hello Jhajj'z, I'd like a quote.",
                   line("Name", f.get("name")),
                   line("Phone", f.get("phone")),
-                  line("Occasion", occasion),
-                  line("Vehicle", vehicle),
-                  line("City", city),
+                  line("Occasion", withOther(occasion, OTHER_OCCASION, "occasionOther")),
+                  line("Vehicle", withOther(vehicle, OTHER_VEHICLE, "vehicleOther")),
+                  line("City", withOther(city, otherCity, "cityOther")),
                   line("Date", f.get("date")),
                   line("Notes", f.get("notes")),
                 ]
@@ -68,11 +90,11 @@ export function QuoteForm() {
               <input id="q-phone" name="phone" type="tel" required autoComplete="tel" className={inputClass} />
             </DarkField>
             <DarkField label="Occasion" id="q-occasion">
-              <Select value={occasion} onValueChange={setOccasion} name="occasion">
+              <Select value={occasion} onValueChange={(v) => choose(setOccasion, v)} name="occasion">
                 <SelectTrigger id="q-occasion" tone="dark">
                   <SelectValue placeholder="Choose an occasion" />
                 </SelectTrigger>
-                <SelectContent>
+                <SelectContent onCloseAutoFocus={(e) => focusOther(e, OTHER_OCCASION, occasionOther)}>
                   {occasions.map((o) => (
                     <SelectItem key={o} value={o}>
                       {o}
@@ -80,13 +102,21 @@ export function QuoteForm() {
                   ))}
                 </SelectContent>
               </Select>
+              <OtherField
+                show={occasion === OTHER_OCCASION}
+                inputRef={occasionOther}
+                id="q-occasion-other"
+                name="occasionOther"
+                label="What's the occasion?"
+                className={inputClass}
+              />
             </DarkField>
             <DarkField label="Vehicle" id="q-vehicle">
-              <Select value={vehicle} onValueChange={setVehicle} name="vehicle">
+              <Select value={vehicle} onValueChange={(v) => choose(setVehicle, v)} name="vehicle">
                 <SelectTrigger id="q-vehicle" tone="dark">
                   <SelectValue placeholder="Choose a vehicle" />
                 </SelectTrigger>
-                <SelectContent>
+                <SelectContent onCloseAutoFocus={(e) => focusOther(e, OTHER_VEHICLE, vehicleOther)}>
                   <SelectItem value={NOT_SURE}>{NOT_SURE}</SelectItem>
                   {fleet.map((v) => (
                     <SelectItem key={v.slug} value={v.name}>
@@ -96,13 +126,21 @@ export function QuoteForm() {
                   <SelectItem value={OTHER_VEHICLE}>{OTHER_VEHICLE}</SelectItem>
                 </SelectContent>
               </Select>
+              <OtherField
+                show={vehicle === OTHER_VEHICLE}
+                inputRef={vehicleOther}
+                id="q-vehicle-other"
+                name="vehicleOther"
+                label="Which vehicle are you looking for?"
+                className={inputClass}
+              />
             </DarkField>
             <DarkField label="City" id="q-city">
-              <Select value={city} onValueChange={setCity} name="city">
+              <Select value={city} onValueChange={(v) => choose(setCity, v)} name="city">
                 <SelectTrigger id="q-city" tone="dark">
                   <SelectValue placeholder="Choose a city" />
                 </SelectTrigger>
-                <SelectContent>
+                <SelectContent onCloseAutoFocus={(e) => focusOther(e, otherCity, cityOther)}>
                   {cityOptions.map((c) => (
                     <SelectItem key={c} value={c}>
                       {c}
@@ -110,6 +148,14 @@ export function QuoteForm() {
                   ))}
                 </SelectContent>
               </Select>
+              <OtherField
+                show={city === otherCity}
+                inputRef={cityOther}
+                id="q-city-other"
+                name="cityOther"
+                label="Which city or town?"
+                className={inputClass}
+              />
             </DarkField>
             <DarkField label="Date" id="q-date">
               <input
@@ -152,5 +198,41 @@ function DarkField({ label, id, children }: { label: string; id: string; childre
       </label>
       {children}
     </div>
+  );
+}
+
+/** Text box that slides open under a dropdown when "Other" is chosen. */
+function OtherField({
+  show,
+  inputRef,
+  id,
+  name,
+  label,
+  className,
+}: {
+  show: boolean;
+  inputRef: React.RefObject<HTMLInputElement | null>;
+  id: string;
+  name: string;
+  label: string;
+  className: string;
+}) {
+  return (
+    <AnimatePresence initial={false}>
+      {show && (
+        <motion.div
+          initial={{ height: 0, opacity: 0 }}
+          animate={{ height: "auto", opacity: 1 }}
+          exit={{ height: 0, opacity: 0 }}
+          transition={{ duration: 0.3, ease: [0.2, 0.7, 0.2, 1] }}
+          className="overflow-hidden"
+        >
+          <label htmlFor={id} className="sr-only">
+            {label}
+          </label>
+          <input ref={inputRef} id={id} name={name} placeholder={label} className={`${className} mt-1`} />
+        </motion.div>
+      )}
+    </AnimatePresence>
   );
 }

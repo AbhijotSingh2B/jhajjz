@@ -1,13 +1,14 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, type MouseEvent } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { motion } from "motion/react";
-import { ArrowRight, Mail, Menu, MessageCircle, Phone } from "lucide-react";
+import { ArrowRight, Mail, Menu, Phone } from "lucide-react";
+import { WhatsAppIcon } from "@/components/icons";
 import { cn } from "@/lib/utils";
-import { contact, fleet, heroImage } from "@/lib/site";
+import { classHref, contact, fleet, heroThumb } from "@/lib/site";
 import {
   NavigationMenu,
   NavigationMenuContent,
@@ -25,6 +26,18 @@ const links = [
   { label: "About", href: "/#about" },
   { label: "Contact", href: "/contact" },
 ];
+
+/**
+ * Next skips the navigation when you're already on "/", so a click on the logo
+ * or Home (e.g. after jumping to #about) would do nothing: scroll back up instead.
+ * Smooth scrolling and its reduced-motion opt-out come from globals.css.
+ */
+function scrollHomeToTop(e: MouseEvent<HTMLAnchorElement>) {
+  if (window.location.pathname !== "/") return;
+  e.preventDefault();
+  if (window.location.hash) history.replaceState(history.state, "", "/");
+  window.scrollTo({ top: 0 });
+}
 
 /**
  * `overlay` = sits transparent on top of a hero photo until the visitor
@@ -57,7 +70,7 @@ export function SiteHeader({ overlay = false }: { overlay?: boolean }) {
           solid ? "h-[72px]" : "h-[88px]",
         )}
       >
-        <Link href="/" className="font-serif text-[26px] leading-none tracking-tight">
+        <Link href="/" onClick={scrollHomeToTop} className="font-serif text-[26px] leading-none tracking-tight">
           Jhajj&apos;z
         </Link>
 
@@ -106,6 +119,7 @@ function NavItem({ href, label, active }: { href: string; label: string; active:
       <NavigationMenuLink asChild active={active}>
         <Link
           href={href}
+          onClick={href === "/" ? scrollHomeToTop : undefined}
           className="group relative inline-flex h-11 items-center px-3 text-[15px] text-cream/85 transition-colors hover:text-cream data-[active]:text-cream"
         >
           {label}
@@ -132,7 +146,7 @@ function FleetMenu() {
           >
             <NavigationMenuLink asChild>
               <Link
-                href={`/fleet#${v.slug}`}
+                href={classHref(v.slug)}
                 className="group flex min-h-11 flex-col justify-center px-3 py-2.5 transition-colors duration-200 hover:bg-sand"
               >
                 <span className="flex items-center justify-between text-[15px] font-semibold">
@@ -150,7 +164,7 @@ function FleetMenu() {
       <NavigationMenuLink asChild>
         <Link href="/fleet" className="group relative block min-h-[280px] overflow-hidden bg-ink">
           <Image
-            src={heroImage}
+            src={heroThumb}
             alt=""
             fill
             sizes="320px"
@@ -160,7 +174,7 @@ function FleetMenu() {
           <span className="absolute inset-x-0 bottom-0 p-5 text-cream">
             <span className="block font-serif text-2xl">See the full fleet</span>
             <span className="mt-1 flex items-center gap-2 text-sm text-cream/80">
-              9 classes, all chauffeur-driven
+              {fleet.length} classes, all chauffeur-driven
               <ArrowRight className="size-3.5 transition-transform duration-300 group-hover:translate-x-1" aria-hidden="true" />
             </span>
           </span>
@@ -194,7 +208,10 @@ function MobileMenu() {
                 className="border-b border-white/10"
               >
                 <SheetClose asChild>
-                  <Link href={l.href} className="flex min-h-14 items-center font-serif text-3xl transition-colors hover:text-gold">
+                  <Link
+                    href={l.href}
+                    onClick={l.href === "/" ? scrollHomeToTop : undefined}
+                    className="flex min-h-14 items-center font-serif text-3xl transition-colors hover:text-gold">
                     {l.label}
                   </Link>
                 </SheetClose>
@@ -210,7 +227,7 @@ function MobileMenu() {
             {(
               [
                 ["call", Phone, "Call us"],
-                ["whatsapp", MessageCircle, "WhatsApp us"],
+                ["whatsapp", WhatsAppIcon, "Talk to us on WhatsApp"],
                 ["email", Mail, "Email us"],
               ] as const
             ).map(([channel, Icon, label]) => (
