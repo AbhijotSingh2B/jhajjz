@@ -846,3 +846,10 @@ export const cars: Car[] = [
 ];
 
 export const carName = (c: Car) => c.name ?? `${c.brand} ${c.model}`;
+
+export const carsInClass = (slug: string) => cars.filter((c) => c.fleetClass === slug);
+/** A class with cars has its own page listing them (/fleet/suvs); one without any yet (coaches) stays on /fleet. */
+export const classHref = (slug: string) => (carsInClass(slug).length > 0 ? `/fleet/${slug}` : `/fleet#${slug}`);
+
+/** "Luxury cars" → "luxury cars", but "SUVs" stays "SUVs". */
+export const inSentence = (s: string) => (/^[A-Z][a-z]/.test(s) ? s[0].toLowerCase() + s.slice(1) : s);

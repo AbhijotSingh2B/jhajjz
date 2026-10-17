@@ -6,12 +6,10 @@ import Link from "next/link";
 import { AnimatePresence, motion } from "motion/react";
 import { Search, X } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { carName, cars, contact, fleet, fleetGroups, type FleetGroup } from "@/lib/site";
+import { carName, carsInClass as carsIn, contact, fleet, fleetGroups, inSentence, type FleetGroup } from "@/lib/site";
 import { Confirm } from "@/components/confirm";
 
 const ease = [0.2, 0.7, 0.2, 1] as const;
-
-const carsIn = (slug: string) => cars.filter((c) => c.fleetClass === slug);
 
 export function FleetBrowser() {
   const [filter, setFilter] = useState<"all" | FleetGroup>("all");
@@ -113,7 +111,7 @@ export function FleetBrowser() {
               <h2 className="mt-4 font-serif text-[28px] leading-tight">{v.name}</h2>
               <p className="mt-1.5 text-[15px] text-muted">{v.text}</p>
               {carsIn(v.slug).length > 0 && (
-                // Above the card-wide quote link (its ::after), so these stay clickable on their own.
+                // Above the card-wide link (its ::after), so these stay clickable on their own.
                 <ul className="relative z-10 mt-1 flex flex-wrap gap-x-5">
                   {carsIn(v.slug).map((c) => (
                     <li key={c.slug}>
@@ -128,11 +126,18 @@ export function FleetBrowser() {
                 </ul>
               )}
               {/* The ::after stretches the link over the whole card, so the photo is clickable too. */}
+              {/* A class with cars opens its own page listing them; one without (coaches) goes to the quote form. */}
               <Link
-                href={`/contact?vehicle=${encodeURIComponent(v.name)}`}
+                href={carsIn(v.slug).length > 0 ? `/fleet/${v.slug}` : `/contact?vehicle=${encodeURIComponent(v.name)}`}
                 className="mt-3 inline-flex min-h-11 items-center text-[15px] font-medium text-gold-deep underline decoration-transparent underline-offset-[5px] transition-colors duration-300 group-hover:decoration-gold-deep after:absolute after:inset-0"
               >
-                Ask for a quote<span className="sr-only">: {v.name}</span>
+                {carsIn(v.slug).length > 0 ? (
+                  `See all ${inSentence(v.name)}`
+                ) : (
+                  <>
+                    Ask for a quote<span className="sr-only">: {v.name}</span>
+                  </>
+                )}
               </Link>
             </motion.article>
           ))}

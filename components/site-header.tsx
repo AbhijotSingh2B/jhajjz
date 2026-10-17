@@ -8,7 +8,7 @@ import { motion } from "motion/react";
 import { ArrowRight, Mail, Menu, Phone } from "lucide-react";
 import { WhatsAppIcon } from "@/components/icons";
 import { cn } from "@/lib/utils";
-import { contact, fleet, heroThumb } from "@/lib/site";
+import { classHref, contact, fleet, heroThumb } from "@/lib/site";
 import {
   NavigationMenu,
   NavigationMenuContent,
@@ -146,7 +146,7 @@ function FleetMenu() {
           >
             <NavigationMenuLink asChild>
               <Link
-                href={`/fleet#${v.slug}`}
+                href={classHref(v.slug)}
                 className="group flex min-h-11 flex-col justify-center px-3 py-2.5 transition-colors duration-200 hover:bg-sand"
               >
                 <span className="flex items-center justify-between text-[15px] font-semibold">

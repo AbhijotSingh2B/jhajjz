@@ -10,13 +10,17 @@ import { ContactDialog } from "@/components/contact-dialog";
 import { Confirm } from "@/components/confirm";
 import { CarGallery } from "@/components/car-gallery";
 import { BreadcrumbStructuredData, CarStructuredData } from "@/components/structured-data";
-import { carName, cars, fleet } from "@/lib/site";
+import { FleetClassPage } from "@/components/fleet-class-page";
+import { carName, cars, carsInClass, classHref, fleet, inSentence } from "@/lib/site";
 import { openGraphBase } from "@/lib/seo";
 
 type Props = { params: Promise<{ car: string }> };
 
+// This route serves both class pages (/fleet/suvs) and car pages (/fleet/rolls-royce-ghost); slugs never overlap.
+const classWithCars = (slug: string) => fleet.find((v) => v.slug === slug && carsInClass(slug).length > 0);
+
 export function generateStaticParams() {
-  return cars.map((c) => ({ car: c.slug }));
+  return [...fleet.filter((v) => classWithCars(v.slug)), ...cars].map((x) => ({ car: x.slug }));
 }
 
 async function getCar(params: Props["params"]) {
@@ -26,11 +30,21 @@ async function getCar(params: Props["params"]) {
   return { car, fleetClass: fleet.find((v) => v.slug === car.fleetClass) };
 }
 
-
-/** "Luxury cars" → "luxury cars", but "SUVs" stays "SUVs". */
-const inSentence = (s: string) => (/^[A-Z][a-z]/.test(s) ? s[0].toLowerCase() + s.slice(1) : s);
+function classMetadata(v: NonNullable<ReturnType<typeof classWithCars>>): Metadata {
+  const names = carsInClass(v.slug).map(carName).join(", ");
+  const description = `${v.text} Chauffeur-driven ${inSentence(v.name)} from Jhajj'z: ${names}. Head office in Chandigarh, serving pan-India.`;
+  const path = `/fleet/${v.slug}`;
+  return {
+    title: `${v.name} on Rent with Chauffeur`,
+    description,
+    alternates: { canonical: path },
+    openGraph: { ...openGraphBase, url: path, title: `${v.name} with chauffeur | Jhajj'z`, description },
+  };
+}
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
+  const v = classWithCars((await params).car);
+  if (v) return classMetadata(v);
   const { car } = await getCar(params);
   const name = carName(car);
   const description = `Hire a chauffeur-driven ${name} from Jhajj'z for weddings, business and special occasions. Head office in Chandigarh, serving pan-India.`;
@@ -52,6 +66,8 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 }
 
 export default async function CarPage({ params }: Props) {
+  const v = classWithCars((await params).car);
+  if (v) return <FleetClassPage fleetClass={v} />;
   const { car, fleetClass } = await getCar(params);
   const name = carName(car);
   // One carousel per model generation, in the order listed (newer first); most cars have just one.
@@ -85,7 +101,7 @@ export default async function CarPage({ params }: Props) {
                       <li aria-hidden="true">/</li>
                       <li>
                         <Link
-                          href={`/fleet#${fleetClass.slug}`}
+                          href={classHref(fleetClass.slug)}
                           className="inline-flex min-h-11 items-center underline-offset-4 hover:text-ink hover:underline"
                         >
                           {fleetClass.name}
@@ -175,7 +191,7 @@ export default async function CarPage({ params }: Props) {
                   )}
                 </div>
                 <Button asChild variant="outline">
-                  <Link href={`/fleet#${fleetClass.slug}`}>See all {inSentence(fleetClass.name)}</Link>
+                  <Link href={classHref(fleetClass.slug)}>See all {inSentence(fleetClass.name)}</Link>
                 </Button>
               </Reveal>
             </section>

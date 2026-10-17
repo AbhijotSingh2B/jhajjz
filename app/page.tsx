@@ -8,7 +8,7 @@ import { Enter, Reveal, Stagger, StaggerItem } from "@/components/motion";
 import { Button } from "@/components/ui/button";
 import { ContactDialog } from "@/components/contact-dialog";
 import { IndiaMap } from "@/components/india-map";
-import { cities, fleet, heroPhoto, photos, serviceGroups } from "@/lib/site";
+import { cities, classHref, fleet, heroPhoto, photos, serviceGroups } from "@/lib/site";
 import { PageTransition } from "@/components/page-transition";
 
 // Home only shows classes that have a photo.
@@ -102,7 +102,7 @@ export default function Home() {
                     key={v.slug}
                     className={i === 0 ? "w-[82%] shrink-0 snap-start md:col-span-2 md:row-span-2 md:w-auto" : "w-[82%] shrink-0 snap-start md:w-auto"}
                   >
-                    <Link href={`/fleet#${v.slug}`} className="group flex h-full flex-col gap-3.5">
+                    <Link href={classHref(v.slug)} className="group flex h-full flex-col gap-3.5">
                       <div
                         className={`relative aspect-[3/2] overflow-hidden ${v.imageCutout ? "bg-sand" : "bg-stone"} ${i === 0 ? "md:aspect-auto md:min-h-[360px] md:flex-1" : ""}`}
                       >
