@@ -70,6 +70,7 @@ components/
                            ("all" opens on the "Get in touch" list; used by the "Contact us" buttons)
                            (both numbers / WhatsApp / email, copy buttons, "Other ways to reach us" list)
   page-transition.tsx      Fade-and-lift between pages (React <ViewTransition>); wraps each page's <main>
+  india-map.tsx            India outline (lib/india-map.ts, Survey of India boundary) + city dots, beside "Pan-India, including"
   motion.tsx               Reveal, Enter, Stagger, StaggerItem, MotionProvider (respects reduced motion)
   icons.tsx                WhatsApp glyph (Simple Icons) + social icons (Tabler, MIT); lucide has no brand icons
   ui/                      button, select, navigation-menu, sheet, dialog (bottom sheet on phones)
@@ -78,6 +79,7 @@ app/sitemap.ts, robots.ts, manifest.ts   SEO files; all URLs use `siteUrl` from 
 app/icon.svg, favicon.ico, apple-icon.png, public/icon-192/512.png   Placeholder "J" monogram favicon
 components/structured-data.tsx   Schema.org JSON-LD (AutoRental business, WebSite, breadcrumbs) from lib/site.ts
 lib/seo.ts                 `openGraphBase`: spread into every page's openGraph (Next doesn't deep-merge it)
+lib/india-map.ts           Map path + city positions (generated with mapshaper; source and method in the file header)
 lib/site.ts                ALL client facts: contact, cities, services, fleet, photos. Edit here, not in pages.
 ```
 
@@ -164,10 +166,16 @@ Jhajj'z has. In order of impact:
 Avoid as replacements (next-generation AI tells): stat strips ("25+ years · 14 cities · 9 classes"), gradient
 blobs / glassmorphism, stock photos, paper-grain or texture overlays, emoji-style or animated icons.
 
-Suggested next step: build #4 now, then #3 if a compliant outline is available; ask the client for photos
-and the logo (#1, #2).
+Status: #3 built (DataMeet india-composite, CC0, official SoI boundary). #4 partly built: office line in the popups;
+the static office map on /contact is NOT built: no map tiles/geocoder reachable from the sandbox and no verified
+pin for the office. Needs the office's exact coordinates (client, or Google Maps pin) plus a map image or an embed
+(an embed loads Google cookies, so the privacy policy would need a line). Still ask the client for photos and logo.
 
 ## Changelog
+
+- 2026-10-17 — About section: fine-line map of India (official Survey of India outline) beside the "Pan-India,
+  including" list, gold dots for the 14 cities, ink ringed dot for the Mohali head office. Call / WhatsApp / Email
+  popups gain a quiet "Office: SSS-106, 107, PCA Stadium Road, Mohali" line (links to Google Maps).
 
 - 2026-10-17 — "Contact us" buttons on the privacy page (Contact section) and in the footer (under Contact) open
   the popup on its "Get in touch" list (`channel="all"`, no Back button there). Privacy page email and phone

@@ -153,7 +153,15 @@ function ChannelView({ channel, message, onOther }: { channel: ContactChannel; m
           </motion.li>
         ))}
       </ul>
-      <Button type="button" variant="outline" size="default" className="mt-8 w-full" onClick={onOther}>
+      <a
+        href={contact.mapsUrl}
+        target="_blank"
+        rel="noreferrer"
+        className="mt-2 inline-flex min-h-11 items-center text-[14px] text-muted underline-offset-4 transition-colors hover:text-ink hover:underline"
+      >
+        Office: {contact.address[0]}, Mohali
+      </a>
+      <Button type="button" variant="outline" size="default" className="mt-4 w-full" onClick={onOther}>
         Other ways to reach us
       </Button>
     </>

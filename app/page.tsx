@@ -7,6 +7,7 @@ import { BookingBar } from "@/components/booking-bar";
 import { Enter, Reveal, Stagger, StaggerItem } from "@/components/motion";
 import { Button } from "@/components/ui/button";
 import { ContactDialog } from "@/components/contact-dialog";
+import { IndiaMap } from "@/components/india-map";
 import { cities, fleet, heroImage, serviceGroups } from "@/lib/site";
 import { PageTransition } from "@/components/page-transition";
 
@@ -211,14 +212,19 @@ export default function Home() {
               </Reveal>
               <Reveal delay={0.1} className="min-w-0 flex-[1_1_400px]">
                 <h3 className="font-serif text-2xl">Pan-India, including</h3>
-                <ul className="mt-4 grid grid-cols-2 gap-x-6 border-t border-ink/15 sm:grid-cols-3">
-                  {cities.map((c) => (
-                    <li key={c} className="border-b border-ink/15 py-2.5 text-[16px] text-body">
-                      {c}
-                    </li>
-                  ))}
-                </ul>
-                <p className="mt-4 text-[15px] text-muted">Travelling somewhere else in India? Ask us.</p>
+                <div className="mt-6 grid items-start gap-x-10 gap-y-8 sm:grid-cols-[minmax(0,5fr)_minmax(0,6fr)]">
+                  <IndiaMap className="mx-auto w-full max-w-[300px] sm:max-w-none" />
+                  <div>
+                    <ul className="grid grid-cols-2 gap-x-6 border-t border-ink/15">
+                      {cities.map((c) => (
+                        <li key={c} className="border-b border-ink/15 py-2.5 text-[16px] text-body">
+                          {c}
+                        </li>
+                      ))}
+                    </ul>
+                    <p className="mt-4 text-[15px] text-muted">Travelling somewhere else in India? Ask us.</p>
+                  </div>
+                </div>
               </Reveal>
             </div>
           </section>
