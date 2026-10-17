@@ -66,7 +66,8 @@ components/
   booking-bar.tsx          "Start a quote": occasion / city / date (all start empty) → pushes to /contact?… as query params
   quote-form.tsx           Pre-fills from those query params; "Other" opens a text box; submit opens the
                            WhatsApp popup with the details written out (nothing stored server-side)
-  contact-dialog.tsx       <ContactDialog channel="call|whatsapp|email"> wraps any button → animated popup
+  contact-dialog.tsx       <ContactDialog channel="call|whatsapp|email|all"> wraps any button → animated popup
+                           ("all" opens on the "Get in touch" list; used by the "Contact us" buttons)
                            (both numbers / WhatsApp / email, copy buttons, "Other ways to reach us" list)
   page-transition.tsx      Fade-and-lift between pages (React <ViewTransition>); wraps each page's <main>
   motion.tsx               Reveal, Enter, Stagger, StaggerItem, MotionProvider (respects reduced motion)
@@ -143,6 +144,10 @@ The v0 reference design (`redesign-jhajjz-in.zip`) got several facts wrong — n
       `jhajjz-preview` also exists (empty). **Never touch the existing Vercel project "aethal".**
 
 ## Changelog
+
+- 2026-10-17 — "Contact us" buttons on the privacy page (Contact section) and in the footer (under Contact) open
+  the popup on its "Get in touch" list (`channel="all"`, no Back button there). Privacy page email and phone
+  numbers open their popups too.
 
 - 2026-10-17 — AI-look audit of every page: contact popup header lost its icon square; "Other ways" list icons no
   longer sit in squares; privacy "In short" is a plain lead paragraph (no gold-striped box); arrows removed from

@@ -23,6 +23,7 @@ type Icon = React.ComponentType<React.SVGProps<SVGSVGElement>>;
  *   <ContactDialog channel="call"><button>Call us</button></ContactDialog>
  *
  * Each channel ends with "Other ways to reach us", which lists every option.
+ * `channel="all"` opens straight on that list (for general "Contact us" buttons).
  *
  * To open it from code (e.g. after a form submit) leave out the trigger and control it:
  *
@@ -37,7 +38,7 @@ export function ContactDialog({
   onOpenChange,
   message,
 }: {
-  channel: ContactChannel;
+  channel: View;
   children?: React.ReactNode;
   open?: boolean;
   onOpenChange?: (open: boolean) => void;
@@ -54,7 +55,7 @@ export function ContactDialog({
 }
 
 /** Mounted only while the dialog is open, so it starts on the requested channel every time. */
-function Panel({ channel, message }: { channel: ContactChannel; message?: string }) {
+function Panel({ channel, message }: { channel: View; message?: string }) {
   const [view, setView] = useState<View>(channel);
   // +1 when moving to the "all" list, -1 when coming back, so the slide direction matches.
   const [dir, setDir] = useState(1);
@@ -82,7 +83,8 @@ function Panel({ channel, message }: { channel: ContactChannel; message?: string
           className="px-6 pt-8 pb-6 sm:px-10 sm:pt-10 sm:pb-8"
         >
           {view === "all" ? (
-            <AllOptions onPick={go} onBack={() => go(channel)} />
+            // Opened on the list itself: nothing to go back to.
+            <AllOptions onPick={go} onBack={channel === "all" ? undefined : () => go(channel)} />
           ) : (
             <ChannelView channel={view} message={message} onOther={() => go("all")} />
           )}
@@ -158,7 +160,7 @@ function ChannelView({ channel, message, onOther }: { channel: ContactChannel; m
   );
 }
 
-function AllOptions({ onPick, onBack }: { onPick: (v: ContactChannel) => void; onBack: () => void }) {
+function AllOptions({ onPick, onBack }: { onPick: (v: ContactChannel) => void; onBack?: () => void }) {
   const itemClass =
     "group flex min-h-16 w-full items-center gap-4 px-2 py-3 text-left transition-colors duration-200 hover:bg-sand";
   const inner = (Icon: Icon, label: string, sub: string) => (
@@ -211,14 +213,16 @@ function AllOptions({ onPick, onBack }: { onPick: (v: ContactChannel) => void; o
           </motion.li>
         ))}
       </ul>
-      <button
-        type="button"
-        onClick={onBack}
-        className="mt-6 inline-flex min-h-11 items-center gap-2 text-[15px] font-medium text-muted transition-colors hover:text-ink"
-      >
-        <ArrowLeft className="size-4" aria-hidden="true" />
-        Back
-      </button>
+      {onBack && (
+        <button
+          type="button"
+          onClick={onBack}
+          className="mt-6 inline-flex min-h-11 items-center gap-2 text-[15px] font-medium text-muted transition-colors hover:text-ink"
+        >
+          <ArrowLeft className="size-4" aria-hidden="true" />
+          Back
+        </button>
+      )}
     </>
   );
 }

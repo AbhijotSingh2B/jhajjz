@@ -10,6 +10,7 @@ import {
 } from "@/components/icons";
 import { contact, founded } from "@/lib/site";
 import { ContactDialog } from "@/components/contact-dialog";
+import { Button } from "@/components/ui/button";
 
 const socialIcons = {
   Instagram: InstagramIcon,
@@ -75,6 +76,11 @@ export function SiteFooter() {
               </ContactDialog>
             </li>
           </ul>
+          <ContactDialog channel="all">
+            <Button type="button" variant="outlineLight" size="default" className="mt-5">
+              Contact us
+            </Button>
+          </ContactDialog>
         </div>
         <div>
           <h3 className="mb-2.5 text-sm font-semibold text-cream">Follow</h3>

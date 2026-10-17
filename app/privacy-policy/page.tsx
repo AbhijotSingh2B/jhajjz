@@ -3,6 +3,8 @@ import { SiteHeader } from "@/components/site-header";
 import { SiteFooter } from "@/components/site-footer";
 import { PageTransition } from "@/components/page-transition";
 import { contact } from "@/lib/site";
+import { ContactDialog } from "@/components/contact-dialog";
+import { Button } from "@/components/ui/button";
 
 export const metadata: Metadata = {
   title: "Privacy policy",
@@ -135,21 +137,30 @@ export default function PrivacyPolicyPage() {
                   {contact.address[0]}, {contact.address[1]}
                 </p>
                 <p className="mt-3">
-                  <a href={`mailto:${contact.email}`} className="underline underline-offset-4 hover:text-gold-deep">
-                    {contact.email}
-                  </a>
+                  <ContactDialog channel="email">
+                    <button type="button" className="underline underline-offset-4 hover:text-gold-deep">
+                      {contact.email}
+                    </button>
+                  </ContactDialog>
                 </p>
                 <p>
                   {contact.phones.map((p, i) => (
                     <span key={p.href}>
                       {i > 0 && " · "}
-                      <a href={p.href} className="underline-offset-4 hover:text-gold-deep hover:underline">
-                        {p.label}
-                      </a>
+                      <ContactDialog channel="call">
+                        <button type="button" className="underline-offset-4 hover:text-gold-deep hover:underline">
+                          {p.label}
+                        </button>
+                      </ContactDialog>
                     </span>
                   ))}
                 </p>
               </div>
+              <ContactDialog channel="all">
+                <Button type="button" variant="ink" className="mt-8">
+                  Contact us
+                </Button>
+              </ContactDialog>
             </section>
           </div>
         </main>
