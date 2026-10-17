@@ -6,7 +6,7 @@ import Link from "next/link";
 import { AnimatePresence, motion } from "motion/react";
 import { Search, X } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { carName, carsInClass as carsIn, classHref, contact, fleet, fleetGroups, inSentence, type FleetGroup } from "@/lib/site";
+import { carName, carsInClass as carsIn, classHref, contact, fleet, fleetGroups, type FleetGroup } from "@/lib/site";
 import { Confirm } from "@/components/confirm";
 import { ShareButton } from "@/components/share-button";
 
@@ -109,9 +109,26 @@ export function FleetBrowser() {
                   </span>
                 )}
               </div>
-              <h2 className="mt-4 font-serif text-[28px] leading-tight">{v.name}</h2>
+              {/* The title link's ::after stretches over the whole card, so the photo opens the class too. A class
+                  without car pages yet (coaches) has no page; its card goes to the quote form instead. */}
+              <div className="mt-3 flex items-start justify-between gap-3">
+                <h2 className="pt-1 font-serif text-[28px] leading-tight">
+                  {carsIn(v.slug).length > 0 ? (
+                    <Link
+                      href={`/fleet/${v.slug}`}
+                      className="underline decoration-transparent underline-offset-[6px] transition-colors duration-300 group-hover:decoration-ink/40 after:absolute after:inset-0"
+                    >
+                      {v.name}
+                    </Link>
+                  ) : (
+                    v.name
+                  )}
+                </h2>
+                {/* Above the card-wide link, like the car names. */}
+                <ShareButton path={classHref(v.slug)} name={v.name} iconOnly className="relative z-10 -mr-3" />
+              </div>
               <p className="mt-1.5 text-[15px] text-muted">{v.text}</p>
-              {carsIn(v.slug).length > 0 && (
+              {carsIn(v.slug).length > 0 ? (
                 // Above the card-wide link (its ::after), so these stay clickable on their own.
                 <ul className="relative z-10 mt-1 flex flex-wrap gap-x-5">
                   {carsIn(v.slug).map((c) => (
@@ -125,29 +142,14 @@ export function FleetBrowser() {
                     </li>
                   ))}
                 </ul>
-              )}
-              {/* The ::after stretches the link over the whole card, so the photo is clickable too. */}
-              <div className="mt-3 flex flex-wrap items-center justify-between gap-x-6">
-                {/* A class with cars opens its own page listing them; one without (coaches) goes to the quote form. */}
+              ) : (
                 <Link
-                  href={carsIn(v.slug).length > 0 ? `/fleet/${v.slug}` : `/contact?vehicle=${encodeURIComponent(v.name)}`}
-                  className="inline-flex min-h-11 items-center text-[15px] font-medium text-gold-deep underline decoration-transparent underline-offset-[5px] transition-colors duration-300 group-hover:decoration-gold-deep after:absolute after:inset-0"
+                  href={`/contact?vehicle=${encodeURIComponent(v.name)}`}
+                  className="mt-2 inline-flex min-h-11 items-center text-[15px] font-medium text-gold-deep underline decoration-transparent underline-offset-[5px] transition-colors duration-300 group-hover:decoration-gold-deep after:absolute after:inset-0"
                 >
-                  {carsIn(v.slug).length > 0 ? (
-                    `See all ${inSentence(v.name)}`
-                  ) : (
-                    <>
-                      Ask for a quote<span className="sr-only">: {v.name}</span>
-                    </>
-                  )}
+                  Ask for a quote<span className="sr-only">: {v.name}</span>
                 </Link>
-                {/* Above the card-wide link, like the car names. */}
-                <ShareButton
-                  path={classHref(v.slug)}
-                  title={`${v.name} | Jhajj'z`}
-                  className="relative z-10"
-                />
-              </div>
+              )}
             </motion.article>
           ))}
         </AnimatePresence>

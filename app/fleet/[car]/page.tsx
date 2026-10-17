@@ -90,28 +90,31 @@ export default async function CarPage({ params }: Props) {
         <main>
           <section className="pt-[72px] pb-[72px] md:pb-28">
             <div className="mx-auto max-w-[1200px] px-6 pt-8 md:pt-12">
-              <nav aria-label="Breadcrumb" className="text-[15px] text-muted">
-                <ol className="flex flex-wrap items-center gap-x-2">
-                  <li>
-                    <Link href="/fleet" className="inline-flex min-h-11 items-center underline-offset-4 hover:text-ink hover:underline">
-                      Fleet
-                    </Link>
-                  </li>
-                  {fleetClass && (
-                    <>
-                      <li aria-hidden="true">/</li>
-                      <li>
-                        <Link
-                          href={classHref(fleetClass.slug)}
-                          className="inline-flex min-h-11 items-center underline-offset-4 hover:text-ink hover:underline"
-                        >
-                          {fleetClass.name}
-                        </Link>
-                      </li>
-                    </>
-                  )}
-                </ol>
-              </nav>
+              <div className="flex items-start justify-between gap-4">
+                <nav aria-label="Breadcrumb" className="text-[15px] text-muted">
+                  <ol className="flex flex-wrap items-center gap-x-2">
+                    <li>
+                      <Link href="/fleet" className="inline-flex min-h-11 items-center underline-offset-4 hover:text-ink hover:underline">
+                        Fleet
+                      </Link>
+                    </li>
+                    {fleetClass && (
+                      <>
+                        <li aria-hidden="true">/</li>
+                        <li>
+                          <Link
+                            href={classHref(fleetClass.slug)}
+                            className="inline-flex min-h-11 items-center underline-offset-4 hover:text-ink hover:underline"
+                          >
+                            {fleetClass.name}
+                          </Link>
+                        </li>
+                      </>
+                    )}
+                  </ol>
+                </nav>
+                <ShareButton path={`/fleet/${car.slug}`} name={name} className="shrink-0 text-muted hover:text-ink" />
+              </div>
 
               <div className="mt-4 grid gap-x-16 gap-y-10 md:mt-6 grid-cols-[minmax(0,1fr)] lg:grid-cols-[minmax(0,7fr)_minmax(0,5fr)]">
                 <Enter>
@@ -155,7 +158,6 @@ export default async function CarPage({ params }: Props) {
                         Talk to us on WhatsApp
                       </Button>
                     </ContactDialog>
-                    <ShareButton path={`/fleet/${car.slug}`} title={`${name} | Jhajj'z`} />
                   </div>
                 </Enter>
               </div>

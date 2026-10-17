@@ -7,9 +7,22 @@ import { cn } from "@/lib/utils";
 /**
  * Shares a page on this site: the phone's own share sheet where there is one (iPhone, Android), otherwise copies
  * the link and says so. `path` is resolved against the current host, so preview links stay on the preview.
+ * `name` is what's shared, e.g. "SUVs" (shared as "SUVs | Jhajj'z").
+ * `iconOnly` is the quiet version for card titles: a 44px icon button, "Link copied" appears beside it.
  */
-export function ShareButton({ path, title, className }: { path: string; title: string; className?: string }) {
+export function ShareButton({
+  path,
+  name,
+  iconOnly = false,
+  className,
+}: {
+  path: string;
+  name: string;
+  iconOnly?: boolean;
+  className?: string;
+}) {
   const [copied, setCopied] = useState(false);
+  const title = `${name} | Jhajj'z`;
 
   const share = async () => {
     const url = new URL(path, window.location.origin).toString();
@@ -30,6 +43,22 @@ export function ShareButton({ path, title, className }: { path: string; title: s
     }
   };
 
+  if (iconOnly) {
+    return (
+      <button
+        type="button"
+        onClick={share}
+        aria-label={`Share ${name}`}
+        className={cn("relative flex size-11 shrink-0 items-center justify-center text-muted transition-colors hover:text-ink", className)}
+      >
+        {copied ? <Check className="size-[18px] text-gold-deep" aria-hidden="true" /> : <Share2 className="size-[18px]" aria-hidden="true" />}
+        <span aria-live="polite" className={cn("absolute right-full bg-paper pl-2 text-[13px] whitespace-nowrap text-gold-deep", !copied && "sr-only")}>
+          {copied ? "Link copied" : ""}
+        </span>
+      </button>
+    );
+  }
+
   return (
     <button
       type="button"
@@ -41,7 +70,7 @@ export function ShareButton({ path, title, className }: { path: string; title: s
     >
       {copied ? <Check className="size-4 text-gold-deep" aria-hidden="true" /> : <Share2 className="size-4" aria-hidden="true" />}
       <span aria-live="polite">{copied ? "Link copied" : "Share"}</span>
-      {!copied && <span className="sr-only">{title}</span>}
+      {!copied && <span className="sr-only">{name}</span>}
     </button>
   );
 }
