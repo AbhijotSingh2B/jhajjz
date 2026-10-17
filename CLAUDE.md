@@ -46,6 +46,11 @@ components/
   page-transition.tsx      Fade-and-lift between pages (React <ViewTransition>); wraps each page's <main>
   motion.tsx               Reveal, Enter, Stagger, StaggerItem, MotionProvider (respects reduced motion)
   ui/                      button, select, navigation-menu, sheet, dialog (bottom sheet on phones)
+proxy.ts                   Adds `X-Robots-Tag: noindex` on every host except www.jhajjz.in / jhajjz.in (previews)
+app/sitemap.ts, robots.ts, manifest.ts   SEO files; all URLs use `siteUrl` from lib/site.ts
+app/icon.svg, favicon.ico, apple-icon.png, public/icon-192/512.png   Placeholder "J" monogram favicon
+components/structured-data.tsx   Schema.org JSON-LD (AutoRental business, WebSite, breadcrumbs) from lib/site.ts
+lib/seo.ts                 `openGraphBase`: spread into every page's openGraph (Next doesn't deep-merge it)
 lib/site.ts                ALL client facts: contact, cities, services, fleet, photos. Edit here, not in pages.
 ```
 
@@ -95,12 +100,25 @@ The v0 reference design (`redesign-jhajjz-in.zip`) got several facts wrong — n
 - [ ] Privacy policy: drafted from what the site actually does (no cookies/tracking; form only opens WhatsApp or
       email). Client must confirm the 3 highlighted `[CONFIRM]` items (who details are shared with, how long they're
       kept, no selling/marketing), or swap in the text from jhajjz.in/privacy-policy.
-- [ ] Favicon / logo — client has a logo on Wix; get the file
+- [ ] Favicon / logo — placeholder favicon is a gold Caslon "J" on ink (made from the heading font, see
+      app/icon.svg). Swap for the client's real logo when we have the file; regenerate all 5 icon files.
+- [ ] **SEO at launch** (code is ready; these are outside the repo):
+      1. Point www.jhajjz.in at Vercel — the noindex on previews switches off automatically for that host.
+      2. 301-redirect every old Wix URL to its new page (`redirects()` in next.config.ts) so rankings carry over.
+         Needs the list of Wix URLs (Search Console → Pages, or a crawl of jhajjz.in).
+      3. Google Search Console: verify the domain, submit https://www.jhajjz.in/sitemap.xml.
+      4. Google Business Profile for the Mohali office (same name, address, phone as the site) — the single
+         biggest factor for "luxury car rental Chandigarh"-type local searches. Ask the client for reviews there.
 - [ ] Deploy preview: Nirmal views the site at **https://jhajjz.vercel.app**. Claude's cloud sandbox can't load it
       (network policy blocks vercel.app; the Vercel connector has no access to that project). Netlify site
       `jhajjz-preview` also exists (empty). **Never touch the existing Vercel project "aethal".**
 
 ## Changelog
+
+- 2026-10-17 — SEO: keyword titles/descriptions per page, canonicals to www.jhajjz.in, Open Graph/Twitter cards,
+  JSON-LD (AutoRental + WebSite + breadcrumbs), sitemap, robots, web manifest, theme colour, noindex on previews
+  via proxy.ts. Favicon set (placeholder "J" monogram). iPhone sideways drag: clip moved to a wrapper div in
+  layout.tsx (Safari ignores overflow on html/body for touch panning).
 
 - 2026-10-17 — iPhone: page could be dragged sideways (Safari horizontal bounce). `html, body { overflow-x: clip;
   overscroll-behavior-x: none }` in globals.css. Chromium shows no overflowing element on any page at 375/390px;

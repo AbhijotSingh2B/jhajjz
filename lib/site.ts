@@ -25,6 +25,19 @@ export const contact = {
 
 export const founded = 1998;
 
+// The live domain (currently the Wix site; this build replaces it at launch). Canonical URLs, the sitemap and
+// structured data all point here. Search engines are told not to index any other host (see proxy.ts).
+export const siteUrl = "https://www.jhajjz.in";
+export const siteName = "Jhajj'z";
+
+// Structured address for search engines. Same facts as `contact.address`; no postcode, it isn't on jhajjz.in.
+export const postalAddress = {
+  streetAddress: "SSS-106, 107, PCA Stadium Road, Sector 63",
+  addressLocality: "Mohali",
+  addressRegion: "Punjab",
+  addressCountry: "IN",
+};
+
 // Hero photo. The client's own sharing image from jhajjz.in is used for now.
 // /public/rolls-royce-hero.webp (from the v0 reference, likely AI-generated)
 // is kept as an alternative — swap the value below to use it instead.

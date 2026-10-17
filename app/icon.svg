@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
+  <!-- "J" from Libre Caslon Display (SIL OFL), the site's heading font. Placeholder until the client's logo file. -->
+  <rect width="100" height="100" fill="#151514"/>
+  <path fill="#C5A47E" stroke="#C5A47E" stroke-width="22" stroke-linejoin="round" transform="translate(38.05 75.95) scale(0.1 -0.1)" d="M63 -159Q29 -159 29 -124L30 -95Q30 -74 19.0 -62.0Q8 -50 -12 -50Q-31 -50 -42.5 -62.0Q-54 -74 -54 -94Q-54 -127 -23.0 -149.0Q8 -171 55 -171Q92 -171 125.0 -154.5Q158 -138 178 -109Q196 -83 203.5 -45.5Q211 -8 211 57V674L293 682V690H52V682L134 674V-20Q134 -83 114.5 -121.0Q95 -159 63 -159Z"/>
+</svg>

@@ -6,17 +6,24 @@ import { FleetBrowser } from "@/components/fleet-browser";
 import { Enter, Reveal } from "@/components/motion";
 import { Button } from "@/components/ui/button";
 import { PageTransition } from "@/components/page-transition";
+import { BreadcrumbStructuredData } from "@/components/structured-data";
+import { openGraphBase } from "@/lib/seo";
+
+const fleetDescription =
+  "Rent a Rolls-Royce, Mercedes-Benz, BMW, Audi or Range Rover with a chauffeur: luxury cars, wedding cars, vintage cars, limousines, SUVs, Volvo coaches and mini vans. Chandigarh and pan-India.";
 
 export const metadata: Metadata = {
-  title: "Fleet",
-  description:
-    "Rolls-Royce, Mercedes-Benz, BMW, Audi and Range Rover, plus Volvo and Mercedes-Benz coaches. All chauffeur-driven.",
+  title: "Luxury Car, Wedding Car & Coach Fleet",
+  description: fleetDescription,
+  alternates: { canonical: "/fleet" },
+  openGraph: { ...openGraphBase, url: "/fleet", title: "The Jhajj'z fleet: luxury cars, wedding cars and coaches", description: fleetDescription },
 };
 
 export default function FleetPage() {
   return (
     <>
       <SiteHeader />
+      <BreadcrumbStructuredData name="Fleet" path="/fleet" />
       <PageTransition>
         <main>
           <section className="pt-[72px]">

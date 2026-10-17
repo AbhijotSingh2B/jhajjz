@@ -7,6 +7,7 @@ import { contact } from "@/lib/site";
 export const metadata: Metadata = {
   title: "Privacy policy",
   description: "How the Jhajj'z website handles your information. No cookies, no tracking.",
+  alternates: { canonical: "/privacy-policy" },
 };
 
 // Written from what this site actually does (checked in the code: no cookies, no

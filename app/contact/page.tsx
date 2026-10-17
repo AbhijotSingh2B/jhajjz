@@ -6,11 +6,18 @@ import { QuoteForm } from "@/components/quote-form";
 import { Enter } from "@/components/motion";
 import { contact } from "@/lib/site";
 import { PageTransition } from "@/components/page-transition";
+import { BreadcrumbStructuredData } from "@/components/structured-data";
+import { openGraphBase } from "@/lib/seo";
 import { ContactDialog, type ContactChannel } from "@/components/contact-dialog";
 
+const contactDescription =
+  "Get a quote for a luxury car, wedding car or coach with chauffeur. Tell us the date, city and occasion, or call +91 98036 00001. Chandigarh and pan-India.";
+
 export const metadata: Metadata = {
-  title: "Get a quote",
-  description: "Tell us the date, city and occasion and we'll recommend a car and send a quote. Call or WhatsApp for urgent bookings.",
+  title: "Get a Quote for Luxury & Wedding Car Rental",
+  description: contactDescription,
+  alternates: { canonical: "/contact" },
+  openGraph: { ...openGraphBase, url: "/contact", title: "Get a quote from Jhajj'z", description: contactDescription },
 };
 
 export default function ContactPage() {
@@ -24,6 +31,7 @@ export default function ContactPage() {
   return (
     <>
       <SiteHeader />
+      <BreadcrumbStructuredData name="Get a quote" path="/contact" />
       <PageTransition>
         <main className="pt-[72px]">
           {/* Phones: intro, form, then contact details. Desktop: intro + details left, form right. */}

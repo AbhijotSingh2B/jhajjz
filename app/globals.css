@@ -38,12 +38,10 @@
 }
 
 @layer base {
-  /* No sideways drag on phones: iOS Safari lets the whole page be pulled left/right and bounce, which
-     shows the edge of the layout. `clip` (unlike `hidden`) doesn't break position: fixed/sticky, and the
-     fleet swipe row still scrolls inside its own container. Vertical bounce is left alone. */
+  /* No sideways bounce on phones (vertical bounce is left alone). The sideways clip itself is on a wrapper
+     in app/layout.tsx, because iPhone Safari ignores overflow set on html/body when you drag. */
   html,
   body {
-    overflow-x: clip;
     overscroll-behavior-x: none;
   }
   html {
