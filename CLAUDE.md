@@ -92,13 +92,18 @@ The v0 reference design (`redesign-jhajjz-in.zip`) got several facts wrong — n
       reference, probably AI-generated) is the alternative — swap `heroImage` in `lib/site.ts`.
 - [ ] **Quote form** opens the WhatsApp popup (`ContactDialog`) with the details prefilled; nothing is stored
       server-side. Confirm +91 98144 00019 is also on WhatsApp (only the first number is confirmed).
-- [ ] Privacy policy text (copy from jhajjz.in/privacy-policy)
+- [ ] Privacy policy: drafted from what the site actually does (no cookies/tracking; form only opens WhatsApp or
+      email). Client must confirm the 3 highlighted `[CONFIRM]` items (who details are shared with, how long they're
+      kept, no selling/marketing), or swap in the text from jhajjz.in/privacy-policy.
 - [ ] Favicon / logo — client has a logo on Wix; get the file
 - [ ] Deploy preview: Nirmal views the site at **https://jhajjz.vercel.app**. Claude's cloud sandbox can't load it
       (network policy blocks vercel.app; the Vercel connector has no access to that project). Netlify site
       `jhajjz-preview` also exists (empty). **Never touch the existing Vercel project "aethal".**
 
 ## Changelog
+
+- 2026-10-17 — Privacy policy page written (plain language, "In short" summary, contact block); unknown business
+  practices shown as highlighted `[CONFIRM]` marks.
 
 - 2026-10-17 — WhatsApp logo (`components/icons.tsx`, Simple Icons glyph) replaces the chat-bubble icon; buttons
   stay ink, not WhatsApp green, to keep the palette. Popup rows: on phones the number sits on its own line with
