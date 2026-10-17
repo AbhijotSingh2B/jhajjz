@@ -76,7 +76,7 @@ components/
   ui/                      button, select, navigation-menu, sheet, dialog (bottom sheet on phones)
 proxy.ts                   Adds `X-Robots-Tag: noindex` on every host except www.jhajjz.in / jhajjz.in (previews)
 app/sitemap.ts, robots.ts, manifest.ts   SEO files; all URLs use `siteUrl` from lib/site.ts
-app/icon.svg, favicon.ico, apple-icon.png, public/icon-192/512.png   Placeholder "J" monogram favicon
+app/icon.svg, favicon.ico, apple-icon.png, public/icon-192/512.png   Placeholder "Jhajj'z" wordmark favicon
 components/structured-data.tsx   Schema.org JSON-LD (AutoRental business, WebSite, breadcrumbs) from lib/site.ts
 lib/seo.ts                 `openGraphBase`: spread into every page's openGraph (Next doesn't deep-merge it)
 lib/india-map.ts           Map path + city positions (generated with mapshaper; source and method in the file header)
@@ -132,8 +132,8 @@ The v0 reference design (`redesign-jhajjz-in.zip`) got several facts wrong — n
 - [ ] Privacy policy: drafted from what the site actually does (no cookies/tracking; form only opens WhatsApp or
       email). Client must confirm the 3 highlighted `[CONFIRM]` items (who details are shared with, how long they're
       kept, no selling/marketing), or swap in the text from jhajjz.in/privacy-policy.
-- [ ] Favicon / logo — placeholder favicon is a gold Caslon "J" on ink (made from the heading font, see
-      app/icon.svg). Swap for the client's real logo when we have the file; regenerate all 5 icon files.
+- [ ] Favicon / logo — placeholder favicon is the word "Jhajj'z" in gold Caslon on ink (made from the heading font
+      with fontTools, see app/icon.svg; PNGs use a narrower word to fit the maskable safe zone). Swap for the client's real logo when we have the file; regenerate all 5 icon files.
 - [ ] **SEO at launch** (code is ready; these are outside the repo):
       1. Point www.jhajjz.in at Vercel — the noindex on previews switches off automatically for that host.
       2. 301-redirect every old Wix URL to its new page (`redirects()` in next.config.ts) so rankings carry over.
@@ -172,6 +172,9 @@ pin for the office. Needs the office's exact coordinates (client, or Google Maps
 (an embed loads Google cookies, so the privacy policy would need a line). Still ask the client for photos and logo.
 
 ## Changelog
+
+- 2026-10-17 — Favicon: full "Jhajj'z" word (gold Libre Caslon on ink) replaces the "J" monogram in all 5 icon
+  files. Legible at 32px and up; at 16px (old browser tabs) it is too small to read.
 
 - 2026-10-17 — Map: head-office dot placed at Mohali (Sector 63), not Chandigarh; caption "Head office, Mohali"
   with its number +91 98036 00001 as a call link.
