@@ -39,7 +39,7 @@ app/
 components/
   site-header.tsx          Fixed header (Home, Fleet, Weddings, Services, About, Contact); transparent over the home hero until scroll; Fleet mega-menu; mobile sheet
   site-footer.tsx          Also renders the phone-only sticky Call / WhatsApp bar
-  booking-bar.tsx          "Start a quote": occasion / city / date → pushes to /contact?… as query params
+  booking-bar.tsx          "Start a quote": occasion / city / date (all start empty) → pushes to /contact?… as query params
   quote-form.tsx           Pre-fills from those query params
   contact-dialog.tsx       <ContactDialog channel="call|whatsapp|email"> wraps any button → animated popup
                            (both numbers / WhatsApp / email, copy buttons, "Other ways to reach us" list)
@@ -92,6 +92,9 @@ The v0 reference design (`redesign-jhajjz-in.zip`) got several facts wrong — n
       `jhajjz-preview` also exists (empty). **Never touch the existing Vercel project "aethal".**
 
 ## Changelog
+
+- 2026-10-17 — Dropdowns start empty with placeholders ("Choose a city" etc.); "Other" added to occasion and
+  vehicle (city already has "Other city in India"). Booking bar only passes on fields the visitor filled.
 
 - 2026-10-17 — Contact popup (`ContactDialog`) on every "Call us" / "WhatsApp us" / "Email us" button, header phone
   and mobile sticky bar. Pan-India copy + "Other city in India" option in both forms. Light Fleet header, whole

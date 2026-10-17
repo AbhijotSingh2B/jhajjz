@@ -10,14 +10,15 @@ import { cn } from "@/lib/utils";
 /** Short quote starter under the hero. Hands its choices to /contact as query params. */
 export function BookingBar() {
   const router = useRouter();
-  const [occasion, setOccasion] = useState(occasions[0]);
-  const [city, setCity] = useState(cityOptions[0]);
+  const [occasion, setOccasion] = useState("");
+  const [city, setCity] = useState("");
   const [date, setDate] = useState("");
 
   function submit(e: React.FormEvent) {
     e.preventDefault();
-    const q = new URLSearchParams({ occasion, city, ...(date ? { date } : {}) });
-    router.push(`/contact?${q.toString()}`);
+    // Only pass on what the visitor actually chose; the quote form shows empty fields for the rest.
+    const q = new URLSearchParams(Object.entries({ occasion, city, date }).filter(([, v]) => v));
+    router.push(q.size ? `/contact?${q.toString()}` : "/contact");
   }
 
   return (
@@ -29,7 +30,7 @@ export function BookingBar() {
       <Field label="Occasion" id="bb-occasion">
         <Select value={occasion} onValueChange={setOccasion}>
           <SelectTrigger id="bb-occasion">
-            <SelectValue />
+            <SelectValue placeholder="Choose an occasion" />
           </SelectTrigger>
           <SelectContent>
             {occasions.map((o) => (
@@ -43,7 +44,7 @@ export function BookingBar() {
       <Field label="City" id="bb-city">
         <Select value={city} onValueChange={setCity}>
           <SelectTrigger id="bb-city">
-            <SelectValue />
+            <SelectValue placeholder="Choose a city" />
           </SelectTrigger>
           <SelectContent>
             {cityOptions.map((c) => (

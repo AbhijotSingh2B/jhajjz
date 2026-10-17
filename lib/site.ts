@@ -89,6 +89,7 @@ export const occasions = [
   "Photoshoot",
   "Long-term hire",
   "City tour",
+  "Other",
 ];
 
 // Wix-hosted photos from the current site. The image-to-category mapping was

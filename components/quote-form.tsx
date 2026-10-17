@@ -8,6 +8,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Button } from "@/components/ui/button";
 
 const NOT_SURE = "Not sure — recommend one";
+const OTHER_VEHICLE = "Other";
 
 /**
  * Quote request form. Pre-fills from the booking bar's query params.
@@ -17,9 +18,9 @@ const NOT_SURE = "Not sure — recommend one";
 export function QuoteForm() {
   const params = useSearchParams();
   const [sent, setSent] = useState(false);
-  const [occasion, setOccasion] = useState(params.get("occasion") ?? occasions[0]);
-  const [vehicle, setVehicle] = useState(params.get("vehicle") ?? NOT_SURE);
-  const [city, setCity] = useState(params.get("city") ?? cityOptions[0]);
+  const [occasion, setOccasion] = useState(params.get("occasion") ?? "");
+  const [vehicle, setVehicle] = useState(params.get("vehicle") ?? "");
+  const [city, setCity] = useState(params.get("city") ?? "");
 
   const inputClass =
     "h-12 w-full border-b border-white/30 bg-transparent text-[17px] text-cream outline-none transition-colors placeholder:text-muted-dark hover:border-white/60 focus:border-gold";
@@ -66,7 +67,7 @@ export function QuoteForm() {
             <DarkField label="Occasion" id="q-occasion">
               <Select value={occasion} onValueChange={setOccasion} name="occasion">
                 <SelectTrigger id="q-occasion" tone="dark">
-                  <SelectValue />
+                  <SelectValue placeholder="Choose an occasion" />
                 </SelectTrigger>
                 <SelectContent>
                   {occasions.map((o) => (
@@ -80,7 +81,7 @@ export function QuoteForm() {
             <DarkField label="Vehicle" id="q-vehicle">
               <Select value={vehicle} onValueChange={setVehicle} name="vehicle">
                 <SelectTrigger id="q-vehicle" tone="dark">
-                  <SelectValue />
+                  <SelectValue placeholder="Choose a vehicle" />
                 </SelectTrigger>
                 <SelectContent>
                   <SelectItem value={NOT_SURE}>{NOT_SURE}</SelectItem>
@@ -89,13 +90,14 @@ export function QuoteForm() {
                       {v.name}
                     </SelectItem>
                   ))}
+                  <SelectItem value={OTHER_VEHICLE}>{OTHER_VEHICLE}</SelectItem>
                 </SelectContent>
               </Select>
             </DarkField>
             <DarkField label="City" id="q-city">
               <Select value={city} onValueChange={setCity} name="city">
                 <SelectTrigger id="q-city" tone="dark">
-                  <SelectValue />
+                  <SelectValue placeholder="Choose a city" />
                 </SelectTrigger>
                 <SelectContent>
                   {cityOptions.map((c) => (
