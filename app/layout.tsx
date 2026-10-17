@@ -10,7 +10,7 @@ export const metadata: Metadata = {
     template: "%s | Jhajj'z",
   },
   description:
-    "Chauffeur-driven luxury cars, wedding cars, SUVs and coaches across India since 1998. Head office in Mohali, stations in 14 cities.",
+    "Chauffeur-driven luxury cars, wedding cars, SUVs and coaches across India since 1998. Head office in Chandigarh, serving pan-India.",
   openGraph: {
     siteName: "Jhajj'z",
     type: "website",

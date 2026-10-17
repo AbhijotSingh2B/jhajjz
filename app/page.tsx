@@ -41,8 +41,8 @@ export default function Home() {
               </Enter>
               <Enter delay={0.3}>
                 <p className="mt-6 max-w-[480px] text-lg text-on-dark-hero">
-                  Weddings, VIP visits, corporate travel and airport transfers, anywhere in India. Head office in Mohali,
-                  with stations in 14 cities.
+                  Weddings, VIP visits, corporate travel and airport transfers. Head office in Chandigarh, serving
+                  pan-India.
                 </p>
               </Enter>
               <Enter delay={0.45} className="mt-8 flex flex-wrap items-center gap-x-6 gap-y-3">
