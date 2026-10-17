@@ -11,7 +11,9 @@ export const contact = {
   email: "info.jhajjz@gmail.com",
   address: ["SSS-106, 107, PCA Stadium Road", "Sector 63, Mohali (SAS Nagar), Punjab"],
   socials: [
-    { label: "Instagram", href: "https://www.instagram.com/jhajjz_limos/" },
+    { label: "Instagram", href: "https://www.instagram.com/jhajjz_transport/" },
+    { label: "Instagram (Delhi)", href: "https://www.instagram.com/jhajjz_limos_delhi/" },
+    { label: "LinkedIn", href: "https://in.linkedin.com/company/jhajjz" },
     { label: "YouTube", href: "https://www.youtube.com/@JhajjzTheTransporters" },
     { label: "Facebook", href: "http://facebook.com/HIRE.CONVERTIBLES.LUXURY.WEDDING.CORPORATE.CARS" },
     { label: "X", href: "http://twitter.com/Jhajjztransport" },
