@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { MessageCircle, Phone } from "lucide-react";
 import { contact, founded } from "@/lib/site";
+import { ContactDialog } from "@/components/contact-dialog";
 
 export function SiteFooter() {
   return (
@@ -10,7 +11,7 @@ export function SiteFooter() {
           <Link href="/" className="font-serif text-2xl text-cream">
             Jhajj&apos;z
           </Link>
-          <p className="mt-2 text-muted-dark">Luxury car and coach rental since {founded}.</p>
+          <p className="mt-2 text-muted-dark">Luxury car and coach rental across India since {founded}.</p>
         </div>
         <div>
           <h3 className="mb-2.5 text-sm font-semibold text-cream">Office</h3>
@@ -39,7 +40,7 @@ export function SiteFooter() {
         </div>
         <div>
           <h3 className="mb-2.5 text-sm font-semibold text-cream">Follow</h3>
-          <ul className="flex flex-col">
+          <ul className="flex flex-wrap gap-x-4 gap-y-1">
             {contact.socials.map((s) => (
               <li key={s.href}>
                 <a href={s.href} target="_blank" rel="noreferrer" className="transition-colors hover:text-cream">
@@ -65,17 +66,21 @@ export function SiteFooter() {
 function MobileContactBar() {
   return (
     <div className="fixed inset-x-0 bottom-0 z-30 grid grid-cols-2 border-t border-white/10 bg-ink/95 pb-[env(safe-area-inset-bottom)] text-cream backdrop-blur-md md:hidden">
-      <a href={contact.phones[0].href} className="flex h-14 items-center justify-center gap-2 text-[15px] font-medium">
-        <Phone className="size-4" aria-hidden="true" />
-        Call
-      </a>
-      <a
-        href={contact.whatsapp}
-        className="flex h-14 items-center justify-center gap-2 border-l border-white/10 text-[15px] font-medium"
-      >
-        <MessageCircle className="size-4" aria-hidden="true" />
-        WhatsApp
-      </a>
+      <ContactDialog channel="call">
+        <button type="button" className="flex h-14 items-center justify-center gap-2 text-[15px] font-medium">
+          <Phone className="size-4 text-gold" aria-hidden="true" />
+          Call
+        </button>
+      </ContactDialog>
+      <ContactDialog channel="whatsapp">
+        <button
+          type="button"
+          className="flex h-14 items-center justify-center gap-2 border-l border-white/10 text-[15px] font-medium"
+        >
+          <MessageCircle className="size-4 text-gold" aria-hidden="true" />
+          WhatsApp
+        </button>
+      </ContactDialog>
     </div>
   );
 }

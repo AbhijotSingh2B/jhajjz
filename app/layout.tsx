@@ -6,21 +6,23 @@ import { heroImage } from "@/lib/site";
 export const metadata: Metadata = {
   metadataBase: new URL("https://www.jhajjz.in"),
   title: {
-    default: "Jhajj'z | Luxury car & coach rental in Chandigarh, since 1998",
+    default: "Jhajj'z | Luxury car & coach rental across India, since 1998",
     template: "%s | Jhajj'z",
   },
   description:
-    "Chauffeur-driven luxury cars, wedding cars, SUVs and coaches. Based in Mohali, serving 14 cities across India since 1998.",
+    "Chauffeur-driven luxury cars, wedding cars, SUVs and coaches across India since 1998. Head office in Mohali, stations in 14 cities.",
   openGraph: {
     siteName: "Jhajj'z",
     type: "website",
+    locale: "en_IN",
     images: [heroImage],
   },
+  twitter: { card: "summary_large_image" },
 };
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html lang="en">
+    <html lang="en-IN" data-scroll-behavior="smooth">
       <body>
         <MotionProvider>{children}</MotionProvider>
       </body>

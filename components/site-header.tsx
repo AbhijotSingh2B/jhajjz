@@ -5,7 +5,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { motion } from "motion/react";
-import { ArrowRight, Menu, Phone } from "lucide-react";
+import { ArrowRight, Mail, Menu, MessageCircle, Phone } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { contact, fleet, heroImage } from "@/lib/site";
 import {
@@ -16,6 +16,7 @@ import {
   NavigationMenuList,
   NavigationMenuTrigger,
 } from "@/components/ui/navigation-menu";
+import { ContactDialog } from "@/components/contact-dialog";
 import { Sheet, SheetContent, SheetDescription, SheetTitle, SheetTrigger, SheetClose } from "@/components/ui/sheet";
 
 const links = [
@@ -82,13 +83,15 @@ export function SiteHeader({ overlay = false }: { overlay?: boolean }) {
               ))}
             </NavigationMenuList>
           </NavigationMenu>
-          <a
-            href={contact.phones[0].href}
-            className="ml-4 inline-flex h-11 items-center gap-2 text-[15px] font-medium text-cream transition-colors hover:text-gold"
-          >
-            <Phone className="size-4" aria-hidden="true" />
-            {contact.phones[0].label}
-          </a>
+          <ContactDialog channel="call">
+            <button
+              type="button"
+              className="ml-4 inline-flex h-11 items-center gap-2 text-[15px] font-medium text-cream transition-colors hover:text-gold"
+            >
+              <Phone className="size-4" aria-hidden="true" />
+              {contact.phones[0].label}
+            </button>
+          </ContactDialog>
         </div>
 
         <MobileMenu />
@@ -204,14 +207,20 @@ function MobileMenu() {
             transition={{ delay: 0.5, duration: 0.5 }}
             className="mt-auto flex flex-col gap-1 text-cream/80"
           >
-            {contact.phones.map((p) => (
-              <a key={p.href} href={p.href} className="flex min-h-11 items-center hover:text-cream">
-                {p.label}
-              </a>
+            {(
+              [
+                ["call", Phone, "Call us"],
+                ["whatsapp", MessageCircle, "WhatsApp us"],
+                ["email", Mail, "Email us"],
+              ] as const
+            ).map(([channel, Icon, label]) => (
+              <ContactDialog key={channel} channel={channel}>
+                <button type="button" className="flex min-h-11 items-center gap-3 text-left transition-colors hover:text-cream">
+                  <Icon className="size-4 text-gold" aria-hidden="true" />
+                  {label}
+                </button>
+              </ContactDialog>
             ))}
-            <a href={contact.whatsapp} className="flex min-h-11 items-center hover:text-cream">
-              WhatsApp us
-            </a>
           </motion.div>
         </div>
       </SheetContent>

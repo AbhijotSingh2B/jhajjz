@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { useSearchParams } from "next/navigation";
 import { AnimatePresence, motion } from "motion/react";
-import { cities, fleet, occasions } from "@/lib/site";
+import { cityOptions, fleet, occasions } from "@/lib/site";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Button } from "@/components/ui/button";
 
@@ -19,7 +19,7 @@ export function QuoteForm() {
   const [sent, setSent] = useState(false);
   const [occasion, setOccasion] = useState(params.get("occasion") ?? occasions[0]);
   const [vehicle, setVehicle] = useState(params.get("vehicle") ?? NOT_SURE);
-  const [city, setCity] = useState(params.get("city") ?? cities[0]);
+  const [city, setCity] = useState(params.get("city") ?? cityOptions[0]);
 
   const inputClass =
     "h-12 w-full border-b border-white/30 bg-transparent text-[17px] text-cream outline-none transition-colors placeholder:text-muted-dark hover:border-white/60 focus:border-gold";
@@ -98,7 +98,7 @@ export function QuoteForm() {
                   <SelectValue />
                 </SelectTrigger>
                 <SelectContent>
-                  {cities.map((c) => (
+                  {cityOptions.map((c) => (
                     <SelectItem key={c} value={c}>
                       {c}
                     </SelectItem>

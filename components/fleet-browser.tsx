@@ -4,7 +4,6 @@ import { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { AnimatePresence, motion } from "motion/react";
-import { ArrowRight } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { fleet, fleetGroups, type FleetGroup } from "@/lib/site";
 
@@ -54,28 +53,26 @@ export function FleetBrowser() {
               initial={{ opacity: 0, y: 24 }}
               animate={{ opacity: 1, y: 0, transition: { duration: 0.6, ease, delay: i * 0.05 } }}
               exit={{ opacity: 0, scale: 0.96, transition: { duration: 0.25 } }}
-              className="group scroll-mt-28"
+              className="group relative scroll-mt-28"
             >
               <div className="relative aspect-[3/2] overflow-hidden bg-stone">
                 <Image
                   src={v.image}
                   alt={v.imageAlt}
                   fill
+                  priority={i < 3}
                   sizes="(max-width: 768px) 100vw, 400px"
                   className="object-cover saturate-[0.85] transition-[transform,filter] duration-700 ease-out group-hover:scale-[1.04] group-hover:saturate-100"
                 />
               </div>
               <h2 className="mt-4 font-serif text-[28px] leading-tight">{v.name}</h2>
               <p className="mt-1.5 text-[15px] text-muted">{v.text}</p>
+              {/* The ::after stretches the link over the whole card, so the photo is clickable too. */}
               <Link
                 href={`/contact?vehicle=${encodeURIComponent(v.name)}`}
-                className="mt-4 inline-flex min-h-11 items-center gap-2 text-[15px] font-semibold text-ink"
+                className="mt-3 inline-flex min-h-11 items-center text-[15px] font-medium text-gold-deep underline decoration-transparent underline-offset-[5px] transition-colors duration-300 group-hover:decoration-gold-deep after:absolute after:inset-0"
               >
-                Get a quote
-                <ArrowRight
-                  aria-hidden="true"
-                  className="size-4 transition-transform duration-300 group-hover:translate-x-1"
-                />
+                Ask for a quote<span className="sr-only">: {v.name}</span>
               </Link>
             </motion.article>
           ))}

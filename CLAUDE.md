@@ -35,13 +35,17 @@ app/
   fleet/page.tsx           Full fleet with filter tabs (components/fleet-browser.tsx)
   contact/page.tsx         Quote form (components/quote-form.tsx) + contact details
   privacy-policy/page.tsx  Placeholder — text still needed
+  not-found.tsx            Branded 404
 components/
   site-header.tsx          Fixed header (Home, Fleet, Weddings, Services, About, Contact); transparent over the home hero until scroll; Fleet mega-menu; mobile sheet
   site-footer.tsx          Also renders the phone-only sticky Call / WhatsApp bar
   booking-bar.tsx          "Start a quote": occasion / city / date → pushes to /contact?… as query params
   quote-form.tsx           Pre-fills from those query params
+  contact-dialog.tsx       <ContactDialog channel="call|whatsapp|email"> wraps any button → animated popup
+                           (both numbers / WhatsApp / email, copy buttons, "Other ways to reach us" list)
+  page-transition.tsx      Fade-and-lift between pages (React <ViewTransition>); wraps each page's <main>
   motion.tsx               Reveal, Enter, Stagger, StaggerItem, MotionProvider (respects reduced motion)
-  ui/                      button, select, navigation-menu, sheet
+  ui/                      button, select, navigation-menu, sheet, dialog (bottom sheet on phones)
 lib/site.ts                ALL client facts: contact, cities, services, fleet, photos. Edit here, not in pages.
 ```
 
@@ -49,7 +53,7 @@ lib/site.ts                ALL client facts: contact, cities, services, fleet, p
 
 - Founded **1998** in Chandigarh. Office: SSS-106, 107, PCA Stadium Road, Sector 63, Mohali (SAS Nagar), Punjab
 - Phones +91 98036 00001, +91 98144 00019 · info.jhajjz@gmail.com · WhatsApp on the first number
-- **14 cities**: Chandigarh, New Delhi, Gurgaon, Jaipur, Udaipur, Mumbai, Chennai, Kolkata, Bhubaneswar,
+- **Pan-India service** (confirmed by Nirmal); stations in **14 cities**: Chandigarh, New Delhi, Gurgaon, Jaipur, Udaipur, Mumbai, Chennai, Kolkata, Bhubaneswar,
   Dehradun, Mussoorie, Rishikesh, Haridwar, Ropar
 - Brands: Rolls-Royce, Mercedes-Benz, BMW, Audi, Range Rover; coaches by Volvo and Mercedes-Benz
 - 9 vehicle classes and 9 services — see `lib/site.ts`
@@ -88,6 +92,11 @@ The v0 reference design (`redesign-jhajjz-in.zip`) got several facts wrong — n
       `jhajjz-preview` also exists (empty). **Never touch the existing Vercel project "aethal".**
 
 ## Changelog
+
+- 2026-10-17 — Contact popup (`ContactDialog`) on every "Call us" / "WhatsApp us" / "Email us" button, header phone
+  and mobile sticky bar. Pan-India copy + "Other city in India" option in both forms. Light Fleet header, whole
+  fleet card clickable, cities as a list, socials in one row, contact form first on phones, branded 404,
+  page transitions, balanced headings, en-IN metadata. Home link in header.
 
 - 2026-10-17 — De-templated the design using only verified content: Libre Caslon headings, smaller hero with
   WhatsApp as a text link, "Start a quote" bar (no fake availability check), featured fleet tile + swipe row on

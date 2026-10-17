@@ -50,6 +50,38 @@
     outline: 2px solid var(--color-gold-deep);
     outline-offset: 2px;
   }
+  /* No lone words at the end of headings and paragraphs. */
+  h1,
+  h2,
+  h3 {
+    text-wrap: balance;
+  }
+  p {
+    text-wrap: pretty;
+  }
+}
+
+/* Page-to-page: old page fades out quickly, new one fades in with a slight lift.
+   See components/page-transition.tsx. */
+::view-transition {
+  pointer-events: none;
+}
+::view-transition-old(.page-exit) {
+  animation: 160ms ease-in both page-fade-out;
+}
+::view-transition-new(.page-enter) {
+  animation: 420ms cubic-bezier(0.2, 0.7, 0.2, 1) 100ms both page-rise;
+}
+@keyframes page-fade-out {
+  to {
+    opacity: 0;
+  }
+}
+@keyframes page-rise {
+  from {
+    opacity: 0;
+    translate: 0 12px;
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -58,7 +90,10 @@
   }
   *,
   *::before,
-  *::after {
+  *::after,
+  ::view-transition-old(*),
+  ::view-transition-new(*),
+  ::view-transition-group(*) {
     animation-duration: 0.01ms !important;
     transition-duration: 0.01ms !important;
   }

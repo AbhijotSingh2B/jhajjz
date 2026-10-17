@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { cities, occasions } from "@/lib/site";
+import { cityOptions, occasions } from "@/lib/site";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
@@ -11,7 +11,7 @@ import { cn } from "@/lib/utils";
 export function BookingBar() {
   const router = useRouter();
   const [occasion, setOccasion] = useState(occasions[0]);
-  const [city, setCity] = useState(cities[0]);
+  const [city, setCity] = useState(cityOptions[0]);
   const [date, setDate] = useState("");
 
   function submit(e: React.FormEvent) {
@@ -46,7 +46,7 @@ export function BookingBar() {
             <SelectValue />
           </SelectTrigger>
           <SelectContent>
-            {cities.map((c) => (
+            {cityOptions.map((c) => (
               <SelectItem key={c} value={c}>
                 {c}
               </SelectItem>

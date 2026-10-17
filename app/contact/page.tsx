@@ -5,6 +5,7 @@ import { SiteFooter } from "@/components/site-footer";
 import { QuoteForm } from "@/components/quote-form";
 import { Enter } from "@/components/motion";
 import { contact } from "@/lib/site";
+import { PageTransition } from "@/components/page-transition";
 
 export const metadata: Metadata = {
   title: "Get a quote",
@@ -21,37 +22,52 @@ export default function ContactPage() {
   return (
     <>
       <SiteHeader />
-      <main className="pt-[72px]">
-        <section className="mx-auto flex max-w-[1200px] flex-wrap gap-x-16 gap-y-12 px-6 py-[72px] md:py-28">
-          <Enter className="min-w-0 flex-[1_1_400px]">
-            <h1 className="font-serif text-[clamp(40px,5.5vw,68px)] leading-[1.05] tracking-[-0.02em]">Get a quote</h1>
-            <p className="mt-5 max-w-[420px] text-[17px] text-muted">
-              Share a few details and we&apos;ll recommend the right car and send a price. For anything urgent, call or
-              WhatsApp.
-            </p>
-            <ul className="mt-10 border-t border-line">
-              {rows.map((r) => (
-                <li key={r.href} className="border-b border-line">
-                  <a href={r.href} className="group flex min-h-16 items-center justify-between gap-4 py-3">
-                    <span className="text-sm font-medium text-muted">{r.label}</span>
-                    <span className="text-right font-serif text-2xl decoration-gold-deep/60 underline-offset-[6px] transition-colors group-hover:text-gold-deep group-hover:underline">
-                      {r.value}
-                    </span>
+      <PageTransition>
+        <main className="pt-[72px]">
+          {/* Phones: intro, form, then contact details. Desktop: intro + details left, form right. */}
+          <section className="mx-auto grid max-w-[1200px] gap-y-12 px-6 py-[72px] md:py-28 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.3fr)] lg:grid-rows-[auto_1fr] lg:gap-x-16">
+            <Enter>
+              <h1 className="font-serif text-[clamp(38px,4.8vw,56px)] leading-[1.08] tracking-[-0.01em]">Get a quote</h1>
+              <p className="mt-5 max-w-[420px] text-[17px] text-muted">
+                Share a few details and we&apos;ll recommend the right car and send a price, for anywhere in India. For
+                anything urgent, call or WhatsApp.
+              </p>
+            </Enter>
+            <Enter
+              delay={0.15}
+              className="-mx-6 bg-ink px-6 py-10 text-cream sm:mx-0 sm:p-8 md:p-12 lg:col-start-2 lg:row-span-2 lg:row-start-1 lg:self-start"
+            >
+              <Suspense fallback={<div className="min-h-[560px]" />}>
+                <QuoteForm />
+              </Suspense>
+            </Enter>
+            <Enter delay={0.25}>
+              <ul className="border-t border-line">
+                {rows.map((r) => (
+                  <li key={r.href} className="border-b border-line">
+                    <a href={r.href} className="group flex min-h-16 items-center justify-between gap-4 py-3">
+                      <span className="text-sm font-medium text-muted">{r.label}</span>
+                      <span className="text-right font-serif text-2xl decoration-gold-deep/60 underline-offset-[6px] transition-colors group-hover:text-gold-deep group-hover:underline">
+                        {r.value}
+                      </span>
+                    </a>
+                  </li>
+                ))}
+                <li className="border-b border-line">
+                  <a
+                    href={contact.mapsUrl}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="block py-4 text-[15px] text-muted underline-offset-4 transition-colors hover:text-ink hover:underline"
+                  >
+                    {contact.address[0]}, {contact.address[1]}
                   </a>
                 </li>
-              ))}
-              <li className="border-b border-line py-4 text-[15px] text-muted">
-                {contact.address[0]}, {contact.address[1]}
-              </li>
-            </ul>
-          </Enter>
-          <Enter delay={0.15} className="min-w-0 flex-[1_1_540px] bg-ink p-8 text-cream md:p-12">
-            <Suspense fallback={<div className="min-h-[560px]" />}>
-              <QuoteForm />
-            </Suspense>
-          </Enter>
-        </section>
-      </main>
+              </ul>
+            </Enter>
+          </section>
+        </main>
+      </PageTransition>
       <SiteFooter />
     </>
   );

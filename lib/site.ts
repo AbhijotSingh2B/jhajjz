@@ -10,6 +10,9 @@ export const contact = {
   whatsapp: "https://wa.me/919803600001",
   email: "info.jhajjz@gmail.com",
   address: ["SSS-106, 107, PCA Stadium Road", "Sector 63, Mohali (SAS Nagar), Punjab"],
+  mapsUrl:
+    "https://www.google.com/maps/search/?api=1&query=" +
+    encodeURIComponent("Jhajj'z, SSS-106, 107, PCA Stadium Road, Sector 63, Mohali, Punjab"),
   socials: [
     { label: "Instagram", href: "https://www.instagram.com/jhajjz_transport/" },
     { label: "Instagram (Delhi)", href: "https://www.instagram.com/jhajjz_limos_delhi/" },
@@ -44,6 +47,11 @@ export const cities = [
   "Haridwar",
   "Ropar",
 ];
+
+// Jhajj'z works pan-India; the cities above are where it has stations. Forms
+// offer this for trips that start anywhere else.
+export const otherCity = "Other city in India";
+export const cityOptions = [...cities, otherCity];
 
 // The same 9 services as jhajjz.in, grouped by who books them.
 export const serviceGroups = [
