@@ -43,8 +43,8 @@ before pushing, and merge (never force-push) if someone else's commit arrives.
   behaviour can't be reproduced — ask Nirmal to check on his phone). Don't run `playwright install`.
 - Verify against a production build (`npm run build && npx next start -p 3001`), not a long-running `next dev`:
   the dev server served stale CSS once (footer lost its background) and made a working change look broken.
-- Python helpers (fontTools, Pillow) go in a venv in the scratchpad; the favicon was made that way from the
-  "J" glyph of Libre Caslon Display.
+- Python helpers (fontTools, Pillow) go in a venv in the scratchpad; the favicon was made that way from Libre
+  Caslon Display. To judge photos, download them and view contact sheets (Pillow) before using any.
 - Nirmal reviews on his iPhone at jhajjz.vercel.app; it lags a few pushes behind while Vercel redeploys.
 
 ## How Nirmal likes to work
@@ -78,8 +78,7 @@ components/
                            ("all" opens on the "Get in touch" list; used by the "Contact us" buttons)
                            (both numbers / WhatsApp / email, copy buttons, "Other ways to reach us" list)
   page-transition.tsx      Fade-and-lift between pages (React <ViewTransition>); wraps each page's <main>
-  car-gallery.tsx          Car-page photo carousel (scroll-snap swipe, prev/next, thumbnail row as a preview); one per
-                           model generation
+  car-gallery.tsx          Car-page photo carousel (scroll-snap swipe, prev/next, thumbnail row); one per model generation
   india-map.tsx            India outline (lib/india-map.ts, Survey of India boundary) + city dots, beside "Pan-India, including"
   motion.tsx               Reveal, Enter, Stagger, StaggerItem, MotionProvider (respects reduced motion)
   icons.tsx                WhatsApp glyph (Simple Icons) + social icons (Tabler, MIT); lucide has no brand icons
@@ -102,7 +101,9 @@ lib/site.ts                ALL client facts: contact, cities, services, fleet, p
 - Brands: Rolls-Royce, Bentley, Mercedes-Benz (and Maybach), BMW, Audi, Jaguar, Land Rover / Range Rover, Toyota; coaches
   by Volvo and Mercedes-Benz (Bentley, Jaguar and the newer cars below come from the car photos on jhajjz.in)
 - 9 vehicle classes and 9 services — see `lib/site.ts`. jhajjz.in's "Wedding cars" class was dropped (Nirmal:
-  every car can be booked for any event); "Luxury MPVs" (Toyota Vellfire) was added by Nirmal
+  every car can be booked for any event); "Luxury MPVs" was added by Nirmal. Class order (fleet page, menu, home):
+  luxury cars, executive cabs, SUVs, luxury MPVs, then vintage, convertibles, limousines, mini vans, coaches.
+- The fleet intro says every vehicle comes with a trained chauffeur; car texts don't repeat it (Nirmal).
 
 The v0 reference design (`redesign-jhajjz-in.zip`) got several facts wrong — never copy these from it:
 "Est. 2014", phone +91 98765 43210, hello@jhajjz.in, "a small fleet", Chandigarh-only.
@@ -125,234 +126,56 @@ The v0 reference design (`redesign-jhajjz-in.zip`) got several facts wrong — n
   hero slow zoom. Everything must respect `prefers-reduced-motion` (already wired).
 - Never invent stats, car models, testimonials or contact details. Use `[BRACKETS]` for unknowns.
 
-## Open items
+## Photos (all in lib/site.ts)
 
-- [ ] **Photos**: fleet photos are hot-linked from Wix (`static.wixstatic.com`, allowed in `next.config.ts`), named in
-      `photos` in lib/site.ts. **Identified by eye** (Oct 2026, from Nirmal's screenshots): BMW 7 Series (white),
-      Rolls-Royce Ghost (white, "JHAJJZ" plate), two vintage open tourers (blue, white; make unknown), Audi cabriolet
-      (red), Chrysler 300C stretch limousine (white, red roof), Land Rover Defender (black), a line-up of Fortuners and
-      an E-Class (Executive cabs), coaches, Toyota Vellfire (white). Mini vans has no photo ([CONFIRM: photo]).
-      Still worth getting the originals into /public (Wix hot-links can break). The privacy policy text, logo file and
-      real office list still need jhajjz.in access (blocked from the sandbox).
-- [ ] **Car pages** (29). Nirmal (2026-10-17): add every car seen on jhajjz.in now; each car is imported properly
-      (details, photos) when the client signs up. The first 12 came from Nirmal: Rolls-Royce Ghost, Mercedes-Benz S-Class, BMW 7 Series, Range Rover Autobiography,
-      Mercedes-Benz GLS, bulletproof Mercedes-Benz GLE, Toyota Land Cruiser, black Toyota Fortuner, Land Rover
-      Defender, Chrysler 300C stretch limousine, Audi Cabriolet (Nirmal; I think an A3 Cabriolet — confirm the model),
-      Toyota Vellfire. Ghost, 7 Series, Defender, limousine, Audi and Vellfire have real Jhajj'z photos; the others
-      need photos. Model year and "Based in" were dropped (Nirmal); details without a value are hidden. Confirm with
-      the client: the limousine is a Chrysler 300C (identified from the photo); passengers for every car.
-      **Car photos (2026-10-17, Nirmal):** every car page has a carousel: a CarWale studio shot on white (from the
-      model's CarWale *colours* page, `studio` in lib/site.ts, matched to the generation and colour the client has; no
-      `wm=1` so no watermark) first, then the client's own photos from jhajjz.in. Where the client has two generations
-      (S-Class, Range Rover, 7 Series) each gets its own carousel, "Newer model" on top, "Older model" below
-      (`generation` on the photo). The Ghost's studio shot is from CarDekho's colours page (the 2014–2020 Ghost, the
-      client's generation; silver, as the client has a silver Ghost too), with `zoom` because its white margins are
-      wide. No studio shot: Audi (no red), limousine. GLE, Land Cruiser, Fortuner have only the
-      studio shot. Fleet cards / home use studio shots for luxury cars (Rolls-Royce Ghost), SUVs (Range Rover), executive cabs
-      (E-Class), MPVs (Vellfire); vintage, convertibles, limousines, coaches keep real photos; mini vans got the client's
-      HiAce photo. All studio shots are `placeholder: true` / `imagePlaceholder: true`: the client will send their own.
-      **14 more (added 2026-10-17 on Nirmal's go-ahead) from the car photos on jhajjz.in, identified by eye**, so the
-      client should still confirm each is in the fleet: Bentley Flying Spur, Jaguar XJ, BMW i8 (luxury cars); Mercedes
-      E-Class (executive cabs; newer W214 + older AMG one); BMW X7, BMW X5, Mercedes G-Class, Mercedes-Maybach GLS, Range
-      Rover Sport (newer white + older blue), Jaguar F-Pace, Audi Q7 (SUVs); Mercedes V-Class (luxury MPVs); Toyota
-      HiAce, Toyota Innova Crysta (mini vans). X5 and i8 only appear in one group photo (with a Range Rover). No studio
-      shot for Flying Spur (CarWale has no silver), Maybach GLS (no red two-tone), V-Class and HiAce (none for the
-      client's generation). Two silver/white photos that looked like a Maybach S-Class are the older S-Class (Maybach-
-      style wheels) and sit in its "Older model" carousel. Then 3 more: Force Urbania (grey van; no CarWale page, it's
-      a commercial van), Mercedes-Benz GLE (black, pre-facelift, from a wedding line-up; kept separate from the
-      bulletproof GLE, could be the same car), "Vintage open tourer" (the blue and white replicas; make unknown, so
-      `brand: ""` and the Car JSON-LD leaves brand out).
-      "Who we drive for" rows each have one of the client's photos (wedding line-up from above; chauffeur with the
-      Taj-branded 7 Series; chauffeur with the Innova).
-- [ ] **Hero**: currently the client's Wix sharing image. `/public/rolls-royce-hero.webp` (from the v0
-      reference, probably AI-generated) is the alternative — swap `heroImage` in `lib/site.ts`.
-- [ ] **Quote form** opens the WhatsApp popup (`ContactDialog`) with the details prefilled; nothing is stored
-      server-side. Confirm +91 98144 00019 is also on WhatsApp (only the first number is confirmed).
-- [ ] Privacy policy: drafted from what the site actually does (no cookies/tracking; form only opens WhatsApp or
-      email). Client must confirm the 3 highlighted `[CONFIRM]` items (who details are shared with, how long they're
-      kept, no selling/marketing). jhajjz.in/privacy-policy turned out to be only Wix's template paragraph ("My Site is
-      committed to…"), so there is no client text to swap in.
-- [ ] Favicon / logo — placeholder favicon is the word "Jhajj'z" in gold Caslon on ink (made from the heading font
-      with fontTools, see app/icon.svg; PNGs use a narrower word to fit the maskable safe zone). Swap for the client's real logo when we have the file; regenerate all 5 icon files.
-- [ ] **SEO at launch** (code is ready; these are outside the repo):
-      1. Point www.jhajjz.in at Vercel — the noindex on previews switches off automatically for that host.
-      2. ~~301-redirect every old Wix URL~~ Done: `redirects()` in next.config.ts covers every URL in jhajjz.in's
-         sitemap (permanent 308s). After launch, check Search Console → Pages for any other old URL still getting traffic.
-      3. Google Search Console: verify the domain, submit https://www.jhajjz.in/sitemap.xml.
-      4. Google Business Profile for the Mohali office (same name, address, phone as the site) — the single
-         biggest factor for "luxury car rental Chandigarh"-type local searches. Ask the client for reviews there.
-- [ ] Deploy preview: Nirmal views the site at **https://jhajjz.vercel.app**. Claude's cloud sandbox can't load it
-      (network policy blocks vercel.app; the Vercel connector has no access to that project). Netlify site
-      `jhajjz-preview` also exists (empty). **Never touch the existing Vercel project "aethal".**
+- **Client photos**: hot-linked from Wix (`photos`; helpers `wix`/`wixJpeg` = 3:2 crop, `wixFit` = uncropped for
+  portrait shots). Identified by eye from jhajjz.in; no captions there. Originals should move into /public one day.
+- **Studio shots** (`studio`): CarWale *colours* pages (`imgd.aeplcdn.com/1280x720/n/<id>.jpg?q=80`, no `wm=1` = no
+  watermark) or CarDekho colours pages; car on white. Always matched to the **generation and colour the client
+  has** (older generations live at slugs like `7-series-2019-2023`, `old-generation-s-class-2021`). Nirmal prefers
+  these no-background shots. All are `placeholder: true` (kept out of Open Graph / JSON-LD) and get replaced when
+  the client signs up and sends their own.
+- `CarPhoto` flags: `cutout` (shown whole on sand, multiply blend on a wrapper), `zoom` (studio shot with wide
+  margins), `portrait` (letterboxed), `position`, `generation` ("Newer model"/"Older model" → separate carousels,
+  newer on top). Fleet cards: `imageCutout`, `imagePlaceholder`, `imageZoom`.
+- `images.unoptimized: true` — **no Vercel image optimization or caching (Nirmal)**. Size/format come from the URL:
+  Wix photos are requested as `.webp` at 1600px; hero WebP on the page, JPEG (`heroImage`) only for link previews.
+
+## Open items (need the client)
+
+- **29 car pages**: 12 from Nirmal, the rest added from jhajjz.in photos on his go-ahead ("we'll import each car
+  properly when the client signs up"). All identified by eye: confirm each is in the fleet, passengers for every car,
+  the limousine is a Chrysler 300C, the Audi is an A3 Cabriolet, which Range Rover is the Autobiography, whether the
+  black GLE and the bulletproof GLE are the same car, the make of the vintage open tourers (`brand: ""`).
+- **Logo file** (favicon is a placeholder "Jhajj'z" wordmark in gold Caslon; regenerate all 5 icon files).
+- **Privacy policy**: 3 highlighted `[CONFIRM]` items. jhajjz.in's own policy is only Wix template text.
+- Confirm +91 98144 00019 is on WhatsApp (only the first number is confirmed).
+- Office map on /contact: needs the office's exact pin; an embed would need a privacy-policy line (Google cookies).
+- Names/proof (hotels, airlines, events they've driven for; real client quotes) only with client permission.
+- Hero: client's Wix sharing image. `/public/rolls-royce-hero.webp` (v0 reference, probably AI-made) is the alternative.
 
 ## Launch checklist
 
-- [ ] **Remove placeholder photos**: every car photo with `placeholder: true` in lib/site.ts (search `PLACEHOLDER`),
-      and the `carwale` helper in lib/site.ts. Replace with the client's own photos, or leave `photos: []`.
-- [ ] SEO steps under "SEO at launch" above.
+- [ ] Remove placeholder photos: search `PLACEHOLDER` in lib/site.ts (and the `carwale`, `carwaleColour`,
+      `cardekhoColour` helpers); replace with the client's photos.
+- [ ] Point www.jhajjz.in at Vercel (noindex on other hosts switches off automatically, proxy.ts).
+- [ ] Old Wix URLs already redirect (`redirects()` in next.config.ts). After launch check Search Console → Pages.
+- [ ] Search Console: verify domain, submit /sitemap.xml. Google Business Profile for the Mohali office (same
+      name/address/phone); ask the client for reviews there.
 
-## Ideas to replace icon-in-box design (agreed direction, not built yet)
+Preview: Nirmal reviews at https://jhajjz.vercel.app. **Never touch the existing Vercel project "aethal".** Netlify site
+`jhajjz-preview` exists (empty).
 
-Icons were standing in for "this is a real business". Use real, specific material instead — things only
-Jhajj'z has. In order of impact:
+## Lessons (don't relearn these)
 
-1. **Real photos** (needs client): one real photo per "Who we drive for" group — decorated car at an actual
-   wedding, coach outside a hotel for a delegation, chauffeur at the door. Their Instagram has this material;
-   get originals or network access to the Wix photos.
-2. **Their real logo** (needs the file) in header, favicon and popup headers, replacing the placeholder "J".
-3. **Map of the 14 cities** (can build now, verified data): fine-line outline of India, small gold dots for the
-   14 cities, a heavier dot for the Chandigarh/Mohali head office, beside the "Pan-India, including" list.
-   The outline **must follow official Survey of India boundaries** (many free world maps draw Kashmir
-   differently). If no compliant outline is available, skip the map rather than use a wrong one.
-4. **Small real-world details** (can build now): in the contact popups a quiet line like
-   "Office: SSS-106, PCA Stadium Road, Mohali" under the numbers; a small static map of the office on /contact.
-5. **Names and proof** (needs client permission): hotels, airlines or events they've driven for as a plain line
-   of text (not a logo wall); one or two real client quotes with names. Never invented.
-
-Avoid as replacements (next-generation AI tells): stat strips ("25+ years · 14 cities · 9 classes"), gradient
-blobs / glassmorphism, stock photos, paper-grain or texture overlays, emoji-style or animated icons.
-
-Status: #3 built (DataMeet india-composite, CC0, official SoI boundary). #4 partly built: office line in the popups;
-the static office map on /contact is NOT built: no map tiles/geocoder reachable from the sandbox and no verified
-pin for the office. Needs the office's exact coordinates (client, or Google Maps pin) plus a map image or an embed
-(an embed loads Google cookies, so the privacy policy would need a line). Still ask the client for photos and logo.
-
-## Changelog
-
-- 2026-10-17 — Carousel thumbnails: a row of small previews under each car-page carousel (tap to jump, current one
-  ringed, row follows along on phones) replaces the "2 / 5" counter. Car page grid forced to `minmax(0,1fr)` on phones,
-  otherwise the thumbnail row widened the column past the screen (the page clips overflow, so it didn't scroll).
-
-- 2026-10-17 — Fleet order (fleet page, Fleet menu, home): luxury cars, executive cabs, SUVs, luxury MPVs first, then
-  vintage, convertibles, limousines, mini vans, coaches. Home shows all 9 classes. Luxury cars card and the Ghost
-  page lead with a no-background Rolls-Royce Ghost (CarDekho, matching generation); silver Ghost photo added.
-
-- 2026-10-17 — 3 more car pages: Force Urbania, Mercedes-Benz GLE (black), Vintage open tourer (no make; JSON-LD
-  brand omitted when `brand` is empty). 29 car pages in all.
-
-- 2026-10-17 — 14 more car pages from the car photos on jhajjz.in (Flying Spur, XJ, i8, E-Class, X7, X5, G-Class,
-  Maybach GLS, Range Rover Sport, F-Pace, Q7, V-Class, HiAce, Innova Crysta), each with matching CarWale studio shots
-  where available; more older S-Class photos. "Who we drive for" rows gain a real photo each. Redirects from every
-  old Wix URL. Brand lists in SEO descriptions and the fleet intro now include Bentley and Jaguar.
-
-- 2026-10-17 — Car pages: photo carousel (components/car-gallery.tsx), one per model generation, newer on top.
-  CarWale studio shots (white background) on every car and on the luxury cars / SUVs / executive cabs / MPVs cards,
-  matched to the client's generation and colour; more of the client's jhajjz.in photos in the carousels; mini vans
-  card gets the HiAce photo. Car texts no longer repeat "comes with a trained Jhajj'z chauffeur" (the fleet intro says
-  every vehicle comes with one).
-
-- 2026-10-17 — No Vercel image optimization or caching: `images.unoptimized: true`; photos load straight from Wix /
-  CarWale. Wix photos now WebP via their URLs (about 45% smaller); hero WebP on the page, JPEG for link previews.
-  Privacy policy line updated (photos load from the service that stores them). GLE placeholder is now CarWale's
-  transparent cut-out.
-
-- 2026-10-17 — Real Jhajj'z photos (from jhajjz.in) on the S-Class, Range Rover Autobiography and GLS pages, replacing
-  CarWale placeholders. GLE, Land Cruiser and Fortuner placeholders swapped for no-background studio shots (`cutout`),
-  shown whole on sand. `wixFit` helper for uncropped portrait Wix photos, cropped on the page with `position`.
-
-- 2026-10-17 — Placeholder CarWale photos on the 6 car pages that had none (S-Class, Range Rover Autobiography, GLS,
-  bulletproof GLE, Land Cruiser, black Fortuner). `CarPhoto` type gains `placeholder` (kept out of Open Graph and
-  JSON-LD) and `position` (object-position for photos where the 3:2 crop cut the car off). Launch checklist added.
-
-- 2026-10-17 — Fleet rebuilt around what the Wix photos actually show (identified from Nirmal's screenshots):
-  "Wedding cars" class removed (every car can do any event; fleet intro says so), "Weddings" filter tab replaced by
-  "Vintage, limousines & convertibles". Vellfire photo moved from Mini vans to Luxury MPVs. New car pages: BMW 7
-  Series, Land Rover Defender, Chrysler 300C stretch limousine, Audi Cabriolet; Ghost and Vellfire got their photos.
-  Home preview: luxury cars, SUVs, limousines, vintage, coaches, MPVs; wedding band uses the Ghost photo.
-
-- 2026-10-17 — Car pages: "Model year" and "Based in" removed; details without a value are no longer shown (no
-  [CONFIRM] rows). Photos can carry a `credit`, shown as "Representative photo · …" for licensed stand-ins.
-
-- 2026-10-17 — New fleet class "Luxury MPVs" (the Indian term for the Vellfire class; "people mover" is British).
-  The Vellfire moved there from Mini vans. No photo yet: class photos are optional now, and a card without one
-  shows a highlighted [CONFIRM: photo]; the home page only previews classes that have a photo. Filter tab renamed
-  "MPVs, vans & coaches"; Fleet menu counts the classes instead of saying "9". MPV wording in SEO description and
-  keywords.
-
-- 2026-10-17 — 7 more car pages (S-Class, Range Rover Autobiography, GLS, bulletproof GLE, Land Cruiser, black
-  Fortuner, Vellfire). `Car.name` overrides "brand model" where it reads wrong. Car pages list the other cars in
-  the same class.
-
-- 2026-10-17 — Individual car pages: `/fleet/rolls-royce-ghost` (photo, details as ruled rows, quote link that
-  prefills the form, WhatsApp popup with a message about the car, "See all luxury cars" band). Car JSON-LD +
-  3-level breadcrumbs, sitemap entry. Fleet cards list their cars; fleet search matches car names.
-
-- 2026-10-17 — Overscroll: `html` and `body` are ink and the paper page background moved to the wrapper div in
-  layout.tsx, so the iPhone bounce past the top or bottom shows the dark header/footer colour. Setting only `html`
-  didn't work on iPhone (WebKit paints that area with body's colour over html's). Can't reproduce in Chromium.
-
-- 2026-10-17 — Header: the "Jhajj'z" logo and Home (desktop nav and phone menu) scroll back to the top when you're
-  already on the home page (e.g. after Weddings/Services/About). Before, Next skipped the same-page click and nothing happened.
-
-- 2026-10-17 — Map check: every dot re-projected from the DataMeet source and real city coordinates; all within
-  0.6 px (≈4 km) of where they should be. City dots gained a thin paper-coloured outline so close neighbours
-  (Delhi/Gurgaon, the four Uttarakhand towns) stay distinct instead of merging into a smudge. Chandigarh and
-  Ropar sit under the head-office marker at this scale; that's expected.
-
-- 2026-10-17 — Favicon: full "Jhajj'z" word (gold Libre Caslon on ink) replaces the "J" monogram in all 5 icon
-  files. Legible at 32px and up; at 16px (old browser tabs) it is too small to read.
-
-- 2026-10-17 — Map: head-office dot placed at Mohali (Sector 63), not Chandigarh; caption "Head office, Mohali"
-  with its number +91 98036 00001 as a call link.
-
-- 2026-10-17 — About section: fine-line map of India (official Survey of India outline) beside the "Pan-India,
-  including" list, gold dots for the 14 cities, ink ringed dot for the Mohali head office. Call / WhatsApp / Email
-  popups gain a quiet "Office: SSS-106, 107, PCA Stadium Road, Mohali" line (links to Google Maps).
-
-- 2026-10-17 — "Contact us" buttons on the privacy page (Contact section) and in the footer (under Contact) open
-  the popup on its "Get in touch" list (`channel="all"`, no Back button there). Privacy page email and phone
-  numbers open their popups too.
-
-- 2026-10-17 — AI-look audit of every page: contact popup header lost its icon square; "Other ways" list icons no
-  longer sit in squares; privacy "In short" is a plain lead paragraph (no gold-striped box); arrows removed from
-  the rate-card links; fleet search uses its own muted × instead of the browser's blue one; booking-bar
-  placeholders shortened to "Choose" so they don't truncate on phones.
-
-- 2026-10-17 — "Who we drive for" laid out like a printed rate card: one row per group (name + "Ask about…" link
-  left, services in two columns right), ink rules between rows. Replaced a three-card version with icons in
-  squares, which Nirmal rightly flagged as AI/template-looking — avoid icon-in-square feature cards.
-
-- 2026-10-17 — SEO: keyword titles/descriptions per page, canonicals to www.jhajjz.in, Open Graph/Twitter cards,
-  JSON-LD (AutoRental + WebSite + breadcrumbs), sitemap, robots, web manifest, theme colour, noindex on previews
-  via proxy.ts. Favicon set (placeholder "J" monogram). iPhone sideways drag: clip moved to a wrapper div in
-  layout.tsx (Safari ignores overflow on html/body for touch panning).
-
-- 2026-10-17 — iPhone: page could be dragged sideways (Safari horizontal bounce). `html, body { overflow-x: clip;
-  overscroll-behavior-x: none }` in globals.css. Chromium shows no overflowing element on any page at 375/390px;
-  no WebKit here to reproduce, so re-check on a real iPhone.
-
-- 2026-10-17 — Footer: icons on every item (gold, outline). Office links to Google Maps; Contact gains a WhatsApp
-  entry; social icons are Tabler brand icons copied into `components/icons.tsx` (MIT). Socials in 2 columns on phones.
-
-- 2026-10-17 — Contact page rows (Call ×2, WhatsApp, Email) and footer phone/email now open `ContactDialog`
-  instead of being plain tel:/mailto: links. Only the office address still links straight out (Google Maps).
-
-- 2026-10-17 — Privacy policy page written (plain language, "In short" summary, contact block); unknown business
-  practices shown as highlighted `[CONFIRM]` marks.
-
-- 2026-10-17 — WhatsApp logo (`components/icons.tsx`, Simple Icons glyph) replaces the chat-bubble icon; buttons
-  stay ink, not WhatsApp green, to keep the palette. Popup rows: on phones the number sits on its own line with
-  the buttons full-width under it, so rows never wrap unevenly.
-
-- 2026-10-17 — "Who we drive for" rebuilt as three equal columns split by hairlines; stations list removed
-  from the About section, then restored as "Pan-India, including" (no "stations" wording in that section).
-
-- 2026-10-17 — Quote form: choosing "Other" (occasion / vehicle / city) slides open a text box for details
-  (`occasionOther`, `vehicleOther`, `cityOther`) and moves focus into it.
-
-- 2026-10-17 — Dropdowns start empty with placeholders ("Choose a city" etc.); "Other" added to occasion and
-  vehicle (city already has "Other city in India"). Booking bar only passes on fields the visitor filled.
-
-- 2026-10-17 — Contact popup (`ContactDialog`) on every "Call us" / "WhatsApp us" / "Email us" button, header phone
-  and mobile sticky bar. Pan-India copy + "Other city in India" option in both forms. Light Fleet header, whole
-  fleet card clickable, cities as a list, socials in one row, contact form first on phones, branded 404,
-  page transitions, balanced headings, en-IN metadata. Home link in header.
-
-- 2026-10-17 — De-templated the design using only verified content: Libre Caslon headings, smaller hero with
-  WhatsApp as a text link, "Start a quote" bar (no fake availability check), featured fleet tile + swipe row on
-  mobile, services grouped by customer type, CTA band folded into About, phone-only sticky Call/WhatsApp bar,
-  no ↗ arrows on Contact.
-
-- 2026-10-17 — Pushed to github.com/abhijotsingh2b/jhajjz.
-- 2026-10-17 — Initial build: Home, Fleet, Contact, Privacy placeholder; animated selects, Fleet
-  mega-menu, mobile sheet menu, scroll reveals, fleet filter animations. Production build passes.
+- Avoid as "real business" signals (next-gen AI tells): stat strips, gradient blobs/glassmorphism, stock photos,
+  texture overlays, emoji/animated icons. Use real material instead: client photos, the Survey-of-India map
+  (DataMeet, CC0) with the 14 cities, the office line in contact popups.
+- iPhone: sideways drag fixed by clipping overflow on a wrapper div in layout.tsx (Safari ignores it on html/body);
+  overscroll shows ink because `html` *and* `body` are ink and the paper background is on that wrapper.
+- Overflow is clipped, so a too-wide element doesn't scroll — it silently widens its column. Grids on phones need
+  `grid-cols-[minmax(0,1fr)]` (the carousel thumbnail row once pushed car photos past the screen edge).
+- A `transform`ed element is its own stacking context: put `mix-blend-multiply` on the scaled wrapper, not the img.
+- Next skips same-page link clicks: the logo/Home scroll to top explicitly when already on the home page.
+- `lib/seo.ts` `openGraphBase` must be spread into every page's openGraph (Next doesn't deep-merge it).
+- History of every change: `git log`.
