@@ -36,7 +36,7 @@ app/
   contact/page.tsx         Quote form (components/quote-form.tsx) + contact details
   privacy-policy/page.tsx  Placeholder — text still needed
 components/
-  site-header.tsx          Fixed header; transparent over the home hero until scroll; Fleet mega-menu; mobile sheet
+  site-header.tsx          Fixed header (Home, Fleet, Weddings, Services, About, Contact); transparent over the home hero until scroll; Fleet mega-menu; mobile sheet
   site-footer.tsx          Also renders the phone-only sticky Call / WhatsApp bar
   booking-bar.tsx          "Start a quote": occasion / city / date → pushes to /contact?… as query params
   quote-form.tsx           Pre-fills from those query params
@@ -84,8 +84,9 @@ The v0 reference design (`redesign-jhajjz-in.zip`) got several facts wrong — n
 - [ ] Seat counts for limousines, coaches and mini vans (`[SEATS]` in `lib/site.ts`)
 - [ ] Privacy policy text (copy from jhajjz.in/privacy-policy)
 - [ ] Favicon / logo — client has a logo on Wix; get the file
-- [ ] Deploy preview: Netlify site `jhajjz-preview` exists (empty). Vercel project creation was refused
-      for Nirmal's connected team (permissions). **Never touch the existing Vercel project "aethal".**
+- [ ] Deploy preview: Nirmal views the site at **https://jhajjz.vercel.app**. Claude's cloud sandbox can't load it
+      (network policy blocks vercel.app; the Vercel connector has no access to that project). Netlify site
+      `jhajjz-preview` also exists (empty). **Never touch the existing Vercel project "aethal".**
 
 ## Changelog
 

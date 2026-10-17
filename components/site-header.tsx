@@ -63,6 +63,7 @@ export function SiteHeader({ overlay = false }: { overlay?: boolean }) {
         <div className="hidden items-center gap-2 md:flex">
           <NavigationMenu>
             <NavigationMenuList>
+              <NavItem href="/" label="Home" active={pathname === "/"} />
               <NavigationMenuItem>
                 <NavigationMenuTrigger
                   className={cn(
@@ -77,20 +78,7 @@ export function SiteHeader({ overlay = false }: { overlay?: boolean }) {
                 </NavigationMenuContent>
               </NavigationMenuItem>
               {links.map((l) => (
-                <NavigationMenuItem key={l.href}>
-                  <NavigationMenuLink asChild active={pathname === l.href}>
-                    <Link
-                      href={l.href}
-                      className="group relative inline-flex h-11 items-center px-3 text-[15px] text-cream/85 transition-colors hover:text-cream data-[active]:text-cream"
-                    >
-                      {l.label}
-                      <span
-                        aria-hidden="true"
-                        className="absolute inset-x-3 bottom-2 h-px origin-left scale-x-0 bg-gold transition-transform duration-300 ease-out group-hover:scale-x-100 group-data-[active]:scale-x-100"
-                      />
-                    </Link>
-                  </NavigationMenuLink>
-                </NavigationMenuItem>
+                <NavItem key={l.href} href={l.href} label={l.label} active={pathname === l.href} />
               ))}
             </NavigationMenuList>
           </NavigationMenu>
@@ -106,6 +94,25 @@ export function SiteHeader({ overlay = false }: { overlay?: boolean }) {
         <MobileMenu />
       </nav>
     </header>
+  );
+}
+
+function NavItem({ href, label, active }: { href: string; label: string; active: boolean }) {
+  return (
+    <NavigationMenuItem>
+      <NavigationMenuLink asChild active={active}>
+        <Link
+          href={href}
+          className="group relative inline-flex h-11 items-center px-3 text-[15px] text-cream/85 transition-colors hover:text-cream data-[active]:text-cream"
+        >
+          {label}
+          <span
+            aria-hidden="true"
+            className="absolute inset-x-3 bottom-2 h-px origin-left scale-x-0 bg-gold transition-transform duration-300 ease-out group-hover:scale-x-100 group-data-[active]:scale-x-100"
+          />
+        </Link>
+      </NavigationMenuLink>
+    </NavigationMenuItem>
   );
 }
 
@@ -162,7 +169,7 @@ function FleetMenu() {
 }
 
 function MobileMenu() {
-  const items = [{ label: "Fleet", href: "/fleet" }, ...links];
+  const items = [{ label: "Home", href: "/" }, { label: "Fleet", href: "/fleet" }, ...links];
   return (
     <Sheet>
       <SheetTrigger
