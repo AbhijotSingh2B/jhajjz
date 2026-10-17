@@ -3,7 +3,8 @@
 # Jhajj'z website redesign
 
 Redesign of **jhajjz.in** (currently on Wix) for the client **Jhajj'z**, a luxury car and coach
-rental company in Mohali/Chandigarh. Built by Nirmal for the client. Design was approved on a
+rental company in Mohali/Chandigarh. Built by Nirmal for the client.
+Repo: github.com/abhijotsingh2b/jhajjz (branch `main`). Design was approved on a
 Claude design canvas first, then ported here.
 
 ## Stack
@@ -84,5 +85,6 @@ The v0 reference design (`redesign-jhajjz-in.zip`) got several facts wrong — n
 
 ## Changelog
 
+- 2026-10-17 — Pushed to github.com/abhijotsingh2b/jhajjz.
 - 2026-10-17 — Initial build: Home, Fleet, Contact, Privacy placeholder; animated selects, Fleet
   mega-menu, mobile sheet menu, scroll reveals, fleet filter animations. Production build passes.
