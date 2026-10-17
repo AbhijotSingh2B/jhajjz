@@ -3,7 +3,7 @@
 import { useRef, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import { AnimatePresence, motion } from "motion/react";
-import { cityOptions, fleet, occasions, otherCity } from "@/lib/site";
+import { carName, cars, carsInClass, cityOptions, fleet, occasions, otherCity } from "@/lib/site";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Button } from "@/components/ui/button";
 import { minToday } from "@/lib/utils";
@@ -12,6 +12,7 @@ import { ContactDialog } from "@/components/contact-dialog";
 const NOT_SURE = "Not sure — recommend one";
 const OTHER_VEHICLE = "Other";
 const OTHER_OCCASION = "Other";
+const ANY_CAR = "No preference";
 
 /**
  * Quote request form. Pre-fills from the booking bar's query params.
@@ -28,7 +29,13 @@ export function QuoteForm() {
   const [message, setMessage] = useState("");
   const [occasion, setOccasion] = useState(pick("occasion", occasions));
   const [vehicle, setVehicle] = useState(pick("vehicle", [NOT_SURE, OTHER_VEHICLE, ...fleet.map((v) => v.name)]));
+  // The exact car, by slug (car pages link here with ?car=<slug>). Optional; ANY_CAR means none chosen.
+  const [car, setCar] = useState(() => (cars.some((c) => c.slug === params.get("car")) ? params.get("car")! : ""));
   const [city, setCity] = useState(pick("city", cityOptions));
+  const vehicleClass = fleet.find((v) => v.name === vehicle);
+  // Cars in the chosen class; all cars when no class (or "Not sure"/"Other") is chosen.
+  const carOptions = vehicleClass && carsInClass(vehicleClass.slug).length > 0 ? carsInClass(vehicleClass.slug) : cars;
+  const chosenCar = cars.find((c) => c.slug === car);
 
   const occasionOther = useRef<HTMLInputElement>(null);
   const vehicleOther = useRef<HTMLInputElement>(null);
@@ -71,6 +78,7 @@ export function QuoteForm() {
                   line("Phone", f.get("phone")),
                   line("Occasion", withOther(occasion, OTHER_OCCASION, "occasionOther")),
                   line("Vehicle", withOther(vehicle, OTHER_VEHICLE, "vehicleOther")),
+                  line("Exact vehicle", chosenCar ? carName(chosenCar) : ""),
                   line("City", withOther(city, otherCity, "cityOther")),
                   line("Date", f.get("date")),
                   line("Notes", f.get("notes")),
@@ -112,7 +120,16 @@ export function QuoteForm() {
               />
             </DarkField>
             <DarkField label="Vehicle" id="q-vehicle">
-              <Select value={vehicle} onValueChange={(v) => choose(setVehicle, v)} name="vehicle">
+              <Select
+                value={vehicle}
+                onValueChange={(v) => {
+                  choose(setVehicle, v);
+                  // Drop an exact car that isn't in the newly chosen class.
+                  const cls = fleet.find((f) => f.name === v);
+                  if (cls && chosenCar && chosenCar.fleetClass !== cls.slug && carsInClass(cls.slug).length > 0) setCar("");
+                }}
+                name="vehicle"
+              >
                 <SelectTrigger id="q-vehicle" tone="dark">
                   <SelectValue placeholder="Choose a vehicle" />
                 </SelectTrigger>
@@ -134,6 +151,30 @@ export function QuoteForm() {
                 label="Which vehicle are you looking for?"
                 className={inputClass}
               />
+            </DarkField>
+            <DarkField label="Exact vehicle (optional)" id="q-car">
+              <Select
+                value={car}
+                onValueChange={(v) => {
+                  const picked = cars.find((c) => c.slug === v);
+                  setCar(picked ? v : "");
+                  // Picking a car fills in its class when none (or "Not sure") was chosen.
+                  const cls = picked && fleet.find((f) => f.slug === picked.fleetClass);
+                  if (cls && (vehicle === "" || vehicle === NOT_SURE)) setVehicle(cls.name);
+                }}
+              >
+                <SelectTrigger id="q-car" tone="dark">
+                  <SelectValue placeholder={ANY_CAR} />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value={ANY_CAR}>{ANY_CAR}</SelectItem>
+                  {carOptions.map((c) => (
+                    <SelectItem key={c.slug} value={c.slug}>
+                      {carName(c)}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
             </DarkField>
             <DarkField label="City" id="q-city">
               <Select value={city} onValueChange={(v) => choose(setCity, v)} name="city">

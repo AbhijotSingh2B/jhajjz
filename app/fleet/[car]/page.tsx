@@ -145,7 +145,7 @@ export default async function CarPage({ params }: Props) {
                   <div className="mt-8 flex flex-wrap gap-3">
                     <Button asChild variant="ink">
                       <Link
-                        href={`/contact?${new URLSearchParams({ ...(fleetClass && { vehicle: fleetClass.name }), notes: name })}`}
+                        href={`/contact?${new URLSearchParams({ ...(fleetClass && { vehicle: fleetClass.name }), car: car.slug })}`}
                       >
                         Ask for a quote
                       </Link>
