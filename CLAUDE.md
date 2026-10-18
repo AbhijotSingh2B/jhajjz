@@ -101,20 +101,6 @@ lib/seo.ts                 `openGraphBase` (spread into every page's openGraph; 
                            link-preview banner: public/og/jhajjz.jpg 1200x630 + jhajjz-square.jpg (Instagram). Same
                            banner on every page for now; custom per-page banners later
 scripts/make-previews.mjs  `npm run previews` redraws the banner (Ghost head-on, sides filled from the photo, no bars)
-lib/india-map.ts, Survey of India boundary) + city dots, beside "Pan-India, including"
-  motion.tsx               Reveal, Enter, Stagger, StaggerItem, MotionProvider (respects reduced motion)
-  icons.tsx                WhatsApp glyph (Simple Icons) + social icons (Tabler, MIT); lucide has no brand icons
-  ui/                      button, select, navigation-menu, sheet, dialog (bottom sheet on phones)
-proxy.ts                   Adds `X-Robots-Tag: noindex` on every host except www.jhajjz.in / jhajjz.in (previews)
-app/sitemap.ts, robots.ts, manifest.ts   SEO files; all URLs use `siteUrl` from lib/site.ts
-app/icon.svg, favicon.ico, apple-icon.png, public/icon-192/512.png   JJ monogram on ink (rendered from icon.svg)
-components/structured-data.tsx   Schema.org JSON-LD (AutoRental business, WebSite, breadcrumbs) from lib/site.ts
-lib/seo.ts                 `openGraphBase`: spread into every page's openGraph (Next doesn't deep-merge it)
-                           and the link-preview banner (public/og/jhajjz.jpg 1200x630 + jhajjz-square.jpg 1080x1080
-                           for Instagram), used on every page for now; custom per-page banners can come later
-scripts/make-previews.mjs  Draws the banner (`npm run previews`): the client's Ghost head-on, its sides filled from the photo's own
-                           blurred road and trees (no dark bars, Nirmal), JJ
-                           monogram and "Jhajj'z" above, one line below. Centred because apps crop previews square.
 lib/india-map.ts           Map path + city positions (generated with mapshaper; source and method in the file header)
 lib/site.ts                ALL client facts: contact, cities, services, fleet, photos. Edit here, not in pages.
 ```
