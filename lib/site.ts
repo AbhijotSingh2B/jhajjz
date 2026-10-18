@@ -380,9 +380,12 @@ export const fleetGroups: { id: "all" | FleetGroup; label: string }[] = [
 
 // Individual cars, each with its own page at /fleet/<slug>. Only add a car the client has confirmed is in the
 // fleet. Details with a `null` value are simply not shown; fill them in only from the client or a checked source,
-// never a guess. "Passengers" (Nirmal, Oct 2026) is CarWale's seating capacity for the generation in the client's
-// photos, minus the chauffeur, and only where every Indian version of it seats the same (not Range Rover, GLE, X7,
-// Defender, Innova Crysta, V-Class...); the client should confirm. An empty `photos` list shows a highlighted [CONFIRM] box.
+// never a guess. "Passengers" (Nirmal, Oct 2026) is CarWale's seating capacity (CarDekho where CarWale has none) for
+// the generation in the client's photos, minus the chauffeur; the car page adds ", plus the chauffeur". Where Indian
+// versions differ it gives both ("6 or 7": Innova Crysta 7/8-seat, X7 6/7, older Range Rover Autobiography 4/5).
+// Still unknown (sources conflict or silent): Land Cruiser (LC200 7 seats vs LC300 5; no client photo to tell),
+// Defender (110: 5 on CarWale, 5-7 on CarDekho; 130: 8), HiAce (13 vs 16), Urbania (driver included?), V-Class
+// before the facelift, Flying Spur 2005-2013, the Chrysler limousine, vintage tourers. The client should confirm all. An empty `photos` list shows a highlighted [CONFIRM] box.
 // Until the client's own photos arrive, a licensed photo of the same model may stand in: give it a `credit`
 // (photographer + licence, e.g. "Photo: Jane Doe, CC BY-SA 4.0, via Wikimedia Commons") and the page labels it
 // "Representative photo".
@@ -507,7 +510,7 @@ export const cars: Car[] = [
       { src: photos.rangeRoverWedding, alt: "White Range Rover with wedding flowers and a Jhajj'z Limos plate", portrait: true },
     ],
     details: [
-      { label: "Passengers", value: null },
+      { label: "Passengers", value: "4" },
       { label: "Colour", value: null },
     ],
   },
@@ -525,7 +528,7 @@ export const cars: Car[] = [
       { src: photos.rangeRover, alt: "White Range Rover from the Jhajj'z fleet" },
     ],
     details: [
-      { label: "Passengers", value: null },
+      { label: "Passengers", value: "3 or 4" },
       { label: "Colour", value: null },
     ],
   },
@@ -557,7 +560,7 @@ export const cars: Car[] = [
       { src: studio.gle, alt: "White Mercedes-Benz GLE", placeholder: true, cutout: true },
     ],
     details: [
-      { label: "Passengers", value: null },
+      { label: "Passengers", value: "4" },
       { label: "Colour", value: null },
       { label: "Protection level", value: null },
     ],
@@ -782,7 +785,7 @@ export const cars: Car[] = [
       { src: photos.bmwX7, alt: "White BMW X7 from the Jhajj'z fleet", portrait: true },
     ],
     details: [
-      { label: "Passengers", value: null },
+      { label: "Passengers", value: "5 or 6" },
       { label: "Colour", value: "White" },
     ],
   },
@@ -850,7 +853,7 @@ export const cars: Car[] = [
       { src: photos.rangeRoverSportWedding, alt: "White Range Rover Sport decorated for a wedding", portrait: true },
     ],
     details: [
-      { label: "Passengers", value: null },
+      { label: "Passengers", value: "4" },
       { label: "Colour", value: null },
     ],
   },
@@ -866,7 +869,7 @@ export const cars: Car[] = [
       { src: photos.rangeRoverSportBlue, alt: "Blue Range Rover Sport" },
     ],
     details: [
-      { label: "Passengers", value: null },
+      { label: "Passengers", value: "4" },
       { label: "Colour", value: null },
     ],
   },
@@ -943,7 +946,7 @@ export const cars: Car[] = [
       { src: photos.innovaCrysta, alt: "Black Toyota Innova Crysta with a Jhajj'z chauffeur" },
     ],
     details: [
-      { label: "Passengers", value: null },
+      { label: "Passengers", value: "6 or 7" },
       { label: "Colour", value: "Black" },
     ],
   },
@@ -959,7 +962,7 @@ export const cars: Car[] = [
       { src: photos.weddingLineUpGle, alt: "Black Mercedes-Benz GLE decorated with flowers, leading a wedding line-up", position: "right" },
     ],
     details: [
-      { label: "Passengers", value: null },
+      { label: "Passengers", value: "4" },
       { label: "Colour", value: "Black" },
     ],
   },
