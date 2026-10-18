@@ -41,7 +41,8 @@ export default function Home() {
       <PageTransition>
         <main>
           {/* Hero */}
-          <section className="relative flex min-h-[min(100svh,880px)] flex-col overflow-hidden bg-ink-deep text-cream">
+          {/* Full screen up to 880px tall; ultrawide monitors may go taller (46vw), or the photo turns into a thin strip. */}
+          <section className="relative flex min-h-[min(100svh,max(880px,46vw))] flex-col overflow-hidden bg-ink-deep text-cream">
             <Photo
               src={heroPhoto}
               alt="A car from the Jhajj'z fleet"
@@ -53,8 +54,9 @@ export default function Home() {
             />
             <div
               aria-hidden="true"
-              // Phones: the text spans the full width, so darken from the bottom up instead of from the left.
-              className="absolute inset-0 bg-[linear-gradient(0deg,rgba(10,10,9,0.88)_0%,rgba(10,10,9,0.7)_40%,rgba(10,10,9,0.15)_70%,rgba(10,10,9,0)_100%)] md:bg-[linear-gradient(90deg,rgba(10,10,9,0.85)_0%,rgba(10,10,9,0.45)_45%,rgba(10,10,9,0)_75%)]"
+              // Phones: the text spans the full width, so darken from the bottom up. Wider: from the left, measured from
+              // the 1200px text column (`.hero-shade` in globals.css), so the text keeps its shade on wide monitors too.
+              className="hero-shade absolute inset-0"
             />
             <div className="relative mx-auto mt-auto w-full max-w-[1200px] px-6 pt-36 pb-16 md:pb-20">
               <Enter delay={0.15}>

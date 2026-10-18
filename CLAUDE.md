@@ -101,7 +101,8 @@ components/
                            right edge; "See the full fleet" card uses the black S-Class studio shot); mobile sheet
   site-footer.tsx          Also renders the phone-only sticky Call / WhatsApp bar
   date-input.tsx           Date field that always shows dd/mm/yyyy (writes the date over the native input; Nirmal);
-                           × clears it (the iPhone picker's Reset does nothing)
+                           × clears it (the iPhone picker's Reset does nothing); Day/Month/Year dropdowns where there's
+                           no calendar picker (TV browsers, old browsers: no `showPicker` on a mouse/remote device)
   booking-bar.tsx          "Start a quote": occasion / city / date (all start empty) → pushes to /contact?… as query params
   quote-form.tsx           Pre-fills from those query params (car pages add ?car=<slug> for the optional
                            "Exact vehicle" dropdown); "Other" opens a text box; submit opens the
@@ -167,6 +168,9 @@ The v0 reference design (`redesign-jhajjz-in.zip`) got several facts wrong — n
   lists), three-equal-cards feature grids, boxes with a gold left stripe, a → after every link (one per screen at
   most), browser-default UI that clashes with the palette (e.g. the blue search clear ×).
 - Body text ≥15px (the reference used 9–11px). Touch targets ≥44px.
+- Checked (2026-10-18) at 23 sizes: phones, foldables (Galaxy Fold inner/outer, a foldable-iPhone-like 880x690),
+  iPads, MacBook 13–16", 1366–1920 PCs, 2560/3440 ultrawide, 1280x720 TV. The hero's shading is placed from the
+  1200px text column (`.hero-shade`), and the hero may grow past 880px on ultrawide screens (46vw).
 - Animations: subtle and purposeful — fade/lift on scroll, staggered lists, animated dropdowns,
   hero slow zoom. Fleet cards share one hover (`.card-roll` / `.card-zoom` / `.card-name` in globals.css):
   studio cut-outs roll forward, photos zoom, a gold line draws under the name. Everything must respect `prefers-reduced-motion` (already wired).

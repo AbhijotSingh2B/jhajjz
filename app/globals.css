@@ -318,3 +318,21 @@ img[data-photo] {
     transform: none;
   }
 }
+
+/* Home hero shading (app/page.tsx). Phones: from the bottom up, under the full-width text. From md: from the left,
+   with stops placed from the centred 1200px text column (50% ± px), not as shares of the screen: as a share, the
+   text on a 1920px screen sat on a nearly clear part of the photo. */
+.hero-shade {
+  background: linear-gradient(0deg, rgba(10, 10, 9, 0.88) 0%, rgba(10, 10, 9, 0.7) 40%, rgba(10, 10, 9, 0.15) 70%, rgba(10, 10, 9, 0) 100%);
+}
+@media (width >= 48rem) {
+  .hero-shade {
+    background: linear-gradient(
+      90deg,
+      rgba(10, 10, 9, 0.85) max(0px, calc(50% - 600px)),
+      rgba(10, 10, 9, 0.6) calc(50% - 100px),
+      rgba(10, 10, 9, 0.3) calc(50% + 150px),
+      rgba(10, 10, 9, 0) calc(50% + 450px)
+    );
+  }
+}
