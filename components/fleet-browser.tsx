@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import Image from "next/image";
+import { IllustrativeTag } from "@/components/illustrative-tag";
 import Link from "next/link";
 import { AnimatePresence, motion } from "motion/react";
 import { Search, X } from "lucide-react";
@@ -108,6 +109,7 @@ export function FleetBrowser() {
                     <Confirm>photo</Confirm>
                   </span>
                 )}
+                {v.image && v.imagePlaceholder && <IllustrativeTag />}
               </div>
               {/* The title link's ::after stretches over the whole card, so the photo opens the class too. A class
                   without car pages yet (coaches) has no page; its card goes to the quote form instead. */}

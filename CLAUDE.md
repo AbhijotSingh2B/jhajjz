@@ -198,6 +198,7 @@ The v0 reference design (`redesign-jhajjz-in.zip`) got several facts wrong — n
 - [ ] Remove placeholder photos: search `PLACEHOLDER` in lib/site.ts (and the `carwale`, `carwaleColour`,
       `cardekhoColour` helpers); replace with the client's photos. Delete public/photos/carwale and /cardekho too
       and re-run `npm run save-photos`.
+      They carry a "For illustrative purposes only" corner tag (components/illustrative-tag.tsx), which goes with them.
 - [ ] Point www.jhajjz.in at Vercel (noindex on other hosts switches off automatically, proxy.ts).
 - [ ] Old Wix URLs already redirect (`redirects()` in next.config.ts). After launch check Search Console → Pages.
 - [ ] Search Console: verify domain, submit /sitemap.xml. Google Business Profile for the Mohali office (same
