@@ -142,9 +142,11 @@ lib/site.ts                ALL client facts: contact, cities, services, fleet, p
   Dehradun, Mussoorie, Rishikesh, Haridwar, Ropar
 - Brands: Rolls-Royce, Bentley, Mercedes-Benz (and Maybach), BMW, Audi, Jaguar, Land Rover / Range Rover, Toyota; coaches
   by Volvo and Mercedes-Benz (Bentley, Jaguar and the newer cars below come from the car photos on jhajjz.in)
-- 9 vehicle classes and 9 services — see `lib/site.ts`. jhajjz.in's "Wedding cars" class was dropped (Nirmal:
-  every car can be booked for any event); "Luxury MPVs" was added by Nirmal. Class order (fleet page, menu, home):
-  luxury cars, executive cabs, SUVs, luxury MPVs, then vintage, convertibles, limousines, mini vans, coaches.
+- 10 vehicle classes and 9 services — see `lib/site.ts`. jhajjz.in's "Wedding cars" class was dropped (Nirmal:
+  every car can be booked for any event); "Luxury MPVs" was added by Nirmal, and "Everyday people movers" for regular
+  non-luxury cars (Nirmal: the Innova Crysta isn't a mini van; it's the only one so far; kept off the home page). Class
+  order (fleet page, menu, home): luxury cars, executive cabs, SUVs, luxury MPVs, then vintage, convertibles,
+  limousines, mini vans, everyday people movers, coaches.
 - The fleet intro says every vehicle comes with a trained chauffeur; car texts don't repeat it (Nirmal).
 
 The v0 reference design (`redesign-jhajjz-in.zip`) got several facts wrong — never copy these from it:
@@ -165,7 +167,8 @@ The v0 reference design (`redesign-jhajjz-in.zip`) got several facts wrong — n
   most), browser-default UI that clashes with the palette (e.g. the blue search clear ×).
 - Body text ≥15px (the reference used 9–11px). Touch targets ≥44px.
 - Animations: subtle and purposeful — fade/lift on scroll, staggered lists, animated dropdowns,
-  hero slow zoom. Everything must respect `prefers-reduced-motion` (already wired).
+  hero slow zoom. Fleet cards share one hover (`.card-roll` / `.card-zoom` / `.card-name` in globals.css):
+  studio cut-outs roll forward, photos zoom, a gold line draws under the name. Everything must respect `prefers-reduced-motion` (already wired).
 - Never invent stats, car models, testimonials or contact details. Use `[BRACKETS]` for unknowns.
 
 ## Photos (all in lib/site.ts)

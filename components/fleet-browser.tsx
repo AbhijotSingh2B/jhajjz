@@ -183,7 +183,7 @@ function ClassCard({ v, priority }: { v: Vehicle; priority: boolean }) {
               fill
               priority={priority}
               sizes="(max-width: 768px) 100vw, 400px"
-              className={`transition-transform duration-700 ease-out group-hover:scale-[1.03] ${v.imageCutout ? "object-contain p-5" : "object-cover"}`}
+              className={v.imageCutout ? "card-roll object-contain p-5" : "card-zoom object-cover"}
             />
           </div>
         ) : (
@@ -200,7 +200,7 @@ function ClassCard({ v, priority }: { v: Vehicle; priority: boolean }) {
           {carsIn(v.slug).length > 0 ? (
             <Link
               href={`/fleet/${v.slug}`}
-              className="underline decoration-transparent underline-offset-[6px] transition-colors duration-300 group-hover:decoration-ink/40 after:absolute after:inset-0"
+              className="card-name after:absolute after:inset-0"
             >
               {v.name}
             </Link>
@@ -257,7 +257,7 @@ function CarCard({ car, fleetClass }: { car: Car; fleetClass: Vehicle }) {
               fill
               sizes="(max-width: 768px) 100vw, 400px"
               className={cn(
-                "transition-transform duration-700 ease-out group-hover:scale-[1.03]",
+                photo.cutout ? "card-roll" : "card-zoom",
                 photo.cutout ? "object-contain p-5" : photo.portrait ? "object-contain" : "object-cover",
               )}
               style={{ objectPosition: photo.position }}
@@ -275,7 +275,7 @@ function CarCard({ car, fleetClass }: { car: Car; fleetClass: Vehicle }) {
           {/* The ::after stretches the link over the whole card, so the photo opens the car too. */}
           <Link
             href={`/fleet/${car.slug}`}
-            className="underline decoration-transparent underline-offset-[6px] transition-colors duration-300 group-hover:decoration-ink/40 after:absolute after:inset-0"
+            className="card-name after:absolute after:inset-0"
           >
             {name}
           </Link>

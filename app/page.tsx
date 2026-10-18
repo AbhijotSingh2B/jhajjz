@@ -17,8 +17,10 @@ const withPhoto = (slug: string) => {
   const v = fleet.find((x) => x.slug === slug);
   return v?.image ? { ...v, image: v.image, imageAlt: v.imageAlt ?? v.name } : undefined;
 };
-// Same order as the fleet page: luxury cars, executive cabs, SUVs and MPVs first.
+// Same order as the fleet page: luxury cars, executive cabs, SUVs and MPVs first. Everyday people movers stay off
+// the home page, which shows the luxury fleet (and the grid fits 9: one large tile and eight small).
 const preview = fleet
+  .filter((v) => v.slug !== "people-movers")
   .map((v) => withPhoto(v.slug))
   .filter((v) => v !== undefined);
 // Wedding band photo: the white Rolls-Royce Ghost decorated with flowers. (The decorated line-up from above was tried
@@ -119,13 +121,15 @@ export default function Home() {
                             alt={v.imageAlt}
                             fill
                             sizes={i === 0 ? "(max-width: 768px) 85vw, 800px" : "(max-width: 768px) 85vw, 400px"}
-                            className={v.imageCutout ? "object-contain p-5 md:p-8" : "object-cover"}
+                            className={v.imageCutout ? "card-roll object-contain p-5 md:p-8" : "card-zoom object-cover"}
                           />
                         </div>
                         {v.imagePlaceholder && <IllustrativeTag />}
                       </div>
                       <div>
-                        <h3 className={i === 0 ? "text-[19px] font-semibold md:font-serif md:text-[28px] md:font-normal" : "text-[19px] font-semibold"}>{v.name}</h3>
+                        <h3 className={i === 0 ? "text-[19px] font-semibold md:font-serif md:text-[28px] md:font-normal" : "text-[19px] font-semibold"}>
+                          <span className="card-name">{v.name}</span>
+                        </h3>
                         <p className="mt-1 text-[15px] text-muted">{v.text}</p>
                       </div>
                     </Link>

@@ -350,6 +350,17 @@ export const fleet: Vehicle[] = [
     imageCutout: true,
   },
   {
+    // Regular (non-luxury) cars, kept apart from the luxury classes (Nirmal). Only the Innova Crysta so far.
+    slug: "people-movers",
+    name: "Everyday people movers",
+    group: "group",
+    text: "The Toyota Innova Crysta, for family trips, airport runs and small groups.",
+    image: studio.innovaCrysta,
+    imageAlt: "Black Toyota Innova Crysta",
+    imagePlaceholder: true,
+    imageCutout: true,
+  },
+  {
     slug: "luxury-coaches",
     name: "Luxury coaches",
     group: "group",
@@ -915,7 +926,7 @@ export const cars: Car[] = [
     slug: "toyota-innova-crysta",
     brand: "Toyota",
     model: "Innova Crysta",
-    fleetClass: "mini-vans",
+    fleetClass: "people-movers",
     text: "A Toyota Innova Crysta for family trips, airport runs and small groups.",
     photos: [
       // PLACEHOLDER: CarWale photo — remove before public launch

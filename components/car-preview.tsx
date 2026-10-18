@@ -23,7 +23,7 @@ export function CarPreview({ car, frame = "bg-sand", className }: { car: Car; fr
               fill
               sizes="240px"
               className={cn(
-                "transition-transform duration-700 ease-out group-hover:scale-[1.03]",
+                photo.cutout ? "card-roll" : "card-zoom",
                 photo.cutout ? "object-contain p-3" : photo.portrait ? "object-contain" : "object-cover",
               )}
               style={{ objectPosition: photo.position }}
@@ -32,8 +32,8 @@ export function CarPreview({ car, frame = "bg-sand", className }: { car: Car; fr
         )}
         {photo?.placeholder && <IllustrativeTag />}
       </div>
-      <p className="mt-2.5 text-[16px] leading-snug font-medium text-ink underline decoration-transparent underline-offset-[5px] transition-colors group-hover:decoration-ink/40">
-        {carName(car)}
+      <p className="mt-2.5 text-[16px] leading-snug font-medium text-ink">
+        <span className="card-name">{carName(car)}</span>
       </p>
       {years && <p className="mt-0.5 text-[15px] text-muted">{years}</p>}
     </Link>
