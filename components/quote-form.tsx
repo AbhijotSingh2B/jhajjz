@@ -6,7 +6,8 @@ import { AnimatePresence, motion } from "motion/react";
 import { carName, cars, carsInClass, cityOptions, fleet, occasions, otherCity } from "@/lib/site";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Button } from "@/components/ui/button";
-import { minToday } from "@/lib/utils";
+import { formatDate } from "@/lib/utils";
+import { DateInput } from "@/components/date-input";
 import { ContactDialog } from "@/components/contact-dialog";
 
 const NOT_SURE = "Not sure";
@@ -84,7 +85,7 @@ export function QuoteForm() {
                   line("Vehicle", withOther(vehicle, OTHER_VEHICLE, "vehicleOther")),
                   line("Exact vehicle", chosenCar ? carName(chosenCar) : car === OTHER_CAR && !bothOther ? f.get("carOther") || OTHER_CAR : ""),
                   line("City", withOther(city, otherCity, "cityOther")),
-                  line("Date", f.get("date")),
+                  line("Date", formatDate(String(f.get("date") ?? ""))),
                   line("Notes", f.get("notes")),
                 ]
                   .filter(Boolean)
@@ -212,13 +213,13 @@ export function QuoteForm() {
               />
             </DarkField>
             <DarkField label="Date" id="q-date">
-              <input
+              <DateInput
                 id="q-date"
                 name="date"
-                type="date"
                 defaultValue={params.get("date") ?? ""}
-                ref={minToday}
                 className={`${inputClass} [color-scheme:dark]`}
+                textClassName="text-[17px] text-cream"
+                placeholderClassName="text-muted-dark"
               />
             </DarkField>
             <div className="col-span-full">

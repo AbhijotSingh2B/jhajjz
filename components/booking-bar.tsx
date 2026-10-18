@@ -5,7 +5,8 @@ import { useRouter } from "next/navigation";
 import { cityOptions, occasions } from "@/lib/site";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Button } from "@/components/ui/button";
-import { cn, minToday } from "@/lib/utils";
+import { cn } from "@/lib/utils";
+import { DateInput } from "@/components/date-input";
 
 /** Short quote starter under the hero. Hands its choices to /contact as query params. */
 export function BookingBar() {
@@ -57,13 +58,12 @@ export function BookingBar() {
         </Select>
       </Field>
       <Field label="Date" id="bb-date" className="col-span-2 md:col-span-1">
-        <input
+        <DateInput
           id="bb-date"
-          type="date"
-          ref={minToday}
-          value={date}
-          onChange={(e) => setDate(e.target.value)}
-          className="h-12 w-full border border-line bg-white px-3 text-base text-ink transition-colors outline-none hover:border-ink/40 focus:border-ink"
+          onChange={setDate}
+          className="h-12 w-full border border-line bg-white px-3 text-base transition-colors outline-none hover:border-ink/40 focus:border-ink"
+          textClassName="px-3 text-base text-ink"
+          placeholderClassName="text-muted"
         />
       </Field>
       <Button type="submit" variant="ink" size="default" className="col-span-2 md:col-span-1">

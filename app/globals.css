@@ -229,3 +229,13 @@ html.splash .header-logo {
     visibility: hidden;
   }
 }
+
+/* components/date-input.tsx writes the date over the input as dd/mm/yyyy, so the browser's own text is hidden
+   (Chrome/Safari segments, iOS value box, and the text colour for Firefox). The calendar icon stays. */
+.date-input {
+  color: transparent;
+}
+.date-input::-webkit-datetime-edit,
+.date-input::-webkit-date-and-time-value {
+  opacity: 0;
+}

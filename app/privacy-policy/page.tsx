@@ -8,12 +8,13 @@ import { Button } from "@/components/ui/button";
 
 export const metadata: Metadata = {
   title: "Privacy policy",
-  description: "How the Jhajj'z website handles your information. No cookies, no tracking.",
+  description: "How the Jhajj'z website handles your information. No cookies, no advertising trackers.",
   alternates: { canonical: "/privacy-policy" },
 };
 
-// Written from what this site actually does (checked in the code: no cookies, no
-// analytics, the quote form only opens WhatsApp or email). Nothing about how the client handles
+// Written from what this site actually does (checked in the code: no cookies, Vercel Web Analytics only, its data
+// points from vercel.com/docs/analytics/privacy-policy in Oct 2026; the quote form only opens WhatsApp or email).
+// Nothing about how the client handles
 // bookings: the "When you contact us" section (sharing, retention, marketing) was removed (Nirmal).
 
 const updated = "18 October 2026";
@@ -24,8 +25,14 @@ const sections: { title: string; body: React.ReactNode }[] = [
     body: (
       <>
         <p>
-          Nothing, on its own. The site doesn&apos;t use cookies, analytics, advertising or tracking of any kind. Fonts
-          and photos are served from our own server.
+          Very little. The site doesn&apos;t use cookies, advertising or anything that follows you to other websites.
+          Fonts and photos are served from our own server.
+        </p>
+        <p>
+          To see how many people visit and which pages they read, we use Vercel Web Analytics. For each page view it
+          records the page, the site you came from, your approximate location (country and city), and your browser,
+          operating system and type of device. It sets no cookies and isn&apos;t linked to your IP address or to you:
+          we only see totals.
         </p>
         <p>
           Like any website, our hosting provider keeps standard technical logs (such as IP address, browser and the

@@ -4,9 +4,11 @@ const nextConfig: NextConfig = {
   cacheComponents: true,
   partialPrefetching: true,
   images: {
-    // Nirmal: nothing goes through Vercel's image optimization. Every <Image> is served as-is: the photos are saved
-    // copies in public/photos (already sized and WebP'd when saved, see `saved()` in lib/site.ts).
-    unoptimized: true,
+    // Nirmal: nothing goes through Vercel's image optimization. Photos are saved copies in public/photos, plus
+    // smaller copies made by `npm run save-photos`; the loader only picks which saved file to use (static files,
+    // no image-optimization usage on Vercel).
+    loader: "custom",
+    loaderFile: "./lib/photo-loader.ts",
   },
   // The old Wix site's URLs (from jhajjz.in/sitemap.xml, Oct 2026), sent permanently to their new pages so search
   // rankings and old links carry over. /fleet and /privacy-policy keep the same path. Anchors point at home sections
