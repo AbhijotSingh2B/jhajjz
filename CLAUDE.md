@@ -78,7 +78,8 @@ app/
   page.tsx                 Home: hero, booking bar, fleet preview, weddings photo band, "Who we drive for"
                            (rate-card rows), "Chandigarh, since 1998" about + city list
   fleet/page.tsx           Full fleet with search + filter tabs (components/fleet-browser.tsx). Searching lists
-                           individual cars, each with its class linked underneath (classes without cars, i.e. coaches, as a card)
+                           individual cars, each with its class linked underneath (classes without cars, i.e. coaches, as a card),
+                           sorted by relevance: name > make/model > class name > description
   fleet/[car]/page.tsx     Also serves class pages (/fleet/suvs, components/fleet-class-page.tsx) for classes that
                            have cars; class cards, home preview and Fleet menu link there (`classHref`).
                            One page per car in `cars` (lib/site.ts), e.g. /fleet/rolls-royce-ghost. Unknown

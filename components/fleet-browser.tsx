@@ -17,17 +17,32 @@ export function FleetBrowser() {
   const [filter, setFilter] = useState<"all" | FleetGroup>("all");
   const [query, setQuery] = useState("");
   const terms = query.toLowerCase().split(/\s+/).filter(Boolean);
-  const matches = (text: string) => terms.every((t) => text.toLowerCase().includes(t));
+  // Relevance: each search word scores by the best place it appears (name over class over description); every
+  // word has to appear somewhere. 0 = no match.
+  const score = (fields: [text: string, weight: number][]) =>
+    terms.reduce((sum, t) => {
+      if (sum < 0) return sum;
+      const best = Math.max(0, ...fields.filter(([text]) => text.toLowerCase().includes(t)).map(([, w]) => w));
+      return best ? sum + best : -1;
+    }, 0);
   // No search: one card per class. Searching: one card per matching car, labelled with its class ("suv" lists
-  // every SUV), plus the classes that have no car pages yet (coaches) when the class itself matches.
+  // every SUV; a word only in a description still finds the car, lower down), plus the classes that have no car
+  // pages yet (coaches) when the class matches. Best matches first, otherwise in fleet order.
   const shown: Result[] = fleet
     .filter((v) => filter === "all" || v.group === filter)
-    .flatMap((v): Result[] => {
+    .flatMap((v): (Result & { score: number })[] => {
       const classCars = carsIn(v.slug);
-      if (terms.length === 0) return [{ kind: "class", v }];
-      if (classCars.length === 0) return matches(`${v.name} ${v.text}`) ? [{ kind: "class", v }] : [];
-      return classCars.filter((c) => matches(`${carName(c)} ${c.brand} ${c.model} ${v.name}`)).map((car) => ({ kind: "car", car, v }));
-    });
+      if (terms.length === 0) return [{ kind: "class", v, score: 0 }];
+      if (classCars.length === 0) return [{ kind: "class" as const, v, score: score([[v.name, 4], [v.text, 1]]) }];
+      return classCars.map((car) => ({
+        kind: "car" as const,
+        car,
+        v,
+        score: score([[carName(car), 4], [`${car.brand} ${car.model}`, 3], [v.name, 2], [car.text, 1], [v.text, 1]]),
+      }));
+    })
+    .filter((r) => terms.length === 0 || r.score > 0)
+    .sort((a, b) => b.score - a.score);
 
   return (
     <>
