@@ -47,6 +47,7 @@ before pushing, and merge (never force-push) if someone else's commit arrives.
   the dev server served stale CSS once (footer lost its background) and made a working change look broken.
 - Python helpers (fontTools, Pillow) go in a venv in the scratchpad; the favicon was made that way from Libre
   Caslon Display. To judge photos, download them and view contact sheets (Pillow) before using any.
+- Don't `pkill -f next`: it matches your own shell and kills it. Use `fuser -k <port>/tcp` or the server's PID.
 - Nirmal reviews on his iPhone at jhajjz.vercel.app; it lags a few pushes behind while Vercel redeploys.
 
 ## How Nirmal likes to work
@@ -171,6 +172,11 @@ The v0 reference design (`redesign-jhajjz-in.zip`) got several facts wrong — n
 - Second number +91 98144 00019 is hidden until the client confirms it is theirs.
 - **+91 98036 00002** is probably one of their numbers (Nirmal's guess, unverified). Commented out next to the
   other hidden number in `lib/site.ts`; ask the client, and if it is theirs, also ask whether it is on WhatsApp.
+- **Unconfirmed copy**: "station manager you can call directly" (About, privacy policy) and "We handle decoration,
+  timings and chauffeurs on the day" (weddings band) aren't published anywhere. Confirm or reword.
+- **Conflicting public facts** (web search, Oct 2026): WeddingWire says est. 1994, an Instagram bio "wedding fleet since
+  2002"; LinkedIn lists jhajjzthetransporters@gmail.com and +91 98036 00019. Confirm the client's own; the Instagram
+  handle (`jhajjz_transport`, plus the Delhi one) and LinkedIn link in `lib/site.ts` were found by search, not from jhajjz.in.
 - Office map on /contact: needs the office's exact pin; an embed would need a privacy-policy line (Google cookies).
 - Names/proof (hotels, airlines, events they've driven for; real client quotes) only with client permission.
 - Hero: client's Wix sharing image. `/public/rolls-royce-hero.webp` (v0 reference, probably AI-made) is the alternative.
