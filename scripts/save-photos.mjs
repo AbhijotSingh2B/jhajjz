@@ -30,9 +30,11 @@ function localPath(url, ext) {
     const prefix = name.startsWith("hero") ? "hero-" : "";
     return `/photos/wix/${prefix}${id}-${mode}-${size}.${ext}`;
   }
-  const dir = u.hostname.includes("cardekho") ? "cardekho" : "carwale";
+  // Stand-ins from anywhere else (a studio shot Nirmal found) go in their own folder, removed at launch with the rest.
+  const dir = u.hostname.includes("cardekho") ? "cardekho" : u.hostname.includes("aeplcdn") ? "carwale" : "stand-ins";
   const base = u.pathname
     .replace(/^\/(1280x720\/n\/(cw\/ec\/)?|images\/car-images\/930x620\/)/, "")
+    .replace(/^\//, "")
     .replace(/\.(webp|jpe?g|png)$/i, "")
     .replace(/[^\w-]+/g, "-");
   return `/photos/${dir}/${base}.${ext}`;

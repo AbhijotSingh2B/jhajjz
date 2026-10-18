@@ -258,7 +258,10 @@ export const studio = {
   rangeRoverSport: carwaleColour("2x5uqsa_1477733"), // Range Rover Sport 2018–2022, Fuji White
   gleOlder: carwaleColour("stahtsa_1480771"), // GLE 2020–2023, Obsidian Black
   urbania: cardekhoColour("Force/Urbania/11849/1721042241113/221_Gray_414142.jpg"), // Urbania (CarDekho), Grey
-  maybachGls: carwaleColour("uvkhafb_1810183"), // Maybach GLS, Hyacinth Red (CarWale has no two-tone shot)
+  maybachGls: carwaleColour("uvkhafb_1810183"),
+  // A3 Cabriolet before the 2017 facelift, red, roof down, transparent PNG (only 561px wide). Link from Nirmal; it's on
+  // the site of Pannu Car Rental, another Chandigarh rental company, but is a maker's render, not a photo of their car.
+  audiA3Cabriolet: saved("https://www.pannucarrental.com/uploads/topics/16353351209623.png"), // Maybach GLS, Hyacinth Red (CarWale has no two-tone shot)
 };
 
 // There is no separate "wedding cars" class: every car in the fleet can be booked for a wedding or any event.
@@ -650,6 +653,8 @@ export const cars: Car[] = [
     fleetClass: "convertibles",
     text: "A red Audi A3 Cabriolet for weddings, photoshoots and drives with the roof down.",
     photos: [
+      // PLACEHOLDER: stand-in render — remove before public launch
+      { src: studio.audiA3Cabriolet, alt: "Red Audi A3 Cabriolet with the roof down", placeholder: true, cutout: true, zoom: 1.4 },
       { src: photos.audiSunset, alt: "Red Audi A3 Cabriolet decorated with flowers at sunset", portrait: true },
       { src: photos.audiAbove, alt: "Red Audi A3 Cabriolet seen from above", portrait: true },
     ],

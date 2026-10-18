@@ -192,8 +192,8 @@ The v0 reference design (`redesign-jhajjz-in.zip`) got several facts wrong — n
 - **Model years** (`years`) of the split cars (S-Class, Range Rover, 7 Series, E-Class, Range Rover Sport) are the
   global years of the generation identified from the photos, not the client's registration years; confirm.
 - **No studio shot available** (CarWale/CarDekho only have other generations, or none on white): Bentley Flying Spur,
-  V-Class, HiAce, Chrysler limousine, vintage tourers, Audi A3 Cabriolet (CarWale's old cut-out was too rough).
-  Force Urbania has one now (CarDekho pictures page, grey). Their pages use the client's photos only. The Maybach GLS studio shot is plain red; the client's car is two-tone.
+  V-Class, HiAce, Chrysler limousine, vintage tourers. Force Urbania has one now (CarDekho pictures page, grey); the
+  Audi A3 Cabriolet has a transparent render Nirmal found (hosted on Pannu Car Rental's site, public/photos/stand-ins). Their pages use the client's photos only. The Maybach GLS studio shot is plain red; the client's car is two-tone.
 - **Logo**: JJ monogram made at Nirmal's request (components/logo.tsx, 2026-10-17); the client hasn't seen it yet.
   If they send their own logo file, swap it there and regenerate all 5 icon files.
 - **Privacy policy**: only covers what the website does. The "When you contact us" section (sharing, retention,
@@ -214,7 +214,7 @@ The v0 reference design (`redesign-jhajjz-in.zip`) got several facts wrong — n
 ## Launch checklist
 
 - [ ] Remove placeholder photos: search `PLACEHOLDER` in lib/site.ts (and the `carwale`, `carwaleColour`,
-      `cardekhoColour` helpers); replace with the client's photos. Delete public/photos/carwale and /cardekho too
+      `cardekhoColour` helpers); replace with the client's photos. Delete public/photos/carwale, /cardekho and /stand-ins too
       and re-run `npm run save-photos`.
       They carry a "For illustrative purposes only" corner tag (components/illustrative-tag.tsx), which goes with them.
 - [ ] Vercel Web Analytics is in the code (`<Analytics />` in layout.tsx, described in the privacy policy); it only
