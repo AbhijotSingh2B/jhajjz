@@ -73,16 +73,11 @@ app/
   privacy-policy/page.tsx  Drafted policy; 3 highlighted [CONFIRM] items for the client
   not-found.tsx            Branded 404
 components/
-  logo.tsx                 JJ monogram (two Caslon Js, the second lower-right). `Logo` = mark + name (footer);
-                           `LogoMark` = header (monogram only); `LogoMark intro` = the entry screen's opening
-                           (Nirmal's idea): "Jhajj'z" with a gold J; "'z" fades, "haj" slides behind the J's stem
-                           (clipped), the last j turns gold and becomes the second J. The header itself never
-                           animates (on reload it reset the logo, Nirmal).
-  splash.tsx               Entry screen (Nirmal): ink screen, "Jhajj'z" turns into the monogram, which flies to the
-                           header logo. 3.3–4s on the animation's own clock (not from the tap, which cut it short on a fast phone):
-                           the monogram holds 0.6s, it leaves once the page has loaded, never after 4s. Once per
-                           tab (sessionStorage), decided by a script in layout.tsx <head>; skipped for reduced motion;
-                           CSS hides it at 4s if JavaScript never runs.
+  logo.tsx                 JJ monogram (two Caslon Js, second lower-right). `Logo` = mark + name (footer), `LogoMark`
+                           = header (static; animating it replayed on reload), `LogoMark intro` = entry-screen opening
+  splash.tsx               Entry screen: "Jhajj'z" folds into the monogram, which flies to the header logo. Once per
+                           tab (script in layout.tsx <head>), skipped for reduced motion. Timed on the animation's own
+                           clock, not from the tap (that cut it short on fast phones); 3.3–4s, CSS fallback hides it
   site-header.tsx          Fixed header (Home, Fleet, Weddings, Services, About, Contact); transparent over the home hero until scroll; Fleet mega-menu; mobile sheet
   site-footer.tsx          Also renders the phone-only sticky Call / WhatsApp bar
   booking-bar.tsx          "Start a quote": occasion / city / date (all start empty) → pushes to /contact?… as query params
@@ -95,6 +90,18 @@ components/
   page-transition.tsx      Fade-and-lift between pages (React <ViewTransition>); wraps each page's <main>
   car-gallery.tsx          Car-page photo carousel (scroll-snap swipe, prev/next, thumbnail row); one per model generation
   india-map.tsx            India outline (lib/india-map.ts, Survey of India boundary) + city dots, beside "Pan-India, including"
+  motion.tsx               Reveal, Enter, Stagger, StaggerItem, MotionProvider (respects reduced motion)
+  icons.tsx                WhatsApp glyph (Simple Icons) + social icons (Tabler, MIT); lucide has no brand icons
+  ui/                      button, select, navigation-menu, sheet, dialog (bottom sheet on phones)
+proxy.ts                   Adds `X-Robots-Tag: noindex` on every host except www.jhajjz.in / jhajjz.in (previews)
+app/sitemap.ts, robots.ts, manifest.ts   SEO files; all URLs use `siteUrl` from lib/site.ts
+app/icon.svg, favicon.ico, apple-icon.png, public/icon-192/512.png   JJ monogram on ink (rendered from icon.svg)
+components/structured-data.tsx   Schema.org JSON-LD (AutoRental business, WebSite, breadcrumbs) from lib/site.ts
+lib/seo.ts                 `openGraphBase` (spread into every page's openGraph; Next doesn't deep-merge it), incl. the
+                           link-preview banner: public/og/jhajjz.jpg 1200x630 + jhajjz-square.jpg (Instagram). Same
+                           banner on every page for now; custom per-page banners later
+scripts/make-previews.mjs  `npm run previews` redraws the banner (Ghost head-on, sides filled from the photo, no bars)
+lib/india-map.ts, Survey of India boundary) + city dots, beside "Pan-India, including"
   motion.tsx               Reveal, Enter, Stagger, StaggerItem, MotionProvider (respects reduced motion)
   icons.tsx                WhatsApp glyph (Simple Icons) + social icons (Tabler, MIT); lucide has no brand icons
   ui/                      button, select, navigation-menu, sheet, dialog (bottom sheet on phones)
