@@ -222,22 +222,36 @@ function ClassCard({ v, priority }: { v: Vehicle; priority: boolean }) {
       {classCars.length > 0 ? (
         // Above the card-wide link (its ::after), so these stay clickable on their own.
         <ul className="relative z-10 mt-1 flex flex-wrap gap-x-5">
-          {listed.map((c) => (
-            <li key={c.slug}>
-              <Link
-                href={`/fleet/${c.slug}`}
-                className="group/car inline-flex min-h-11 items-center text-[15px] text-ink"
+          {/* The extra cars fade and lift in one after another on "Show N more" and fade out on "Show fewer";
+              the button glides to its new place. */}
+          <AnimatePresence initial={false}>
+            {listed.map((c, i) => (
+              <motion.li
+                key={c.slug}
+                layout="position"
+                initial={{ opacity: 0, y: 8 }}
+                animate={{
+                  opacity: 1,
+                  y: 0,
+                  transition: { duration: 0.35, delay: Math.max(0, i - CARS_SHOWN) * 0.04, ease: [0.2, 0.7, 0.2, 1] },
+                }}
+                exit={{ opacity: 0, transition: { duration: 0.15 } }}
               >
-                <span className="flex items-baseline gap-x-2">
-                  <span className="underline decoration-ink/30 underline-offset-[5px] transition-colors group-hover/car:decoration-ink">{carName(c)}</span>
-                  {/* Model years as a quieter subtitle beside the name, instead of in brackets. */}
-                  {c.years && <span className="text-[14px] text-muted">{carYears(c)}</span>}
-                </span>
-              </Link>
-            </li>
-          ))}
+                <Link
+                  href={`/fleet/${c.slug}`}
+                  className="group/car inline-flex min-h-11 items-center text-[15px] text-ink"
+                >
+                  <span className="flex items-baseline gap-x-2">
+                    <span className="underline decoration-ink/30 underline-offset-[5px] transition-colors group-hover/car:decoration-ink">{carName(c)}</span>
+                    {/* Model years as a quieter subtitle beside the name, instead of in brackets. */}
+                    {c.years && <span className="text-[14px] text-muted">{carYears(c)}</span>}
+                  </span>
+                </Link>
+              </motion.li>
+            ))}
+          </AnimatePresence>
           {hidden > 1 && (
-            <li>
+            <motion.li layout="position" transition={{ duration: 0.35, ease: [0.2, 0.7, 0.2, 1] }}>
               <button
                 type="button"
                 onClick={() => setExpanded((e) => !e)}
@@ -246,7 +260,7 @@ function ClassCard({ v, priority }: { v: Vehicle; priority: boolean }) {
               >
                 {expanded ? "Show fewer" : `Show ${hidden} more`}
               </button>
-            </li>
+            </motion.li>
           )}
         </ul>
       ) : (
