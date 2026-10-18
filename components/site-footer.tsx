@@ -100,11 +100,14 @@ export function SiteFooter() {
           </ul>
         </div>
       </div>
-      <div className="mx-auto flex max-w-[1200px] flex-wrap justify-between gap-3 border-t border-ink-soft px-6 py-5 text-sm text-footer-muted">
-        <span>© 2026 Jhajj&apos;z</span>
-        <Link href="/privacy-policy" className="hover:text-cream">
-          Privacy policy
-        </Link>
+      {/* Rule on the inner div so it lines up with the columns above instead of running into the padding. */}
+      <div className="mx-auto max-w-[1200px] px-6">
+        <div className="flex flex-wrap justify-between gap-3 border-t border-ink-soft py-5 text-sm text-footer-muted">
+          <span>© 2026 Jhajj&apos;z</span>
+          <Link href="/privacy-policy" className="hover:text-cream">
+            Privacy policy
+          </Link>
+        </div>
       </div>
       <MobileContactBar />
     </footer>

@@ -48,7 +48,8 @@ export default function Home() {
             />
             <div
               aria-hidden="true"
-              className="absolute inset-0 bg-[linear-gradient(90deg,rgba(10,10,9,0.85)_0%,rgba(10,10,9,0.45)_45%,rgba(10,10,9,0)_75%)]"
+              // Phones: the text spans the full width, so darken from the bottom up instead of from the left.
+              className="absolute inset-0 bg-[linear-gradient(0deg,rgba(10,10,9,0.88)_0%,rgba(10,10,9,0.7)_40%,rgba(10,10,9,0.15)_70%,rgba(10,10,9,0)_100%)] md:bg-[linear-gradient(90deg,rgba(10,10,9,0.85)_0%,rgba(10,10,9,0.45)_45%,rgba(10,10,9,0)_75%)]"
             />
             <div className="relative mx-auto mt-auto w-full max-w-[1200px] px-6 pt-36 pb-16 md:pb-20">
               <Enter delay={0.15}>
@@ -191,7 +192,7 @@ export default function Home() {
                           <Image src={g.photo.src} alt={g.photo.alt} fill sizes="(max-width: 768px) 100vw, 360px" className="object-cover" />
                         </div>
                       </div>
-                      <ul className="grid gap-x-10 gap-y-5 sm:grid-cols-2 md:pt-2">
+                      <ul className="grid content-start gap-x-10 gap-y-5 sm:grid-cols-2 md:pt-2">
                         {g.items.map((s) => (
                           <li key={s.title}>
                             <span className="block text-[16px] font-semibold">{s.title}</span>

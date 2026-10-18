@@ -34,7 +34,7 @@ export function FleetBrowser() {
           type="search"
           value={query}
           onChange={(e) => setQuery(e.target.value)}
-          placeholder="Search by brand or type, e.g. Rolls-Royce"
+          placeholder="Search by brand or type"
           className="h-12 w-full border border-line bg-white pr-12 pl-11 text-base text-ink outline-none transition-colors hover:border-ink/40 focus:border-ink [&::-webkit-search-cancel-button]:appearance-none"
         />
         {query && (
