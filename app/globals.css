@@ -52,6 +52,15 @@
     scroll-behavior: smooth;
     -webkit-tap-highlight-color: transparent;
   }
+  /* Radix's scroll lock (dialogs, sheet, selects) hides the scrollbar and adds its width as a right margin on body,
+     so on computers the page jumped sideways and an ink strip showed. With a mouse, keep the scrollbar instead: the
+     lock still stops the wheel and touch scrolling behind the popup. Phones (overlay scrollbars) keep the default. */
+  @media (hover: hover) and (pointer: fine) {
+    body[data-scroll-locked] {
+      overflow: visible !important;
+      margin-right: 0 !important;
+    }
+  }
   body {
     background: var(--color-ink);
     color: var(--color-ink);
