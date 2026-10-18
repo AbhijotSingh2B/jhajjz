@@ -72,21 +72,22 @@ export function QuoteForm() {
             onSubmit={(e) => {
               e.preventDefault();
               const f = new FormData(e.currentTarget);
-              const line = (label: string, v: FormDataEntryValue | null) => (v ? `${label}: ${v}` : "");
+              // Trimmed, so a stray space doesn't end up in the message (or a box of spaces as a value).
+              const get = (key: string) => String(f.get(key) ?? "").trim();
+              const line = (label: string, v: string) => (v ? `${label}: ${v}` : "");
               // "Other" plus whatever the visitor typed in its box, e.g. "Other (Amritsar)".
-              const withOther = (v: string, other: string, key: string) =>
-                v === other && f.get(key) ? `${v} (${f.get(key)})` : v;
+              const withOther = (v: string, other: string, key: string) => (v === other && get(key) ? `${v} (${get(key)})` : v);
               setMessage(
                 [
                   "Hello Jhajj'z, I'd like a quote.",
-                  line("Name", f.get("name")),
-                  line("Phone", f.get("phone")),
+                  line("Name", get("name")),
+                  line("Phone", get("phone")),
                   line("Occasion", withOther(occasion, OTHER_OCCASION, "occasionOther")),
                   line("Vehicle", withOther(vehicle, OTHER_VEHICLE, "vehicleOther")),
-                  line("Exact vehicle", chosenCar ? carTitle(chosenCar) : car === OTHER_CAR && !bothOther ? f.get("carOther") || OTHER_CAR : ""),
+                  line("Exact vehicle", chosenCar ? carTitle(chosenCar) : car === OTHER_CAR && !bothOther ? get("carOther") || OTHER_CAR : ""),
                   line("City", withOther(city, otherCity, "cityOther")),
-                  line("Date", formatDate(String(f.get("date") ?? ""))),
-                  line("Notes", f.get("notes")),
+                  line("Date", formatDate(get("date"))),
+                  line("Notes", get("notes")),
                 ]
                   .filter(Boolean)
                   .join("\n"),
@@ -97,7 +98,7 @@ export function QuoteForm() {
             className="grid grid-cols-[repeat(auto-fit,minmax(220px,1fr))] gap-7"
           >
             <DarkField label="Full name" id="q-name">
-              <input id="q-name" name="name" required autoComplete="name" className={inputClass} />
+              <input id="q-name" name="name" required pattern=".*\S.*" title="Please enter your name" autoComplete="name" className={inputClass} />
             </DarkField>
             <DarkField label="Phone (optional)" id="q-phone">
               <input id="q-phone" name="phone" type="tel" autoComplete="tel" className={inputClass} />
