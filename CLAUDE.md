@@ -204,8 +204,9 @@ The v0 reference design (`redesign-jhajjz-in.zip`) got several facts wrong — n
   Autobiography, whether the black GLE and the bulletproof GLE are the same car, the make of the vintage open tourers
   (`brand: ""`). Identified on 2026-10-18 by comparing with CarWale photos: Audi = A3 Cabriolet before the 2017 facelift,
   limousine = first-generation Chrysler 300C, Bentley = first-generation Continental Flying Spur (2005–2013), V-Class =
-  before the 2019 facelift, HiAce = the older H200 model. **Passengers** (excluding the chauffeur) filled in for 22 cars
-  from CarWale/CarDekho, only where every Indian version seats the same (Nirmal: nothing we're unsure of); 12 unknown
+  before the 2019 facelift, HiAce = the older H200 model. **Passengers** (excluding the chauffeur) filled in for 18 cars
+  from CarWale/CarDekho (all rechecked 2026-10-18), only where every Indian version seats the same (Nirmal: nothing
+  we're unsure of); 16 unknown
   (comment above `cars` in lib/site.ts). Ask the client to confirm all.
 - **Model years** (`years`) of the split cars (S-Class, Range Rover, 7 Series, E-Class, Range Rover Sport) are the
   global years of the generation identified from the photos, not the client's registration years; confirm.

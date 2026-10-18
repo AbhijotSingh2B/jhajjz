@@ -383,7 +383,8 @@ export const fleetGroups: { id: "all" | FleetGroup; label: string }[] = [
 // never a guess. "Passengers" (Nirmal, Oct 2026) is CarWale's seating capacity (CarDekho where CarWale has none) for
 // the generation in the client's photos, minus the chauffeur; the car page adds ", plus the chauffeur". Only filled
 // in where every Indian version of that generation seats the same (Nirmal: list nothing we're unsure of). Unknown:
-// versions differ (Innova Crysta 7/8 seats, X7 6/7, older Range Rover Autobiography 4/5, Defender 5-8, Urbania), the
+// versions differ (Innova Crysta 7/8 seats, X7 6/7, older Range Rover Autobiography 4/5, S-Class 2013-2020 4/5,
+// X5 2014-2019 5/7, Defender 5-8, Urbania), CarWale contradicts the car (7 Series: every version listed as 4 seats), the
 // generation is unclear (Land Cruiser), armouring may change it (bulletproof GLE), sources conflict (HiAce) or say
 // nothing (V-Class before the facelift, Flying Spur 2005-2013, the Chrysler limousine, vintage tourers). Ask the client. An empty `photos` list shows a highlighted [CONFIRM] box.
 // Until the client's own photos arrive, a licensed photo of the same model may stand in: give it a `credit`
@@ -492,7 +493,7 @@ export const cars: Car[] = [
       { src: photos.sClassOlderChauffeur, alt: "White Mercedes-Benz S-Class with a Jhajj'z chauffeur", portrait: true, colour: "White" },
     ],
     details: [
-      { label: "Passengers", value: "4" },
+      { label: "Passengers", value: null },
       { label: "Colour", value: "White, silver" },
     ],
   },
@@ -626,7 +627,7 @@ export const cars: Car[] = [
       { src: photos.bmw7SeriesNewer, alt: "White BMW 7 Series from the Jhajj'z fleet" },
     ],
     details: [
-      { label: "Passengers", value: "4" },
+      { label: "Passengers", value: null },
       { label: "Colour", value: "White" },
     ],
   },
@@ -642,7 +643,7 @@ export const cars: Car[] = [
       { src: photos.bmw7SeriesChauffeur, alt: "White BMW 7 Series with a Jhajj'z chauffeur" },
     ],
     details: [
-      { label: "Passengers", value: "4" },
+      { label: "Passengers", value: null },
       { label: "Colour", value: "White" },
     ],
   },
@@ -801,7 +802,7 @@ export const cars: Car[] = [
       { src: photos.bmwLineUp, alt: "BMW X5, BMW i8 and a Range Rover from the Jhajj'z fleet" },
     ],
     details: [
-      { label: "Passengers", value: "4" },
+      { label: "Passengers", value: null },
       { label: "Colour", value: "White" },
     ],
   },
