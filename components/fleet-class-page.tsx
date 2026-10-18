@@ -112,9 +112,9 @@ export function FleetClassPage({ fleetClass }: { fleetClass: Vehicle }) {
                 <Button asChild variant="ink">
                   <Link href={`/contact?vehicle=${encodeURIComponent(fleetClass.name)}`}>Ask for a quote</Link>
                 </Button>
-                <ContactDialog channel="whatsapp" message={`Hello, I'd like to ask about your ${inSentence(fleetClass.name)}.`}>
+                <ContactDialog channel="all" message={`Hello, I'd like to ask about your ${inSentence(fleetClass.name)}.`}>
                   <Button type="button" variant="outline">
-                    Talk to us on WhatsApp
+                    Talk to us
                   </Button>
                 </ContactDialog>
               </div>

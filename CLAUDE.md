@@ -70,7 +70,7 @@ app/
                            details/photos show a highlighted [CONFIRM] (components/confirm.tsx). The car is linked
                            from its class card on /fleet and found by the fleet search. Add a car = add an entry.
   contact/page.tsx         Quote form (components/quote-form.tsx) + contact details
-  privacy-policy/page.tsx  Drafted policy; 3 highlighted [CONFIRM] items for the client
+  privacy-policy/page.tsx  Plain policy from what the site does (no "In short", no "When you contact us" — Nirmal)
   not-found.tsx            Branded 404
 components/
   logo.tsx                 JJ monogram (two Caslon Js, second lower-right). `Logo` = mark + name (footer), `LogoMark`
@@ -165,7 +165,9 @@ The v0 reference design (`redesign-jhajjz-in.zip`) got several facts wrong — n
   black GLE and the bulletproof GLE are the same car, the make of the vintage open tourers (`brand: ""`).
 - **Logo**: JJ monogram made at Nirmal's request (components/logo.tsx, 2026-10-17); the client hasn't seen it yet.
   If they send their own logo file, swap it there and regenerate all 5 icon files.
-- **Privacy policy**: 3 highlighted `[CONFIRM]` items. jhajjz.in's own policy is only Wix template text.
+- **Privacy policy**: only covers what the website does. The "When you contact us" section (sharing, retention,
+  marketing) was removed at Nirmal's request; worth the client's lawyer adding it back before launch. jhajjz.in's own
+  policy is only Wix template text.
 - Second number +91 98144 00019 is hidden until the client confirms it is theirs.
 - **+91 98036 00002** is probably one of their numbers (Nirmal's guess, unverified). Commented out next to the
   other hidden number in `lib/site.ts`; ask the client, and if it is theirs, also ask whether it is on WhatsApp.

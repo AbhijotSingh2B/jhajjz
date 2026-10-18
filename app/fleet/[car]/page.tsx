@@ -155,9 +155,9 @@ export default async function CarPage({ params }: Props) {
                         Ask for a quote
                       </Link>
                     </Button>
-                    <ContactDialog channel="whatsapp" message={`Hello, I'd like to ask about the ${name}.`}>
+                    <ContactDialog channel="all" message={`Hello, I'd like to ask about the ${name}.`}>
                       <Button type="button" variant="outline">
-                        Talk to us on WhatsApp
+                        Talk to us
                       </Button>
                     </ContactDialog>
                   </div>

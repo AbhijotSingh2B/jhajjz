@@ -5,7 +5,6 @@ import { PageTransition } from "@/components/page-transition";
 import { contact } from "@/lib/site";
 import { ContactDialog } from "@/components/contact-dialog";
 import { Button } from "@/components/ui/button";
-import { Confirm } from "@/components/confirm";
 
 export const metadata: Metadata = {
   title: "Privacy policy",
@@ -14,11 +13,10 @@ export const metadata: Metadata = {
 };
 
 // Written from what this site actually does (checked in the code: no cookies, no
-// analytics, the quote form only opens WhatsApp or email). Statements about how
-// the client handles bookings are marked [CONFIRM] until the client agrees them.
-// If the client prefers the text from jhajjz.in/privacy-policy, replace this.
+// analytics, the quote form only opens WhatsApp or email). Nothing about how the client handles
+// bookings: the "When you contact us" section (sharing, retention, marketing) was removed (Nirmal).
 
-const updated = "17 October 2026";
+const updated = "18 October 2026";
 
 const sections: { title: string; body: React.ReactNode }[] = [
   {
@@ -44,36 +42,6 @@ const sections: { title: string; body: React.ReactNode }[] = [
           What you type into the quote form stays in your browser. When you press &ldquo;Request a quote&rdquo;, the
           site opens WhatsApp (or your email app) with your details written into a message. Nothing reaches us until
           you send that message yourself, and the form is not stored on our servers.
-        </p>
-      </>
-    ),
-  },
-  {
-    title: "When you contact us",
-    body: (
-      <>
-        <p>
-          If you call, message us on WhatsApp or email us, we receive what you share: usually your name, phone number
-          and trip details. We use it to reply, prepare a quote and arrange your booking.
-        </p>
-        <p>
-          <Confirm>who booking details are shared with, e.g. the assigned chauffeur and station manager</Confirm>{" "}
-          <Confirm>how long enquiry and booking details are kept</Confirm>
-        </p>
-        <p>
-          <Confirm>we don&apos;t sell your details or use them for marketing without asking</Confirm>
-        </p>
-        <p>
-          Messages sent on WhatsApp are also covered by{" "}
-          <a
-            href="https://www.whatsapp.com/legal/privacy-policy"
-            target="_blank"
-            rel="noreferrer"
-            className="underline underline-offset-4 hover:text-gold-deep"
-          >
-            WhatsApp&apos;s privacy policy
-          </a>
-          .
         </p>
       </>
     ),
@@ -110,11 +78,6 @@ export default function PrivacyPolicyPage() {
         <main className="mx-auto max-w-[760px] px-6 pt-[144px] pb-[72px] md:pt-[168px] md:pb-28">
           <h1 className="font-serif text-[clamp(38px,4.8vw,56px)] leading-[1.08] tracking-[-0.01em]">Privacy policy</h1>
           <p className="mt-4 text-[15px] text-muted">Last updated {updated}</p>
-
-          <p className="mt-8 max-w-[640px] text-[19px] leading-relaxed text-ink">
-            In short: this website doesn&apos;t use cookies or tracking, and the quote form doesn&apos;t send anything
-            until you send it yourself on WhatsApp or by email.
-          </p>
 
           <div className="mt-12 flex flex-col gap-10">
             {sections.map((s) => (
