@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { Photo } from "@/components/photo";
+import { Photo, PortraitBackdrop } from "@/components/photo";
 import { IllustrativeTag } from "@/components/illustrative-tag";
 import Link from "next/link";
 import { AnimatePresence, motion } from "motion/react";
@@ -264,6 +264,7 @@ function CarCard({ car, fleetClass }: { car: Car; fleetClass: Vehicle }) {
   return (
     <>
       <div className={cn("relative flex aspect-[3/2] items-center justify-center overflow-hidden", photo?.cutout ? "bg-sand" : "bg-stone")}>
+        {photo?.portrait && <PortraitBackdrop src={photo.src} />}
         {photo ? (
           // The multiply sits on this wrapper: a scaled (zoomed) element is its own stacking context.
           <div

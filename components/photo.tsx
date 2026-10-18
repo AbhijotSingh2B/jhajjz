@@ -46,3 +46,16 @@ export function Photo({
     </>
   );
 }
+
+/**
+ * Fills the side bars of a portrait photo shown whole in a landscape frame with a blurred, darkened copy of the same
+ * photo, so a portrait slide fills the frame like the landscape ones around it instead of sitting between grey bars.
+ * Put it first inside the frame (which clips it); it uses the smallest saved copy, as the blur hides the detail.
+ */
+export function PortraitBackdrop({ src }: { src: string }) {
+  return (
+    <span aria-hidden="true" className="absolute inset-0 scale-125 blur-2xl brightness-90">
+      <Image src={src} alt="" fill sizes="320px" className="object-cover" />
+    </span>
+  );
+}
