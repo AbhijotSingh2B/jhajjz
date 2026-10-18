@@ -407,7 +407,8 @@ export type CarPhoto = {
   /** Portrait photo: shown whole in the 3:2 frame rather than cropped, with a blurred copy of itself filling the sides
    * (`PortraitBackdrop`). Fetch it with `wixFit`. */
   portrait?: true;
-  /** When the client has the car in more than one colour: the car page shows a colour picker over the photos. */
+  /** When the client has the car in more than one colour: the car page shows a colour picker (with "All") above the
+   *  quote buttons, which filters the photos and adds the colour to the quote. */
   colour?: string;
 };
 
@@ -427,6 +428,14 @@ export type Car = {
   photos: CarPhoto[];
   details: { label: string; value: string | null }[];
 };
+
+/** A car's colours when the client has it in more than one (`colour` on its photos), most photos first; else []. */
+export function carColours(photos: CarPhoto[]) {
+  const tagged = photos.map((p) => p.colour).filter((c): c is string => !!c);
+  const count = (c: string) => tagged.filter((t) => t === c).length;
+  const colours = [...new Set(tagged)].sort((a, b) => count(b) - count(a));
+  return colours.length > 1 ? colours : [];
+}
 
 export const cars: Car[] = [
   {
@@ -475,14 +484,14 @@ export const cars: Car[] = [
     fleetClass: "luxury-cars",
     text: "A Mercedes-Benz S-Class for business travel, airport transfers and weddings.",
     photos: [
-      { src: photos.sClassOlderWhite, alt: "White Mercedes-Benz S-Class from the side" },
-      { src: photos.sClassOlderSilver, alt: "Silver Mercedes-Benz S-Class parked under trees" },
-      { src: photos.sClassOlderWedding, alt: "White Mercedes-Benz S-Class decorated for a wedding", portrait: true },
-      { src: photos.sClassOlderChauffeur, alt: "White Mercedes-Benz S-Class with a Jhajj'z chauffeur", portrait: true },
+      { src: photos.sClassOlderWhite, alt: "White Mercedes-Benz S-Class from the side", colour: "White" },
+      { src: photos.sClassOlderSilver, alt: "Silver Mercedes-Benz S-Class parked under trees", colour: "Silver" },
+      { src: photos.sClassOlderWedding, alt: "White Mercedes-Benz S-Class decorated for a wedding", portrait: true, colour: "White" },
+      { src: photos.sClassOlderChauffeur, alt: "White Mercedes-Benz S-Class with a Jhajj'z chauffeur", portrait: true, colour: "White" },
     ],
     details: [
       { label: "Passengers", value: "4" },
-      { label: "Colour", value: null },
+      { label: "Colour", value: "White, silver" },
     ],
   },
   {
@@ -802,13 +811,13 @@ export const cars: Car[] = [
     text: "A Mercedes-Benz G-Class for weddings, VIP arrivals and hill trips.",
     photos: [
       // PLACEHOLDER: CarWale photo — remove before public launch
-      { src: studio.gClass, alt: "Black Mercedes-AMG G 63", placeholder: true, cutout: true },
-      { src: photos.gClassBlack, alt: "Black Mercedes-Benz G-Class from the Jhajj'z fleet", portrait: true },
-      { src: photos.gClassWhite, alt: "White Mercedes-Benz G-Class decorated for a wedding", portrait: true },
+      { src: studio.gClass, alt: "Black Mercedes-AMG G 63", placeholder: true, cutout: true, colour: "Black" },
+      { src: photos.gClassBlack, alt: "Black Mercedes-Benz G-Class from the Jhajj'z fleet", portrait: true, colour: "Black" },
+      { src: photos.gClassWhite, alt: "White Mercedes-Benz G-Class decorated for a wedding", portrait: true, colour: "White" },
     ],
     details: [
       { label: "Passengers", value: "4" },
-      { label: "Colour", value: null },
+      { label: "Colour", value: "Black, white" },
     ],
   },
   {

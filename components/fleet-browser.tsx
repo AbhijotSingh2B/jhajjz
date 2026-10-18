@@ -171,8 +171,8 @@ export function FleetBrowser() {
 type Result = { kind: "class"; v: Vehicle } | { kind: "car"; car: Car; v: Vehicle };
 type Scored = Result & { score: number; direct: boolean };
 
-// Cars listed under a class card before "Show N more": the SUV list ran to 17 links and swamped the page.
-const CARS_SHOWN = 4;
+// Cars listed under a class card before "Show N more" (Nirmal: two or three, then see more).
+const CARS_SHOWN = 3;
 
 function ClassCard({ v, priority }: { v: Vehicle; priority: boolean }) {
   const [expanded, setExpanded] = useState(false);

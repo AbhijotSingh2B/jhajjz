@@ -112,7 +112,9 @@ components/
                            (both numbers / WhatsApp / email, copy buttons, "Other ways to reach us" list)
   page-transition.tsx      Fade-and-lift between pages (React <ViewTransition>); wraps each page's <main>
   car-gallery.tsx          Car-page photo carousel (scroll-snap swipe, prev/next, thumbnail row)
-  car-photos.tsx           Wraps it with a colour picker when photos carry a `colour` (Ghost: White / Silver)
+  car-photos.tsx           The car page's carousel, filtered by the colour chosen in car-colour.tsx
+  car-colour.tsx           Colour picker (All + each colour) above the quote buttons when photos carry 2+ `colour`s
+                           (Ghost, G-Class, S-Class 2013–2020); passes ?colour= to the quote form and its message
   photo.tsx                Every photo goes through `Photo` (next/image + skeleton pulse + blur fade-in). `photoScript`
                            in layout.tsx <head> marks photos loaded before hydration; hidden only under
                            `@media (scripting: enabled)`, so photos still show with JavaScript off

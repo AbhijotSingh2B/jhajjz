@@ -3,7 +3,7 @@
 import { useRef, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import { AnimatePresence, motion } from "motion/react";
-import { carName, carTitle, carYears, cars, carsInClass, cityOptions, fleet, occasions, otherCity } from "@/lib/site";
+import { carColours, carName, carTitle, carYears, cars, carsInClass, cityOptions, fleet, occasions, otherCity } from "@/lib/site";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Button } from "@/components/ui/button";
 import { formatDate } from "@/lib/utils";
@@ -38,6 +38,9 @@ export function QuoteForm() {
   // Cars in the chosen class; all cars when no class (or "Not sure"/"Other") is chosen.
   const carOptions = vehicleClass && carsInClass(vehicleClass.slug).length > 0 ? carsInClass(vehicleClass.slug) : cars;
   const chosenCar = cars.find((c) => c.slug === car);
+  // Colour picked on the car page (?colour=White), kept only while that car is chosen and has the colour.
+  const colourParam = params.get("colour") ?? "";
+  const colour = chosenCar && carColours(chosenCar.photos).includes(colourParam) ? colourParam : "";
   // "Other" in both dropdowns needs only one text box: the vehicle one ("Which vehicle are you looking for?").
   const bothOther = vehicle === OTHER_VEHICLE && car === OTHER_CAR;
 
@@ -84,7 +87,7 @@ export function QuoteForm() {
                   line("Phone", get("phone")),
                   line("Occasion", withOther(occasion, OTHER_OCCASION, "occasionOther")),
                   line("Vehicle", withOther(vehicle, OTHER_VEHICLE, "vehicleOther")),
-                  line("Exact vehicle", chosenCar ? carTitle(chosenCar) : car === OTHER_CAR && !bothOther ? get("carOther") || OTHER_CAR : ""),
+                  line("Exact vehicle", chosenCar ? carTitle(chosenCar) + (colour ? ` (${colour.toLowerCase()})` : "") : car === OTHER_CAR && !bothOther ? get("carOther") || OTHER_CAR : ""),
                   line("City", withOther(city, otherCity, "cityOther")),
                   line("Date", formatDate(get("date"))),
                   line("Notes", get("notes")),
@@ -183,6 +186,7 @@ export function QuoteForm() {
                   <SelectItem value={OTHER_CAR}>{OTHER_CAR}</SelectItem>
                 </SelectContent>
               </Select>
+              {colour && <p className="mt-2 text-[15px] text-on-dark-strong">Colour: {colour}</p>}
               <OtherField
                 show={car === OTHER_CAR && !bothOther}
                 inputRef={carOther}

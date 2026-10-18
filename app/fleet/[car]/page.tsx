@@ -6,14 +6,14 @@ import { SiteFooter } from "@/components/site-footer";
 import { Enter, Reveal } from "@/components/motion";
 import { Button } from "@/components/ui/button";
 import { PageTransition } from "@/components/page-transition";
-import { ContactDialog } from "@/components/contact-dialog";
 import { Confirm } from "@/components/confirm";
 import { ShareButton } from "@/components/share-button";
 import { CarPhotos } from "@/components/car-photos";
+import { CarColourProvider, CarQuoteButtons, ColourPicker } from "@/components/car-colour";
 import { CarPreview } from "@/components/car-preview";
 import { BreadcrumbStructuredData, CarStructuredData } from "@/components/structured-data";
 import { FleetClassPage } from "@/components/fleet-class-page";
-import { carName, carTitle, carYears, cars, carsInClass, classHref, fleet, inSentence, otherYears } from "@/lib/site";
+import { carColours, carName, carTitle, carYears, cars, carsInClass, classHref, fleet, inSentence, otherYears } from "@/lib/site";
 import { openGraphBase } from "@/lib/seo";
 
 type Props = { params: Promise<{ car: string }> };
@@ -116,6 +116,7 @@ export default async function CarPage({ params }: Props) {
                 <ShareButton path={`/fleet/${car.slug}`} name={name} className="shrink-0 text-muted hover:text-ink" />
               </div>
 
+              <CarColourProvider>
               <div className="mt-4 grid gap-x-16 gap-y-10 md:mt-6 grid-cols-[minmax(0,1fr)] lg:grid-cols-[minmax(0,7fr)_minmax(0,5fr)]">
                 <Enter>
                   {car.photos.length > 0 ? (
@@ -137,26 +138,15 @@ export default async function CarPage({ params }: Props) {
                       {known.map((d) => (
                         <div key={d.label} className="grid grid-cols-[minmax(0,2fr)_minmax(0,3fr)] gap-4 border-b border-ink/15 py-3 text-[16px]">
                           <dt className="text-muted">{d.label}</dt>
-                          <dd className="text-ink">{d.value}</dd>
+                          {/* Passengers never count the chauffeur; say so, or "6" reads as a 6-seater. */}
+                          <dd className="text-ink">{d.label === "Passengers" ? `${d.value}, plus the chauffeur` : d.value}</dd>
                         </div>
                       ))}
                     </dl>
                   )}
 
-                  <div className="mt-8 flex flex-wrap gap-3">
-                    <Button asChild variant="ink">
-                      <Link
-                        href={`/contact?${new URLSearchParams({ ...(fleetClass && { vehicle: fleetClass.name }), car: car.slug })}`}
-                      >
-                        Ask for a quote
-                      </Link>
-                    </Button>
-                    <ContactDialog channel="all" message={`Hello, I'd like to ask about the ${carTitle(car)}.`}>
-                      <Button type="button" variant="outline">
-                        Talk to us
-                      </Button>
-                    </ContactDialog>
-                  </div>
+                  <ColourPicker colours={carColours(car.photos)} />
+                  <CarQuoteButtons params={{ ...(fleetClass && { vehicle: fleetClass.name }), car: car.slug }} title={carTitle(car)} />
 
                   {siblings.length > 0 && (
                     <div className="mt-10 border-t border-ink/15 pt-6">
@@ -172,6 +162,7 @@ export default async function CarPage({ params }: Props) {
                   )}
                 </Enter>
               </div>
+              </CarColourProvider>
 
             </div>
           </section>
