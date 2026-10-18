@@ -1,4 +1,4 @@
-import Image from "next/image";
+import { Photo } from "@/components/photo";
 import Link from "next/link";
 import { IllustrativeTag } from "@/components/illustrative-tag";
 import { cn } from "@/lib/utils";
@@ -17,7 +17,7 @@ export function CarPreview({ car, frame = "bg-sand", className }: { car: Car; fr
             className={cn("absolute inset-0", photo.cutout && "mix-blend-multiply")}
             style={{ transform: photo.zoom ? `scale(${photo.zoom})` : undefined }}
           >
-            <Image
+            <Photo
               src={photo.src}
               alt=""
               fill

@@ -1,4 +1,4 @@
-import Image from "next/image";
+import { Photo } from "@/components/photo";
 import { IllustrativeTag } from "@/components/illustrative-tag";
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
@@ -21,8 +21,9 @@ const withPhoto = (slug: string) => {
 const preview = fleet
   .map((v) => withPhoto(v.slug))
   .filter((v) => v !== undefined);
-// Wedding band photo: the white Rolls-Royce Ghost.
-const weddingPhoto = photos.ghost;
+// Wedding band photo: the white Rolls-Royce Ghost decorated with flowers. (The decorated line-up from above was tried
+// on phones, but its cars sit at the bottom of the photo, under the text, and a tall crop can't move them up.)
+const weddingPhoto = photos.ghostFlowers;
 
 // The quote-form link under each group name (occasion names match lib/site.ts `occasions`).
 const groupLinks: Record<string, { label: string; href: string }> = {
@@ -39,10 +40,11 @@ export default function Home() {
         <main>
           {/* Hero */}
           <section className="relative flex min-h-[min(100svh,880px)] flex-col overflow-hidden bg-ink-deep text-cream">
-            <Image
+            <Photo
               src={heroPhoto}
               alt="A car from the Jhajj'z fleet"
               fill
+              dark
               priority
               sizes="100vw"
               className="animate-hero-zoom object-cover object-center"
@@ -112,7 +114,7 @@ export default function Home() {
                         className={`relative aspect-[3/2] overflow-hidden ${v.imageCutout ? "bg-sand" : "bg-stone"} ${i === 0 ? "md:aspect-auto md:min-h-[360px] md:flex-1" : ""}`}
                       >
                         <div className={`absolute inset-0 ${v.imageCutout ? "mix-blend-multiply" : ""}`} style={{ transform: v.imageZoom ? `scale(${v.imageZoom})` : undefined }}>
-                          <Image
+                          <Photo
                             src={v.image}
                             alt={v.imageAlt}
                             fill
@@ -135,12 +137,15 @@ export default function Home() {
 
           {/* Weddings */}
           <section id="weddings" className="relative isolate flex min-h-[560px] scroll-mt-16 items-end overflow-hidden bg-ink text-cream md:min-h-[640px]">
-            <Image
+            <Photo
               src={weddingPhoto}
-              alt="Silver Rolls-Royce Ghost from the Jhajj'z fleet"
+              alt="White Rolls-Royce Ghost decorated with flowers"
               fill
+              dark
+              skeletonClassName="-z-20"
               sizes="100vw"
-              className="-z-20 object-cover object-center"
+              // Phones crop the sides: shift right so the whole grille and the flowers are in frame.
+              className="-z-20 object-cover object-[62%_center] md:object-center"
             />
             <div
               aria-hidden="true"
@@ -191,7 +196,7 @@ export default function Home() {
                           </Link>
                         )}
                         <div className="relative mt-5 aspect-[3/2] max-w-[420px] overflow-hidden bg-stone">
-                          <Image src={g.photo.src} alt={g.photo.alt} fill sizes="(max-width: 768px) 100vw, 360px" className="object-cover" />
+                          <Photo src={g.photo.src} alt={g.photo.alt} fill sizes="(max-width: 768px) 100vw, 360px" className="object-cover" />
                         </div>
                       </div>
                       <ul className="grid content-start gap-x-10 gap-y-5 sm:grid-cols-2 md:pt-2">

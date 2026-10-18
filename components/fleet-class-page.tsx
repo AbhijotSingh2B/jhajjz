@@ -1,4 +1,4 @@
-import Image from "next/image";
+import { Photo } from "@/components/photo";
 import { IllustrativeTag } from "@/components/illustrative-tag";
 import Link from "next/link";
 import { SiteHeader } from "@/components/site-header";
@@ -54,7 +54,7 @@ export function FleetClassPage({ fleetClass }: { fleetClass: Vehicle }) {
                             className={cn("absolute inset-0", photo.cutout && "mix-blend-multiply")}
                             style={{ transform: photo.zoom ? `scale(${photo.zoom})` : undefined }}
                           >
-                            <Image
+                            <Photo
                               src={photo.src}
                               alt={photo.alt}
                               fill

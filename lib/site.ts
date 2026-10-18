@@ -227,6 +227,9 @@ export const photos = {
   ghostSilver: wixJpeg("171684_3bae57ad0f5348dbb59d4c51ce5ed205"),
   forceUrbania: wix("171684_93c797d72e81473ba9e78345d7a49391"),
   weddingLineUpGle: wix("171684_12c0dc2805044efb842caad88abfe2f4"), // black GLE in front of a decorated wedding line-up
+  // Class cards (home preview, fleet page), picked over the older photos above on 2026-10-18.
+  vintageShowroom: wixJpeg("171684_45e6f86256cb4528ad8881d6b27ee4dc"), // yellow and white vintage cars at the Jhajj'z showroom, dusk
+  coachLineUp: wixJpeg("171684_2c1f871dc9d947b2a60bd4976edbf38b"), // Jhajj'z coaches in a row at dusk
 };
 
 // PLACEHOLDER: CarWale studio shots on white (from each model's colours page), matched to the generation and colour
@@ -313,16 +316,19 @@ export const fleet: Vehicle[] = [
     name: "Vintage cars",
     group: "classic",
     text: "Classic cars for weddings, anniversaries and themed photoshoots.",
-    image: photos.vintage,
-    imageAlt: "Blue and white vintage open tourers at the Jhajj'z transport yard",
+    image: photos.vintageShowroom,
+    imageAlt: "Yellow and white vintage cars outside the Jhajj'z showroom at dusk",
   },
   {
     slug: "convertibles",
     name: "Convertibles",
     group: "classic",
     text: "Roof down, for photoshoots and days that call for open sky.",
-    image: photos.audiCabriolet,
-    imageAlt: "Red Audi cabriolet decorated with flowers",
+    image: studio.audiA3Cabriolet,
+    imageAlt: "Red Audi A3 Cabriolet with the roof down",
+    imageZoom: 1.4,
+    imagePlaceholder: true,
+    imageCutout: true,
   },
   {
     slug: "limousines",
@@ -337,16 +343,19 @@ export const fleet: Vehicle[] = [
     name: "Mini vans",
     group: "group",
     text: "Flexible seating and room for luggage, for families and small groups.",
-    image: photos.hiace,
-    imageAlt: "Navy Toyota HiAce van from the Jhajj'z fleet",
+    image: studio.urbania,
+    imageAlt: "Grey Force Urbania",
+    imageZoom: 1.05,
+    imagePlaceholder: true,
+    imageCutout: true,
   },
   {
     slug: "luxury-coaches",
     name: "Luxury coaches",
     group: "group",
     text: "Volvo and Mercedes-Benz coaches for delegations, baraat and large groups.",
-    image: photos.coaches,
-    imageAlt: "Jhajj'z coaches",
+    image: photos.coachLineUp,
+    imageAlt: "A row of Jhajj'z coaches",
   },
 ];
 
