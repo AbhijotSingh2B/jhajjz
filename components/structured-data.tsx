@@ -1,4 +1,4 @@
-import { absoluteUrl, type Car, carName, cities, contact, fleet, founded, heroImage, postalAddress, serviceGroups, siteName, siteUrl } from "@/lib/site";
+import { absoluteUrl, type Car, carTitle, cities, contact, fleet, founded, heroImage, postalAddress, serviceGroups, siteName, siteUrl } from "@/lib/site";
 
 /**
  * Schema.org data for search engines (Google's business panel, rich results).
@@ -90,7 +90,7 @@ export function CarStructuredData({ car }: { car: Car }) {
       data={{
         "@context": "https://schema.org",
         "@type": "Car",
-        name: carName(car),
+        name: carTitle(car),
         ...(car.brand && { brand: { "@type": "Brand", name: car.brand } }),
         model: car.model,
         description: car.text,

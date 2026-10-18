@@ -9,10 +9,11 @@ import { PageTransition } from "@/components/page-transition";
 import { ContactDialog } from "@/components/contact-dialog";
 import { Confirm } from "@/components/confirm";
 import { ShareButton } from "@/components/share-button";
-import { CarGallery } from "@/components/car-gallery";
+import { CarPhotos } from "@/components/car-photos";
+import { CarPreview } from "@/components/car-preview";
 import { BreadcrumbStructuredData, CarStructuredData } from "@/components/structured-data";
 import { FleetClassPage } from "@/components/fleet-class-page";
-import { carName, cars, carsInClass, classHref, fleet, inSentence } from "@/lib/site";
+import { carName, carTitle, carYears, cars, carsInClass, classHref, fleet, inSentence, otherYears } from "@/lib/site";
 import { openGraphBase } from "@/lib/seo";
 
 type Props = { params: Promise<{ car: string }> };
@@ -32,7 +33,7 @@ async function getCar(params: Props["params"]) {
 }
 
 function classMetadata(v: NonNullable<ReturnType<typeof classWithCars>>): Metadata {
-  const names = carsInClass(v.slug).map(carName).join(", ");
+  const names = carsInClass(v.slug).map(carTitle).join(", ");
   const description = `${v.text} Chauffeur-driven ${inSentence(v.name)} from Jhajj'z: ${names}. Head office in Chandigarh, serving pan-India.`;
   const path = `/fleet/${v.slug}`;
   return {
@@ -52,7 +53,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const v = classWithCars((await params).car);
   if (v) return classMetadata(v);
   const { car } = await getCar(params);
-  const name = carName(car);
+  const name = carTitle(car);
   const description = `Hire a chauffeur-driven ${name} from Jhajj'z for weddings, business and special occasions. Head office in Chandigarh, serving pan-India.`;
   const path = `/fleet/${car.slug}`;
   return {
@@ -73,20 +74,17 @@ export default async function CarPage({ params }: Props) {
   if (v) return <FleetClassPage fleetClass={v} />;
   const { car, fleetClass } = await getCar(params);
   const name = carName(car);
-  // One carousel per model generation, in the order listed (newer first); most cars have just one.
-  const generations = [...new Set(car.photos.map((p) => p.generation))].map((generation) => ({
-    generation,
-    photos: car.photos.filter((p) => p.generation === generation),
-  }));
-  const [first, ...older] = generations;
+  const years = carYears(car);
+  const siblings = otherYears(car);
   // Only details we actually know; unknown ones are left out rather than shown as blanks.
   const known = car.details.filter((d) => d.value);
-  const sameClass = cars.filter((c) => c.fleetClass === car.fleetClass && c.slug !== car.slug);
+  // Other generations of this model first, then the rest of its class.
+  const sameClass = [...siblings, ...cars.filter((c) => c.fleetClass === car.fleetClass && c.slug !== car.slug && !siblings.includes(c))];
 
   return (
     <>
       <SiteHeader />
-      <BreadcrumbStructuredData name={name} path={`/fleet/${car.slug}`} parent={{ name: "Fleet", path: "/fleet" }} />
+      <BreadcrumbStructuredData name={carTitle(car)} path={`/fleet/${car.slug}`} parent={{ name: "Fleet", path: "/fleet" }} />
       <CarStructuredData car={car} />
       <PageTransition>
         <main>
@@ -120,11 +118,8 @@ export default async function CarPage({ params }: Props) {
 
               <div className="mt-4 grid gap-x-16 gap-y-10 md:mt-6 grid-cols-[minmax(0,1fr)] lg:grid-cols-[minmax(0,7fr)_minmax(0,5fr)]">
                 <Enter>
-                  {first ? (
-                    <>
-                      {first.generation && <p className="mb-3 text-[15px] text-muted">{first.generation}</p>}
-                      <CarGallery photos={first.photos} label={`Photos of the ${name}`} priority sizes="(max-width: 1024px) 100vw, 680px" />
-                    </>
+                  {car.photos.length > 0 ? (
+                    <CarPhotos photos={car.photos} label={`Photos of the ${carTitle(car)}`} sizes="(max-width: 1024px) 100vw, 680px" />
                   ) : (
                     <div className="flex aspect-[3/2] items-center justify-center bg-sand p-6 text-center text-[15px]">
                       <Confirm>photos of our {name}</Confirm>
@@ -134,6 +129,7 @@ export default async function CarPage({ params }: Props) {
 
                 <Enter delay={0.12}>
                   <h1 className="font-serif text-[clamp(38px,4.8vw,56px)] leading-[1.08] tracking-[-0.01em]">{name}</h1>
+                  {years && <p className="mt-2 text-[17px] text-muted">{years}</p>}
                   <p className="mt-5 max-w-[520px] text-[17px] text-body">{car.text}</p>
 
                   {known.length > 0 && (
@@ -155,50 +151,53 @@ export default async function CarPage({ params }: Props) {
                         Ask for a quote
                       </Link>
                     </Button>
-                    <ContactDialog channel="all" message={`Hello, I'd like to ask about the ${name}.`}>
+                    <ContactDialog channel="all" message={`Hello, I'd like to ask about the ${carTitle(car)}.`}>
                       <Button type="button" variant="outline">
                         Talk to us
                       </Button>
                     </ContactDialog>
                   </div>
+
+                  {siblings.length > 0 && (
+                    <div className="mt-10 border-t border-ink/15 pt-6">
+                      <h2 className="text-[16px] font-semibold">Also in our fleet</h2>
+                      <ul className="mt-4 grid grid-cols-2 gap-x-4 gap-y-6 sm:max-w-[400px]">
+                        {siblings.map((c) => (
+                          <li key={c.slug}>
+                            <CarPreview car={c} />
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                  )}
                 </Enter>
               </div>
 
-              {older.map((g) => (
-                <Reveal key={g.generation} className="mt-16 grid gap-x-16 grid-cols-[minmax(0,1fr)] lg:grid-cols-[minmax(0,7fr)_minmax(0,5fr)]">
-                  <div>
-                    <h2 className="mb-5 font-serif text-[clamp(26px,3vw,34px)] leading-[1.1]">{g.generation}</h2>
-                    <CarGallery photos={g.photos} label={`Photos of the ${name}, ${g.generation?.toLowerCase()}`} sizes="(max-width: 1024px) 100vw, 680px" />
-                  </div>
-                </Reveal>
-              ))}
             </div>
           </section>
 
           {fleetClass && (
             <section className="bg-sand py-[72px] md:py-24">
-              <Reveal className="mx-auto flex max-w-[1200px] flex-wrap items-center justify-between gap-8 px-6">
-                <div className="min-w-0 flex-[1_1_480px]">
-                  <h2 className="font-serif text-[clamp(28px,3.4vw,40px)] leading-[1.1]">Looking at other cars?</h2>
-                  <p className="mt-3 max-w-[480px] text-[17px] text-body">{fleetClass.text}</p>
-                  {sameClass.length > 0 && (
-                    <ul className="mt-3 flex flex-wrap gap-x-5">
-                      {sameClass.map((c) => (
-                        <li key={c.slug}>
-                          <Link
-                            href={`/fleet/${c.slug}`}
-                            className="inline-flex min-h-11 items-center text-[16px] text-ink underline decoration-ink/30 underline-offset-[5px] transition-colors hover:decoration-ink"
-                          >
-                            {carName(c)}
-                          </Link>
-                        </li>
-                      ))}
-                    </ul>
-                  )}
+              <Reveal className="mx-auto max-w-[1200px] px-6">
+                <div className="flex flex-wrap items-end justify-between gap-x-8 gap-y-6">
+                  <div className="min-w-0 flex-[1_1_480px]">
+                    <h2 className="font-serif text-[clamp(28px,3.4vw,40px)] leading-[1.1]">Looking at other cars?</h2>
+                    <p className="mt-3 max-w-[480px] text-[17px] text-body">{fleetClass.text}</p>
+                  </div>
+                  <Button asChild variant="outline">
+                    <Link href={classHref(fleetClass.slug)}>See all {inSentence(fleetClass.name)}</Link>
+                  </Button>
                 </div>
-                <Button asChild variant="outline">
-                  <Link href={classHref(fleetClass.slug)}>See all {inSentence(fleetClass.name)}</Link>
-                </Button>
+                {sameClass.length > 0 && (
+                  // Phones: a row to swipe through. Wider screens: a grid.
+                  <ul className="-mx-6 mt-10 flex snap-x scroll-px-6 gap-4 overflow-x-auto px-6 pb-2 [scrollbar-width:none] sm:mx-0 sm:grid sm:grid-cols-[repeat(auto-fill,minmax(200px,1fr))] sm:gap-x-6 sm:gap-y-8 sm:overflow-visible sm:px-0 sm:pb-0 [&::-webkit-scrollbar]:hidden">
+                    {sameClass.map((c) => (
+                      <li key={c.slug} className="w-[62%] shrink-0 snap-start sm:w-auto">
+                        <CarPreview car={c} frame="bg-paper" />
+                      </li>
+                    ))}
+                  </ul>
+                )}
               </Reveal>
             </section>
           )}

@@ -79,7 +79,8 @@ app/
                            (rate-card rows), "Chandigarh, since 1998" about + city list
   fleet/page.tsx           Full fleet with search + filter tabs (components/fleet-browser.tsx). Searching lists
                            individual cars, each with its class linked underneath (classes without cars, i.e. coaches, as a card),
-                           sorted by relevance: name > make/model > class name > description
+                           sorted by relevance: name > make/model > class name > description. Cars matching by their own
+                           name/make/model come first; the rest sit under a "You might also consider" divider
   fleet/[car]/page.tsx     Also serves class pages (/fleet/suvs, components/fleet-class-page.tsx) for classes that
                            have cars; class cards, home preview and Fleet menu link there (`classHref`).
                            One page per car in `cars` (lib/site.ts), e.g. /fleet/rolls-royce-ghost. Unknown
@@ -106,7 +107,10 @@ components/
                            ("all" opens on the "Get in touch" list; used by the "Contact us" buttons)
                            (both numbers / WhatsApp / email, copy buttons, "Other ways to reach us" list)
   page-transition.tsx      Fade-and-lift between pages (React <ViewTransition>); wraps each page's <main>
-  car-gallery.tsx          Car-page photo carousel (scroll-snap swipe, prev/next, thumbnail row); one per model generation
+  car-gallery.tsx          Car-page photo carousel (scroll-snap swipe, prev/next, thumbnail row)
+  car-photos.tsx           Wraps it with a colour picker when photos carry a `colour` (Ghost: White / Silver)
+  car-preview.tsx          Small photo + name card: "Also in our fleet" (other model years) under the quote buttons and
+                           the "Looking at other cars?" row (swipe row on phones, grid on wider screens)
   india-map.tsx            India outline (lib/india-map.ts, Survey of India boundary) + city dots, beside "Pan-India, including"
   motion.tsx               Reveal, Enter, Stagger, StaggerItem, MotionProvider (respects reduced motion)
   icons.tsx                WhatsApp glyph (Simple Icons) + social icons (Tabler, MIT); lucide has no brand icons
@@ -170,8 +174,9 @@ The v0 reference design (`redesign-jhajjz-in.zip`) got several facts wrong — n
   these no-background shots. All are `placeholder: true` (kept out of Open Graph / JSON-LD) and get replaced when
   the client signs up and sends their own.
 - `CarPhoto` flags: `cutout` (shown whole on sand, multiply blend on a wrapper), `zoom` (studio shot with wide
-  margins), `portrait` (letterboxed), `position`, `generation` ("Newer model"/"Older model" → separate carousels,
-  newer on top). Fleet cards: `imageCutout`, `imagePlaceholder`, `imageZoom`.
+  margins), `portrait` (letterboxed), `position`, `colour` (car-page colour picker). Two generations of one
+  model are separate cars with `years` (e.g. S-Class "2021 onwards" and "2013–2020"); `carTitle` adds the years where
+  both appear in a list. Fleet cards: `imageCutout`, `imagePlaceholder`, `imageZoom`.
 - **No Vercel image optimization (Nirmal)**: saved copies plus smaller saved copies (see above); size/format come from
   the original URL: Wix as `.webp` at 1600px; hero WebP on the page, JPEG (`heroImage`) only for link previews.
 
@@ -184,9 +189,11 @@ The v0 reference design (`redesign-jhajjz-in.zip`) got several facts wrong — n
   limousine = first-generation Chrysler 300C, Bentley = first-generation Continental Flying Spur (2005–2013), V-Class =
   before the 2019 facelift, HiAce = the older H200 model. **Passengers** filled in for 15 cars from CarWale's seating
   capacity minus the chauffeur (see comment above `cars` in lib/site.ts); the rest vary by version, so ask the client.
+- **Model years** (`years`) of the split cars (S-Class, Range Rover, 7 Series, E-Class, Range Rover Sport) are the
+  global years of the generation identified from the photos, not the client's registration years; confirm.
 - **No studio shot available** (CarWale/CarDekho only have other generations, or none on white): Bentley Flying Spur,
-  V-Class, HiAce, Force Urbania, Chrysler limousine, vintage tourers, Audi A3 Cabriolet (CarWale's old cut-out was too
-  rough). Their pages use the client's photos only. The Maybach GLS studio shot is plain red; the client's car is two-tone.
+  V-Class, HiAce, Chrysler limousine, vintage tourers, Audi A3 Cabriolet (CarWale's old cut-out was too rough).
+  Force Urbania has one now (CarDekho pictures page, grey). Their pages use the client's photos only. The Maybach GLS studio shot is plain red; the client's car is two-tone.
 - **Logo**: JJ monogram made at Nirmal's request (components/logo.tsx, 2026-10-17); the client hasn't seen it yet.
   If they send their own logo file, swap it there and regenerate all 5 icon files.
 - **Privacy policy**: only covers what the website does. The "When you contact us" section (sharing, retention,

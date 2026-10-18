@@ -11,7 +11,7 @@ import { Confirm } from "@/components/confirm";
 import { ShareButton } from "@/components/share-button";
 import { BreadcrumbStructuredData } from "@/components/structured-data";
 import { cn } from "@/lib/utils";
-import { carName, carsInClass, classHref, fleet, inSentence, type Vehicle } from "@/lib/site";
+import { carName, carTitle, carYears, carsInClass, classHref, fleet, inSentence, type Vehicle } from "@/lib/site";
 
 /** One vehicle class (e.g. /fleet/suvs): every car in it, each linking to its own page. */
 export function FleetClassPage({ fleetClass }: { fleetClass: Vehicle }) {
@@ -84,8 +84,9 @@ export function FleetClassPage({ fleetClass }: { fleetClass: Vehicle }) {
                             {name}
                           </Link>
                         </h2>
-                        <ShareButton path={`/fleet/${car.slug}`} name={name} iconOnly className="relative z-10 -mr-3" />
+                        <ShareButton path={`/fleet/${car.slug}`} name={carTitle(car)} iconOnly className="relative z-10 -mr-3" />
                       </div>
+                      {car.years && <p className="mt-0.5 text-[15px] text-muted">{carYears(car)}</p>}
                     </StaggerItem>
                   );
                 })}

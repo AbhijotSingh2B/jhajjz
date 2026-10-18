@@ -3,7 +3,7 @@
 import { useRef, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import { AnimatePresence, motion } from "motion/react";
-import { carName, cars, carsInClass, cityOptions, fleet, occasions, otherCity } from "@/lib/site";
+import { carTitle, cars, carsInClass, cityOptions, fleet, occasions, otherCity } from "@/lib/site";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Button } from "@/components/ui/button";
 import { formatDate } from "@/lib/utils";
@@ -83,7 +83,7 @@ export function QuoteForm() {
                   line("Phone", f.get("phone")),
                   line("Occasion", withOther(occasion, OTHER_OCCASION, "occasionOther")),
                   line("Vehicle", withOther(vehicle, OTHER_VEHICLE, "vehicleOther")),
-                  line("Exact vehicle", chosenCar ? carName(chosenCar) : car === OTHER_CAR && !bothOther ? f.get("carOther") || OTHER_CAR : ""),
+                  line("Exact vehicle", chosenCar ? carTitle(chosenCar) : car === OTHER_CAR && !bothOther ? f.get("carOther") || OTHER_CAR : ""),
                   line("City", withOther(city, otherCity, "cityOther")),
                   line("Date", formatDate(String(f.get("date") ?? ""))),
                   line("Notes", f.get("notes")),
@@ -175,7 +175,7 @@ export function QuoteForm() {
                   <SelectItem value={ANY_CAR}>{ANY_CAR}</SelectItem>
                   {carOptions.map((c) => (
                     <SelectItem key={c.slug} value={c.slug}>
-                      {carName(c)}
+                      {carTitle(c)}
                     </SelectItem>
                   ))}
                   <SelectItem value={OTHER_CAR}>{OTHER_CAR}</SelectItem>

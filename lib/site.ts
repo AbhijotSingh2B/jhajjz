@@ -257,6 +257,7 @@ export const studio = {
   audiQ7: carwaleColour("93c7oua_1555653"), // Q7 2022–2024, Carrara White
   rangeRoverSport: carwaleColour("2x5uqsa_1477733"), // Range Rover Sport 2018–2022, Fuji White
   gleOlder: carwaleColour("stahtsa_1480771"), // GLE 2020–2023, Obsidian Black
+  urbania: cardekhoColour("Force/Urbania/11849/1721042241113/221_Gray_414142.jpg"), // Urbania (CarDekho), Grey
   maybachGls: carwaleColour("uvkhafb_1810183"), // Maybach GLS, Hyacinth Red (CarWale has no two-tone shot)
 };
 
@@ -365,7 +366,7 @@ export const fleetGroups: { id: "all" | FleetGroup; label: string }[] = [
 // PLACEHOLDER photos (`placeholder: true`) are CarWale studio shots (no background, see `studio` above), used on
 // Nirmal's instruction for the preview: on every car that has one, in the generation and colour the client has. Remove
 // every one before public launch (see "Launch checklist" in CLAUDE.md). They're kept out of Open Graph and JSON-LD.
-// Car pages show the photos as carousels, one per `generation`, in the order they first appear: list newer first.
+// Two generations of the same model are separate cars (own page, own `years`); their pages link to each other.
 const carwale = (path: string) => saved(`https://imgd.aeplcdn.com/1280x720/n/cw/ec/${path}?isig=0&q=80`);
 
 export type CarPhoto = {
@@ -382,14 +383,17 @@ export type CarPhoto = {
   zoom?: number;
   /** Portrait photo: shown whole (letterboxed) in the 3:2 frame rather than cropped. Fetch it with `wixFit`. */
   portrait?: true;
-  /** When the client has two generations of a car, each gets its own carousel, newer on top. */
-  generation?: "Newer model" | "Older model";
+  /** When the client has the car in more than one colour: the car page shows a colour picker over the photos. */
+  colour?: string;
 };
 
 export type Car = {
   slug: string;
   /** "" when the make isn't known (the vintage cars); give a `name` then. */
   brand: string;
+  /** Model years of the generation in the client's photos (identified by eye), when the fleet has more than one
+   * generation of the model, e.g. "2013–2020". Shown with the name; the client should confirm. */
+  years?: string;
   model: string;
   /** What we call it on the site, when "brand model" reads wrong (e.g. "Range Rover Autobiography"). */
   name?: string;
@@ -409,13 +413,13 @@ export const cars: Car[] = [
     text: "A Rolls-Royce Ghost for weddings, business visits and the days you want to remember.",
     photos: [
       // PLACEHOLDER: CarDekho photo — remove before public launch
-      { src: studio.ghost, alt: "Silver Rolls-Royce Ghost", placeholder: true, cutout: true, zoom: 1.35 },
-      { src: photos.ghostFlowers, alt: "White Rolls-Royce Ghost decorated with flowers" },
-      { src: photos.ghostSide, alt: "White Rolls-Royce Ghost from the side" },
-      { src: photos.ghostFront, alt: "White Rolls-Royce Ghost with a JHAJJZ number plate", portrait: true },
-      { src: photos.ghostLimos, alt: "White Rolls-Royce Ghost with a JHAJJZ LIMOS plate", portrait: true },
-      { src: photos.ghostRear, alt: "White Rolls-Royce Ghost from behind", portrait: true },
-      { src: photos.ghostSilver, alt: "Silver Rolls-Royce Ghost with its coach doors open" },
+      { src: studio.ghost, alt: "Silver Rolls-Royce Ghost", placeholder: true, cutout: true, zoom: 1.35, colour: "Silver" },
+      { src: photos.ghostFlowers, alt: "White Rolls-Royce Ghost decorated with flowers", colour: "White" },
+      { src: photos.ghostSide, alt: "White Rolls-Royce Ghost from the side", colour: "White" },
+      { src: photos.ghostFront, alt: "White Rolls-Royce Ghost with a JHAJJZ number plate", portrait: true, colour: "White" },
+      { src: photos.ghostLimos, alt: "White Rolls-Royce Ghost with a JHAJJZ LIMOS plate", portrait: true, colour: "White" },
+      { src: photos.ghostRear, alt: "White Rolls-Royce Ghost from behind", portrait: true, colour: "White" },
+      { src: photos.ghostSilver, alt: "Silver Rolls-Royce Ghost with its coach doors open", colour: "Silver" },
     ],
     details: [
       { label: "Passengers", value: "4" },
@@ -426,16 +430,31 @@ export const cars: Car[] = [
     slug: "mercedes-benz-s-class",
     brand: "Mercedes-Benz",
     model: "S-Class",
+    years: "2021 onwards",
     fleetClass: "luxury-cars",
     text: "A Mercedes-Benz S-Class for business travel, airport transfers and weddings.",
     photos: [
       // PLACEHOLDER: CarWale photo — remove before public launch
-      { src: studio.sClass, alt: "Black Mercedes-Benz S-Class", placeholder: true, cutout: true, generation: "Newer model" },
-      { src: photos.sClass, alt: "Black Mercedes-Benz S-Class from the Jhajj'z fleet", generation: "Newer model" },
-      { src: photos.sClassOlderWedding, alt: "White Mercedes-Benz S-Class decorated for a wedding", portrait: true, generation: "Older model" },
-      { src: photos.sClassOlderChauffeur, alt: "White Mercedes-Benz S-Class with a Jhajj'z chauffeur", portrait: true, generation: "Older model" },
-      { src: photos.sClassOlderSilver, alt: "Silver Mercedes-Benz S-Class parked under trees", generation: "Older model" },
-      { src: photos.sClassOlderWhite, alt: "White Mercedes-Benz S-Class from the side", generation: "Older model" },
+      { src: studio.sClass, alt: "Black Mercedes-Benz S-Class", placeholder: true, cutout: true },
+      { src: photos.sClass, alt: "Black Mercedes-Benz S-Class from the Jhajj'z fleet" },
+    ],
+    details: [
+      { label: "Passengers", value: "4" },
+      { label: "Colour", value: null },
+    ],
+  },
+  {
+    slug: "mercedes-benz-s-class-2013-2020",
+    brand: "Mercedes-Benz",
+    model: "S-Class",
+    years: "2013–2020",
+    fleetClass: "luxury-cars",
+    text: "A Mercedes-Benz S-Class for business travel, airport transfers and weddings.",
+    photos: [
+      { src: photos.sClassOlderWhite, alt: "White Mercedes-Benz S-Class from the side" },
+      { src: photos.sClassOlderSilver, alt: "Silver Mercedes-Benz S-Class parked under trees" },
+      { src: photos.sClassOlderWedding, alt: "White Mercedes-Benz S-Class decorated for a wedding", portrait: true },
+      { src: photos.sClassOlderChauffeur, alt: "White Mercedes-Benz S-Class with a Jhajj'z chauffeur", portrait: true },
     ],
     details: [
       { label: "Passengers", value: "4" },
@@ -447,15 +466,31 @@ export const cars: Car[] = [
     brand: "Land Rover",
     model: "Range Rover Autobiography",
     name: "Range Rover Autobiography",
+    years: "2022 onwards",
     fleetClass: "suvs",
     text: "A Range Rover for weddings, business visits and trips to the hills.",
     photos: [
       // PLACEHOLDER: CarWale photo — remove before public launch
-      { src: studio.rangeRover, alt: "White Range Rover", placeholder: true, cutout: true, generation: "Newer model" },
-      { src: photos.rangeRoverWedding, alt: "White Range Rover with wedding flowers and a Jhajj'z Limos plate", portrait: true, generation: "Newer model" },
+      { src: studio.rangeRover, alt: "White Range Rover", placeholder: true, cutout: true },
+      { src: photos.rangeRoverWedding, alt: "White Range Rover with wedding flowers and a Jhajj'z Limos plate", portrait: true },
+    ],
+    details: [
+      { label: "Passengers", value: null },
+      { label: "Colour", value: null },
+    ],
+  },
+  {
+    slug: "range-rover-autobiography-2013-2022",
+    brand: "Land Rover",
+    model: "Range Rover Autobiography",
+    name: "Range Rover Autobiography",
+    years: "2013–2022",
+    fleetClass: "suvs",
+    text: "A Range Rover for weddings, business visits and trips to the hills.",
+    photos: [
       // PLACEHOLDER: CarWale photo — remove before public launch
-      { src: studio.rangeRoverOlder, alt: "White Range Rover, previous generation", placeholder: true, cutout: true, generation: "Older model" },
-      { src: photos.rangeRover, alt: "White Range Rover from the Jhajj'z fleet", generation: "Older model" },
+      { src: studio.rangeRoverOlder, alt: "White Range Rover", placeholder: true, cutout: true },
+      { src: photos.rangeRover, alt: "White Range Rover from the Jhajj'z fleet" },
     ],
     details: [
       { label: "Passengers", value: null },
@@ -547,14 +582,29 @@ export const cars: Car[] = [
     slug: "bmw-7-series",
     brand: "BMW",
     model: "7 Series",
+    years: "2019–2022",
     fleetClass: "luxury-cars",
     text: "A BMW 7 Series for business travel, airport transfers and weddings.",
     photos: [
       // PLACEHOLDER: CarWale photo — remove before public launch
-      { src: studio.bmw7Series, alt: "White BMW 7 Series", placeholder: true, cutout: true, generation: "Newer model" },
-      { src: photos.bmw7SeriesNewer, alt: "White BMW 7 Series from the Jhajj'z fleet", generation: "Newer model" },
-      { src: photos.bmw7Series, alt: "White BMW 7 Series from the Jhajj'z fleet", generation: "Older model" },
-      { src: photos.bmw7SeriesChauffeur, alt: "White BMW 7 Series with a Jhajj'z chauffeur", generation: "Older model" },
+      { src: studio.bmw7Series, alt: "White BMW 7 Series", placeholder: true, cutout: true },
+      { src: photos.bmw7SeriesNewer, alt: "White BMW 7 Series from the Jhajj'z fleet" },
+    ],
+    details: [
+      { label: "Passengers", value: "4" },
+      { label: "Colour", value: "White" },
+    ],
+  },
+  {
+    slug: "bmw-7-series-2015-2019",
+    brand: "BMW",
+    model: "7 Series",
+    years: "2015–2019",
+    fleetClass: "luxury-cars",
+    text: "A BMW 7 Series for business travel, airport transfers and weddings.",
+    photos: [
+      { src: photos.bmw7Series, alt: "White BMW 7 Series from the Jhajj'z fleet" },
+      { src: photos.bmw7SeriesChauffeur, alt: "White BMW 7 Series with a Jhajj'z chauffeur" },
     ],
     details: [
       { label: "Passengers", value: "4" },
@@ -658,13 +708,28 @@ export const cars: Car[] = [
     slug: "mercedes-benz-e-class",
     brand: "Mercedes-Benz",
     model: "E-Class",
+    years: "2023 onwards",
     fleetClass: "executive-cabs",
     text: "A Mercedes-Benz E-Class for meetings, corporate events and airport runs.",
     photos: [
       // PLACEHOLDER: CarWale photo — remove before public launch
-      { src: studio.eClass, alt: "White Mercedes-Benz E-Class", placeholder: true, cutout: true, generation: "Newer model" },
-      { src: photos.eClass, alt: "White Mercedes-Benz E-Class from the Jhajj'z fleet", portrait: true, generation: "Newer model" },
-      { src: photos.eClassOlderWedding, alt: "Mercedes-Benz E-Class decorated with red ribbon for a wedding", portrait: true, generation: "Older model" },
+      { src: studio.eClass, alt: "White Mercedes-Benz E-Class", placeholder: true, cutout: true },
+      { src: photos.eClass, alt: "White Mercedes-Benz E-Class from the Jhajj'z fleet", portrait: true },
+    ],
+    details: [
+      { label: "Passengers", value: "4" },
+      { label: "Colour", value: null },
+    ],
+  },
+  {
+    slug: "mercedes-benz-e-class-2016-2023",
+    brand: "Mercedes-Benz",
+    model: "E-Class",
+    years: "2016–2023",
+    fleetClass: "executive-cabs",
+    text: "A Mercedes-Benz E-Class for meetings, corporate events and airport runs.",
+    photos: [
+      { src: photos.eClassOlderWedding, alt: "Mercedes-Benz E-Class decorated with red ribbon for a wedding", portrait: true },
     ],
     details: [
       { label: "Passengers", value: "4" },
@@ -741,14 +806,30 @@ export const cars: Car[] = [
     brand: "Land Rover",
     model: "Range Rover Sport",
     name: "Range Rover Sport",
+    years: "2018–2022",
     fleetClass: "suvs",
     text: "A Range Rover Sport for weddings, business visits and trips to the hills.",
     photos: [
       // PLACEHOLDER: CarWale photo — remove before public launch
-      { src: studio.rangeRoverSport, alt: "White Range Rover Sport", placeholder: true, cutout: true, generation: "Newer model" },
-      { src: photos.rangeRoverSportFront, alt: "White Range Rover Sport from the Jhajj'z fleet", portrait: true, generation: "Newer model" },
-      { src: photos.rangeRoverSportWedding, alt: "White Range Rover Sport decorated for a wedding", portrait: true, generation: "Newer model" },
-      { src: photos.rangeRoverSportBlue, alt: "Blue Range Rover Sport", generation: "Older model" },
+      { src: studio.rangeRoverSport, alt: "White Range Rover Sport", placeholder: true, cutout: true },
+      { src: photos.rangeRoverSportFront, alt: "White Range Rover Sport from the Jhajj'z fleet", portrait: true },
+      { src: photos.rangeRoverSportWedding, alt: "White Range Rover Sport decorated for a wedding", portrait: true },
+    ],
+    details: [
+      { label: "Passengers", value: null },
+      { label: "Colour", value: null },
+    ],
+  },
+  {
+    slug: "range-rover-sport-2013-2017",
+    brand: "Land Rover",
+    model: "Range Rover Sport",
+    name: "Range Rover Sport",
+    years: "2013–2017",
+    fleetClass: "suvs",
+    text: "A Range Rover Sport for weddings, business visits and trips to the hills.",
+    photos: [
+      { src: photos.rangeRoverSportBlue, alt: "Blue Range Rover Sport" },
     ],
     details: [
       { label: "Passengers", value: null },
@@ -854,7 +935,11 @@ export const cars: Car[] = [
     model: "Urbania",
     fleetClass: "mini-vans",
     text: "A Force Urbania for groups, wedding guests and trips with plenty of luggage.",
-    photos: [{ src: photos.forceUrbania, alt: "Grey Force Urbania van with its sliding door open" }],
+    photos: [
+      // PLACEHOLDER: CarDekho photo — remove before public launch
+      { src: studio.urbania, alt: "Grey Force Urbania", placeholder: true, cutout: true },
+      { src: photos.forceUrbania, alt: "Grey Force Urbania van with its sliding door open" },
+    ],
     details: [
       { label: "Passengers", value: null },
       { label: "Colour", value: "Grey" },
@@ -876,6 +961,12 @@ export const cars: Car[] = [
 ];
 
 export const carName = (c: Car) => c.name ?? `${c.brand} ${c.model}`;
+/** The name plus model years, for lists where two generations of one model sit side by side. */
+export const carTitle = (c: Car) => (c.years ? `${carName(c)} (${c.years})` : carName(c));
+/** "2013–2020 model", "2021 onwards" — the line shown under a car's name. */
+export const carYears = (c: Car) => (c.years && /\d$/.test(c.years) ? `${c.years} model` : c.years);
+/** Other generations of the same model in the fleet. */
+export const otherYears = (c: Car) => cars.filter((o) => o.slug !== c.slug && carName(o) === carName(c));
 
 export const carsInClass = (slug: string) => cars.filter((c) => c.fleetClass === slug);
 /** A class with cars has its own page listing them (/fleet/suvs); one without any yet (coaches) stays on /fleet. */

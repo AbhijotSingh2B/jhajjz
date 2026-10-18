@@ -7,7 +7,7 @@ import Link from "next/link";
 import { AnimatePresence, motion } from "motion/react";
 import { Search, X } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { carName, carsInClass as carsIn, classHref, contact, fleet, fleetGroups, type Car, type FleetGroup, type Vehicle } from "@/lib/site";
+import { carName, carTitle, carYears, carsInClass as carsIn, classHref, contact, fleet, fleetGroups, type Car, type FleetGroup, type Vehicle } from "@/lib/site";
 import { Confirm } from "@/components/confirm";
 import { ShareButton } from "@/components/share-button";
 
@@ -18,31 +18,56 @@ export function FleetBrowser() {
   const [query, setQuery] = useState("");
   const terms = query.toLowerCase().split(/\s+/).filter(Boolean);
   // Relevance: each search word scores by the best place it appears (name over class over description); every
-  // word has to appear somewhere. 0 = no match.
-  const score = (fields: [text: string, weight: number][]) =>
-    terms.reduce((sum, t) => {
-      if (sum < 0) return sum;
-      const best = Math.max(0, ...fields.filter(([text]) => text.toLowerCase().includes(t)).map(([, w]) => w));
-      return best ? sum + best : -1;
-    }, 0);
+  // word has to appear somewhere (else 0). `direct`: every word is in the car's own name, make or model (weight 3+).
+  const score = (fields: [text: string, weight: number][]) => {
+    const best = terms.map((t) => Math.max(0, ...fields.filter(([text]) => text.toLowerCase().includes(t)).map(([, w]) => w)));
+    return best.includes(0) ? { score: 0, direct: false } : { score: best.reduce((a, b) => a + b, 0), direct: best.every((b) => b >= 3) };
+  };
   // No search: one card per class. Searching: one card per matching car, labelled with its class ("suv" lists
   // every SUV; a word only in a description still finds the car, lower down), plus the classes that have no car
   // pages yet (coaches) when the class matches. Best matches first, otherwise in fleet order.
-  const shown: Result[] = fleet
+  const shown = fleet
     .filter((v) => filter === "all" || v.group === filter)
-    .flatMap((v): (Result & { score: number })[] => {
+    .flatMap((v): Scored[] => {
       const classCars = carsIn(v.slug);
-      if (terms.length === 0) return [{ kind: "class", v, score: 0 }];
-      if (classCars.length === 0) return [{ kind: "class" as const, v, score: score([[v.name, 4], [v.text, 1]]) }];
+      if (terms.length === 0) return [{ kind: "class", v, score: 0, direct: true }];
+      if (classCars.length === 0) return [{ kind: "class" as const, v, ...score([[v.name, 4], [v.text, 1]]) }];
       return classCars.map((car) => ({
         kind: "car" as const,
         car,
         v,
-        score: score([[carName(car), 4], [`${car.brand} ${car.model}`, 3], [v.name, 2], [car.text, 1], [v.text, 1]]),
+        ...score([[carName(car), 4], [`${car.brand} ${car.model} ${car.years ?? ""}`, 3], [v.name, 2], [car.text, 1], [v.text, 1]]),
       }));
     })
     .filter((r) => terms.length === 0 || r.score > 0)
     .sort((a, b) => b.score - a.score);
+  // "rolls royce": the Ghost on top, then the cars that only mention it (the rest of the luxury class) under a
+  // divider. When nothing matches by name (e.g. "wedding"), everything is shown together.
+  const direct = shown.filter((r) => r.direct);
+  const [top, more] = direct.length > 0 && direct.length < shown.length ? [direct, shown.filter((r) => !r.direct)] : [shown, []];
+
+  const grid = (list: Result[], offset: number, spacing = "mt-10") => (
+    <motion.div layout className={cn("grid grid-cols-[repeat(auto-fill,minmax(320px,1fr))] gap-x-6 gap-y-10", spacing)}>
+      <AnimatePresence mode="popLayout">
+        {list.map((r, j) => {
+          const i = offset + j;
+          return (
+            <motion.article
+              key={r.kind === "car" ? `car-${r.car.slug}` : r.v.slug}
+              id={r.kind === "class" ? r.v.slug : undefined}
+              layout
+              initial={{ opacity: 0, y: 24 }}
+              animate={{ opacity: 1, y: 0, transition: { duration: 0.6, ease, delay: Math.min(i, 8) * 0.05 } }}
+              exit={{ opacity: 0, scale: 0.96, transition: { duration: 0.25 } }}
+              className="group relative scroll-mt-28"
+            >
+              {r.kind === "car" ? <CarCard car={r.car} fleetClass={r.v} /> : <ClassCard v={r.v} priority={i < 3} />}
+            </motion.article>
+          );
+        })}
+      </AnimatePresence>
+    </motion.div>
+  );
 
   return (
     <>
@@ -101,23 +126,15 @@ export function FleetBrowser() {
       <p className="sr-only" role="status">
         {shown.length} {shown.length === 1 ? "vehicle" : "vehicles"} shown
       </p>
-      <motion.div layout className="mt-10 grid grid-cols-[repeat(auto-fill,minmax(320px,1fr))] gap-x-6 gap-y-10">
-        <AnimatePresence mode="popLayout">
-          {shown.map((r, i) => (
-            <motion.article
-              key={r.kind === "car" ? `car-${r.car.slug}` : r.v.slug}
-              id={r.kind === "class" ? r.v.slug : undefined}
-              layout
-              initial={{ opacity: 0, y: 24 }}
-              animate={{ opacity: 1, y: 0, transition: { duration: 0.6, ease, delay: Math.min(i, 8) * 0.05 } }}
-              exit={{ opacity: 0, scale: 0.96, transition: { duration: 0.25 } }}
-              className="group relative scroll-mt-28"
-            >
-              {r.kind === "car" ? <CarCard car={r.car} fleetClass={r.v} /> : <ClassCard v={r.v} priority={i < 3} />}
-            </motion.article>
-          ))}
-        </AnimatePresence>
-      </motion.div>
+      {grid(top, 0)}
+      {more.length > 0 && (
+        <>
+          <div className="mt-16 border-t border-ink/15 pt-8">
+            <h2 className="font-serif text-[clamp(26px,3vw,32px)] leading-tight">You might also consider</h2>
+          </div>
+          {grid(more, top.length, "mt-8")}
+        </>
+      )}
       {shown.length === 0 && (
         <div className="mt-10 max-w-[560px]">
           <h2 className="font-serif text-[28px] leading-tight">Nothing matches &ldquo;{query.trim()}&rdquo;</h2>
@@ -152,6 +169,7 @@ export function FleetBrowser() {
 }
 
 type Result = { kind: "class"; v: Vehicle } | { kind: "car"; car: Car; v: Vehicle };
+type Scored = Result & { score: number; direct: boolean };
 
 function ClassCard({ v, priority }: { v: Vehicle; priority: boolean }) {
   return (
@@ -203,7 +221,7 @@ function ClassCard({ v, priority }: { v: Vehicle; priority: boolean }) {
                 href={`/fleet/${c.slug}`}
                 className="inline-flex min-h-11 items-center text-[15px] text-ink underline decoration-ink/30 underline-offset-[5px] transition-colors hover:decoration-ink"
               >
-                {carName(c)}
+                {carTitle(c)}
               </Link>
             </li>
           ))}
@@ -262,15 +280,23 @@ function CarCard({ car, fleetClass }: { car: Car; fleetClass: Vehicle }) {
             {name}
           </Link>
         </h2>
-        <ShareButton path={`/fleet/${car.slug}`} name={name} iconOnly className="relative z-10 -mr-3" />
+        <ShareButton path={`/fleet/${car.slug}`} name={carTitle(car)} iconOnly className="relative z-10 -mr-3" />
       </div>
-      {/* Above the card-wide link, so the class opens on its own. */}
-      <Link
-        href={classHref(fleetClass.slug)}
-        className="relative z-10 inline-flex min-h-11 items-center text-[15px] text-muted underline decoration-ink/20 underline-offset-[5px] transition-colors hover:text-ink hover:decoration-ink"
-      >
-        {fleetClass.name}
-      </Link>
+      <p className="flex flex-wrap items-center gap-x-2 text-[15px] text-muted">
+        {car.years && (
+          <>
+            <span>{carYears(car)}</span>
+            <span aria-hidden="true">·</span>
+          </>
+        )}
+        {/* Above the card-wide link, so the class opens on its own. */}
+        <Link
+          href={classHref(fleetClass.slug)}
+          className="relative z-10 inline-flex min-h-11 items-center underline decoration-ink/20 underline-offset-[5px] transition-colors hover:text-ink hover:decoration-ink"
+        >
+          {fleetClass.name}
+        </Link>
+      </p>
     </>
   );
 }
