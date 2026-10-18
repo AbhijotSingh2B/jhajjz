@@ -257,6 +257,7 @@ export const studio = {
   audiQ7: carwaleColour("93c7oua_1555653"), // Q7 2022–2024, Carrara White
   rangeRoverSport: carwaleColour("2x5uqsa_1477733"), // Range Rover Sport 2018–2022, Fuji White
   gleOlder: carwaleColour("stahtsa_1480771"), // GLE 2020–2023, Obsidian Black
+  maybachGls: carwaleColour("uvkhafb_1810183"), // Maybach GLS, Hyacinth Red (CarWale has no two-tone shot)
 };
 
 // There is no separate "wedding cars" class: every car in the fleet can be booked for a wedding or any event.
@@ -354,8 +355,10 @@ export const fleetGroups: { id: "all" | FleetGroup; label: string }[] = [
 ];
 
 // Individual cars, each with its own page at /fleet/<slug>. Only add a car the client has confirmed is in the
-// fleet. Details with a `null` value are simply not shown; fill them in only from the client, never from the
-// manufacturer's brochure or a guess. An empty `photos` list shows a highlighted [CONFIRM] box.
+// fleet. Details with a `null` value are simply not shown; fill them in only from the client or a checked source,
+// never a guess. "Passengers" (Nirmal, Oct 2026) is CarWale's seating capacity for the generation in the client's
+// photos, minus the chauffeur, and only where every Indian version of it seats the same (not Range Rover, GLE, X7,
+// Defender, Innova Crysta, V-Class...); the client should confirm. An empty `photos` list shows a highlighted [CONFIRM] box.
 // Until the client's own photos arrive, a licensed photo of the same model may stand in: give it a `credit`
 // (photographer + licence, e.g. "Photo: Jane Doe, CC BY-SA 4.0, via Wikimedia Commons") and the page labels it
 // "Representative photo".
@@ -415,7 +418,7 @@ export const cars: Car[] = [
       { src: photos.ghostSilver, alt: "Silver Rolls-Royce Ghost with its coach doors open" },
     ],
     details: [
-      { label: "Passengers", value: null },
+      { label: "Passengers", value: "4" },
       { label: "Colour", value: "White, silver" },
     ],
   },
@@ -435,7 +438,7 @@ export const cars: Car[] = [
       { src: photos.sClassOlderWhite, alt: "White Mercedes-Benz S-Class from the side", generation: "Older model" },
     ],
     details: [
-      { label: "Passengers", value: null },
+      { label: "Passengers", value: "4" },
       { label: "Colour", value: null },
     ],
   },
@@ -471,7 +474,7 @@ export const cars: Car[] = [
       { src: photos.gls, alt: "White Mercedes-Benz GLS decorated with flowers for a wedding", position: "50% 70%" },
     ],
     details: [
-      { label: "Passengers", value: null },
+      { label: "Passengers", value: "6" },
       { label: "Colour", value: null },
     ],
   },
@@ -518,7 +521,7 @@ export const cars: Car[] = [
       { src: carwale("44709/fortuner-exterior-right-front-three-quarter-7.jpeg"), alt: "Black Toyota Fortuner", placeholder: true, cutout: true },
     ],
     details: [
-      { label: "Passengers", value: null },
+      { label: "Passengers", value: "6" },
       { label: "Colour", value: "Black" },
     ],
   },
@@ -536,7 +539,7 @@ export const cars: Car[] = [
       { src: photos.vellfirePortrait, alt: "White Toyota Vellfire on an empty road", portrait: true },
     ],
     details: [
-      { label: "Passengers", value: null },
+      { label: "Passengers", value: "6" },
       { label: "Colour", value: "White" },
     ],
   },
@@ -554,7 +557,7 @@ export const cars: Car[] = [
       { src: photos.bmw7SeriesChauffeur, alt: "White BMW 7 Series with a Jhajj'z chauffeur", generation: "Older model" },
     ],
     details: [
-      { label: "Passengers", value: null },
+      { label: "Passengers", value: "4" },
       { label: "Colour", value: "White" },
     ],
   },
@@ -593,15 +596,15 @@ export const cars: Car[] = [
   {
     slug: "audi-cabriolet",
     brand: "Audi",
-    model: "Cabriolet",
+    model: "A3 Cabriolet",
     fleetClass: "convertibles",
-    text: "A red Audi Cabriolet for weddings, photoshoots and drives with the roof down.",
+    text: "A red Audi A3 Cabriolet for weddings, photoshoots and drives with the roof down.",
     photos: [
-      { src: photos.audiSunset, alt: "Red Audi Cabriolet decorated with flowers at sunset", portrait: true },
-      { src: photos.audiAbove, alt: "Red Audi Cabriolet seen from above", portrait: true },
+      { src: photos.audiSunset, alt: "Red Audi A3 Cabriolet decorated with flowers at sunset", portrait: true },
+      { src: photos.audiAbove, alt: "Red Audi A3 Cabriolet seen from above", portrait: true },
     ],
     details: [
-      { label: "Passengers", value: null },
+      { label: "Passengers", value: "3" },
       { label: "Colour", value: "Red" },
     ],
   },
@@ -631,7 +634,7 @@ export const cars: Car[] = [
       { src: photos.jaguarXj, alt: "White Jaguar XJ decorated for a wedding" },
     ],
     details: [
-      { label: "Passengers", value: null },
+      { label: "Passengers", value: "4" },
       { label: "Colour", value: "White" },
     ],
   },
@@ -647,7 +650,7 @@ export const cars: Car[] = [
       { src: photos.bmwLineUp, alt: "BMW i8 between a BMW X5 and a Range Rover from the Jhajj'z fleet" },
     ],
     details: [
-      { label: "Passengers", value: null },
+      { label: "Passengers", value: "3" },
       { label: "Colour", value: "White" },
     ],
   },
@@ -664,7 +667,7 @@ export const cars: Car[] = [
       { src: photos.eClassOlderWedding, alt: "Mercedes-Benz E-Class decorated with red ribbon for a wedding", portrait: true, generation: "Older model" },
     ],
     details: [
-      { label: "Passengers", value: null },
+      { label: "Passengers", value: "4" },
       { label: "Colour", value: null },
     ],
   },
@@ -696,7 +699,7 @@ export const cars: Car[] = [
       { src: photos.bmwLineUp, alt: "BMW X5, BMW i8 and a Range Rover from the Jhajj'z fleet" },
     ],
     details: [
-      { label: "Passengers", value: null },
+      { label: "Passengers", value: "4" },
       { label: "Colour", value: "White" },
     ],
   },
@@ -713,7 +716,7 @@ export const cars: Car[] = [
       { src: photos.gClassWhite, alt: "White Mercedes-Benz G-Class decorated for a wedding", portrait: true },
     ],
     details: [
-      { label: "Passengers", value: null },
+      { label: "Passengers", value: "4" },
       { label: "Colour", value: null },
     ],
   },
@@ -725,11 +728,12 @@ export const cars: Car[] = [
     fleetClass: "suvs",
     text: "A Mercedes-Maybach GLS for weddings, VIP visits and family travel.",
     photos: [
+      { src: studio.maybachGls, alt: "Red Mercedes-Maybach GLS", placeholder: true, cutout: true },
       { src: photos.maybachGls, alt: "Two-tone Mercedes-Maybach GLS at night" },
     ],
     details: [
-      { label: "Passengers", value: null },
-      { label: "Colour", value: null },
+      { label: "Passengers", value: "4" },
+      { label: "Colour", value: "Red and white (two-tone)" },
     ],
   },
   {
@@ -763,7 +767,7 @@ export const cars: Car[] = [
       { src: photos.fPace, alt: "White Jaguar F-Pace from the Jhajj'z fleet" },
     ],
     details: [
-      { label: "Passengers", value: null },
+      { label: "Passengers", value: "4" },
       { label: "Colour", value: "White" },
     ],
   },
@@ -779,7 +783,7 @@ export const cars: Car[] = [
       { src: photos.audiQ7, alt: "White Audi Q7 from the Jhajj'z fleet", portrait: true },
     ],
     details: [
-      { label: "Passengers", value: null },
+      { label: "Passengers", value: "6" },
       { label: "Colour", value: "White" },
     ],
   },

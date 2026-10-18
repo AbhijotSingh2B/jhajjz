@@ -178,9 +178,15 @@ The v0 reference design (`redesign-jhajjz-in.zip`) got several facts wrong — n
 ## Open items (need the client)
 
 - **29 car pages**: 12 from Nirmal, the rest added from jhajjz.in photos on his go-ahead ("we'll import each car
-  properly when the client signs up"). All identified by eye: confirm each is in the fleet, passengers for every car,
-  the limousine is a Chrysler 300C, the Audi is an A3 Cabriolet, which Range Rover is the Autobiography, whether the
-  black GLE and the bulletproof GLE are the same car, the make of the vintage open tourers (`brand: ""`).
+  properly when the client signs up"). All identified by eye: confirm each is in the fleet, which Range Rover is the
+  Autobiography, whether the black GLE and the bulletproof GLE are the same car, the make of the vintage open tourers
+  (`brand: ""`). Identified on 2026-10-18 by comparing with CarWale photos: Audi = A3 Cabriolet before the 2017 facelift,
+  limousine = first-generation Chrysler 300C, Bentley = first-generation Continental Flying Spur (2005–2013), V-Class =
+  before the 2019 facelift, HiAce = the older H200 model. **Passengers** filled in for 15 cars from CarWale's seating
+  capacity minus the chauffeur (see comment above `cars` in lib/site.ts); the rest vary by version, so ask the client.
+- **No studio shot available** (CarWale/CarDekho only have other generations, or none on white): Bentley Flying Spur,
+  V-Class, HiAce, Force Urbania, Chrysler limousine, vintage tourers, Audi A3 Cabriolet (CarWale's old cut-out was too
+  rough). Their pages use the client's photos only. The Maybach GLS studio shot is plain red; the client's car is two-tone.
 - **Logo**: JJ monogram made at Nirmal's request (components/logo.tsx, 2026-10-17); the client hasn't seen it yet.
   If they send their own logo file, swap it there and regenerate all 5 icon files.
 - **Privacy policy**: only covers what the website does. The "When you contact us" section (sharing, retention,
