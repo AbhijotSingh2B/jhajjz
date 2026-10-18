@@ -1,4 +1,5 @@
 import Image from "next/image";
+import { IllustrativeTag } from "@/components/illustrative-tag";
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 import { SiteHeader } from "@/components/site-header";
@@ -119,6 +120,7 @@ export default function Home() {
                             className={v.imageCutout ? "object-contain p-5 md:p-8" : "object-cover"}
                           />
                         </div>
+                        {v.imagePlaceholder && <IllustrativeTag />}
                       </div>
                       <div>
                         <h3 className={i === 0 ? "text-[19px] font-semibold md:font-serif md:text-[28px] md:font-normal" : "text-[19px] font-semibold"}>{v.name}</h3>

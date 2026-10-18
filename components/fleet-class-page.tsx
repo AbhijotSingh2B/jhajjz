@@ -1,4 +1,5 @@
 import Image from "next/image";
+import { IllustrativeTag } from "@/components/illustrative-tag";
 import Link from "next/link";
 import { SiteHeader } from "@/components/site-header";
 import { SiteFooter } from "@/components/site-footer";
@@ -71,6 +72,7 @@ export function FleetClassPage({ fleetClass }: { fleetClass: Vehicle }) {
                             <Confirm>photo</Confirm>
                           </span>
                         )}
+                        {photo?.placeholder && <IllustrativeTag />}
                       </div>
                       <div className="mt-3 flex items-start justify-between gap-3">
                         <h2 className="pt-1 font-serif text-[28px] leading-tight">

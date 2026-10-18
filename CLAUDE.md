@@ -201,6 +201,7 @@ The v0 reference design (`redesign-jhajjz-in.zip`) got several facts wrong — n
 - [ ] Remove placeholder photos: search `PLACEHOLDER` in lib/site.ts (and the `carwale`, `carwaleColour`,
       `cardekhoColour` helpers); replace with the client's photos. Delete public/photos/carwale and /cardekho too
       and re-run `npm run save-photos`.
+      They carry a "For illustrative purposes only" corner tag (components/illustrative-tag.tsx), which goes with them.
 - [ ] Vercel Web Analytics is in the code (`<Analytics />` in layout.tsx, described in the privacy policy); it only
       collects once Web Analytics is enabled on the project in the Vercel dashboard. Hobby: 50,000 events a month
       shared by every project on the account, 1-month window, no custom events (Vercel docs, Oct 2026).

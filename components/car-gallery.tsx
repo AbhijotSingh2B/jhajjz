@@ -2,6 +2,7 @@
 
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import Image from "next/image";
+import { IllustrativeTag } from "@/components/illustrative-tag";
 import { useEffect, useRef, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
@@ -77,6 +78,7 @@ export function CarGallery({
                   style={{ objectPosition: photo.position }}
                 />
               </div>
+              {photo.placeholder && <IllustrativeTag />}
             </div>
             {photo.credit && <figcaption className="mt-2 text-[13px] text-muted">Representative photo · {photo.credit}</figcaption>}
           </figure>
