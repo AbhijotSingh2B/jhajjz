@@ -43,13 +43,15 @@ before pushing, and merge (never force-push) if someone else's commit arrives.
 ## Working in the Claude cloud sandbox
 
 - Network: since 2026-10-17 jhajjz.in, static.wixstatic.com, carwale/aeplcdn and cardekho load (Nirmal opened the
-  environment's network). `vercel.app` untested. Images are `unoptimized` (no `/_next/image`), so photos load
-  straight from their hosts in Playwright too; no stand-in needed.
-- **Images: no Vercel image optimization (Nirmal).** `images.unoptimized: true` in next.config.ts, so every
-  photo is served as-is. **All photos are saved in `public/photos/`** (Nirmal, so the site doesn't depend on Wix or
+  environment's network). `vercel.app` untested. Photos are static files (no `/_next/image`), so they load in
+  Playwright too; no stand-in needed.
+- **Images: no Vercel image optimization (Nirmal).** next.config.ts uses a custom loader (`lib/photo-loader.ts`)
+  that only picks between saved files, so nothing counts against Vercel's image-optimization quota. **All photos are saved in `public/photos/`** (Nirmal, so the site doesn't depend on Wix or
   CarWale); lib/site.ts keeps the original URLs as the backup and `saved()` maps each to its copy via
   `lib/saved-photos.json`. After adding/changing a photo URL run `NODE_USE_ENV_PROXY=1 npm run save-photos` (Node's
-  fetch ignores the sandbox proxy without it). Size and format still come from the original URL: Wix photos use
+  fetch ignores the sandbox proxy without it); it also makes the smaller copies (`-640w`, `-1080w`, `-1600w`, listed
+  in `lib/photo-sizes.json`) that the loader serves to phones and cards, so keep `sizes` right on every `<Image>`.
+  Size and format still come from the original URL: Wix photos use
   `.../photo.webp` at 1600px, the hero is WebP on the page (`heroPhoto`, `heroThumb`) and JPEG only as the sharing
   image (`heroImage`). Don't turn optimization back on. The privacy policy says fonts and photos come from our server.
 - Playwright: `require('/opt/node22/lib/node_modules/playwright')`; Chromium only (no WebKit, so iPhone Safari
@@ -93,6 +95,7 @@ components/
                            clock, not from the tap (that cut it short on fast phones); 3.3–4s, CSS fallback hides it
   site-header.tsx          Fixed header (Home, Fleet, Weddings, Services, About, Contact); transparent over the home hero until scroll; Fleet mega-menu; mobile sheet
   site-footer.tsx          Also renders the phone-only sticky Call / WhatsApp bar
+  date-input.tsx           Date field that always shows dd/mm/yyyy (writes the date over the native input; Nirmal)
   booking-bar.tsx          "Start a quote": occasion / city / date (all start empty) → pushes to /contact?… as query params
   quote-form.tsx           Pre-fills from those query params (car pages add ?car=<slug> for the optional
                            "Exact vehicle" dropdown); "Other" opens a text box; submit opens the
@@ -167,8 +170,8 @@ The v0 reference design (`redesign-jhajjz-in.zip`) got several facts wrong — n
 - `CarPhoto` flags: `cutout` (shown whole on sand, multiply blend on a wrapper), `zoom` (studio shot with wide
   margins), `portrait` (letterboxed), `position`, `generation` ("Newer model"/"Older model" → separate carousels,
   newer on top). Fleet cards: `imageCutout`, `imagePlaceholder`, `imageZoom`.
-- `images.unoptimized: true` — **no Vercel image optimization (Nirmal)**. Photos are saved copies (see above); size/format
-  come from the original URL: Wix as `.webp` at 1600px; hero WebP on the page, JPEG (`heroImage`) only for link previews.
+- **No Vercel image optimization (Nirmal)**: saved copies plus smaller saved copies (see above); size/format come from
+  the original URL: Wix as `.webp` at 1600px; hero WebP on the page, JPEG (`heroImage`) only for link previews.
 
 ## Open items (need the client)
 
@@ -198,6 +201,9 @@ The v0 reference design (`redesign-jhajjz-in.zip`) got several facts wrong — n
 - [ ] Remove placeholder photos: search `PLACEHOLDER` in lib/site.ts (and the `carwale`, `carwaleColour`,
       `cardekhoColour` helpers); replace with the client's photos. Delete public/photos/carwale and /cardekho too
       and re-run `npm run save-photos`.
+- [ ] Vercel Web Analytics is in the code (`<Analytics />` in layout.tsx, described in the privacy policy); it only
+      collects once Web Analytics is enabled on the project in the Vercel dashboard. Hobby: 50,000 events a month
+      shared by every project on the account, 1-month window, no custom events (Vercel docs, Oct 2026).
 - [ ] Point www.jhajjz.in at Vercel (noindex on other hosts switches off automatically, proxy.ts).
 - [ ] Old Wix URLs already redirect (`redirects()` in next.config.ts). After launch check Search Console → Pages.
 - [ ] Search Console: verify domain, submit /sitemap.xml. Google Business Profile for the Mohali office (same

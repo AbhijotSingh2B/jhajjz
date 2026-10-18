@@ -1,8 +1,12 @@
 // Downloads every photo URL in lib/site.ts into public/photos/ and records original URL → local path in
 // lib/saved-photos.json, which `saved()` in lib/site.ts reads. Already-saved photos are skipped; entries whose URL
 // is no longer in lib/site.ts are dropped from the JSON (their files are left for you to delete).
+// It also saves smaller copies of each photo (x.webp → x-640w.webp, x-1080w.webp, x-1600w.webp, only widths below the
+// original's) and lists them in lib/photo-sizes.json, so phones download a card-sized copy instead of the full photo
+// (lib/photo-loader.ts picks the copy; still no Vercel image optimization).
 // Run: npm run save-photos (in the Claude sandbox: NODE_USE_ENV_PROXY=1 npm run save-photos, so fetch uses the proxy)
 import { createJiti } from "jiti";
+import sharp from "sharp";
 import { existsSync, mkdirSync, readFileSync, writeFileSync } from "node:fs";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
@@ -55,3 +59,23 @@ for (const url of [...photoSources].sort()) {
 }
 writeFileSync(manifestPath, JSON.stringify(manifest, null, 2) + "\n");
 console.log(`${photoSources.size} photos, ${downloaded} downloaded.`);
+
+// Smaller copies, same format as the original. Widths match what next/image asks for on phones and in cards.
+const widths = [640, 1080, 1600];
+const sizes = {};
+let made = 0;
+for (const local of [...new Set(Object.values(manifest))].sort()) {
+  const file = join(root, "public", local);
+  const { width, format } = await sharp(file).metadata();
+  const smaller = widths.filter((w) => w < width);
+  for (const w of smaller) {
+    const out = file.replace(/(\.\w+)$/, `-${w}w$1`);
+    if (existsSync(out)) continue;
+    const img = sharp(file).resize({ width: w });
+    await (format === "jpeg" ? img.jpeg({ quality: 80, mozjpeg: true }) : format === "png" ? img.png() : img.webp({ quality: 78 })).toFile(out);
+    made++;
+  }
+  if (smaller.length) sizes[local] = smaller;
+}
+writeFileSync(join(root, "lib/photo-sizes.json"), JSON.stringify(sizes, null, 2) + "\n");
+console.log(`${made} smaller copies made.`);

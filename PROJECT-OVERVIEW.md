@@ -25,13 +25,19 @@ Mohali/Chandigarh, serving pan-India). Replaces jhajjz.in on Wix. Built by Nirma
 ## How enquiries work
 
 No backend. The quote form writes the details into a WhatsApp message (or email) that the visitor sends
-themselves; nothing is stored. Name is required, phone is optional. Call / WhatsApp / email popups everywhere,
+themselves; nothing is stored. Name is required, phone is optional. Dates always show as dd/mm/yyyy. Call / WhatsApp / email popups everywhere,
 plus a sticky Call / WhatsApp bar on phones.
+
+## Analytics
+
+Vercel Web Analytics (cookieless page-view counts, Hobby plan), described in the privacy policy. Collects only once
+it's enabled on the project in the Vercel dashboard.
 
 ## Content
 
 All client facts (contact, cities, fleet, cars, photos) live in `lib/site.ts`. Photos are saved copies in
 `public/photos/`: the client's from their Wix site, plus studio placeholder shots to be replaced at launch.
+Smaller saved copies go to phones and cards; no Vercel image optimization.
 
 ## See also
 

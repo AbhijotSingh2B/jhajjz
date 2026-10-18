@@ -1,6 +1,7 @@
 import type { Metadata, Viewport } from "next";
 import "./globals.css";
 import { MotionProvider } from "@/components/motion";
+import { Analytics } from "@vercel/analytics/next";
 import { Splash, splashScript } from "@/components/splash";
 import { BusinessStructuredData } from "@/components/structured-data";
 import { siteName, siteUrl } from "@/lib/site";
@@ -76,6 +77,8 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
         <div className="overflow-x-clip bg-paper">
           <MotionProvider>{children}</MotionProvider>
         </div>
+        {/* Vercel Web Analytics (Nirmal): cookieless page-view counts; the privacy policy describes it. */}
+        <Analytics />
       </body>
     </html>
   );
