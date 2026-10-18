@@ -98,7 +98,8 @@ components/
                            clock, not from the tap (that cut it short on fast phones); 3.3–4s, CSS fallback hides it
   site-header.tsx          Fixed header (Home, Fleet, Weddings, Services, About, Contact); transparent over the home hero until scroll; Fleet mega-menu; mobile sheet
   site-footer.tsx          Also renders the phone-only sticky Call / WhatsApp bar
-  date-input.tsx           Date field that always shows dd/mm/yyyy (writes the date over the native input; Nirmal)
+  date-input.tsx           Date field that always shows dd/mm/yyyy (writes the date over the native input; Nirmal);
+                           × clears it (the iPhone picker's Reset does nothing)
   booking-bar.tsx          "Start a quote": occasion / city / date (all start empty) → pushes to /contact?… as query params
   quote-form.tsx           Pre-fills from those query params (car pages add ?car=<slug> for the optional
                            "Exact vehicle" dropdown); "Other" opens a text box; submit opens the

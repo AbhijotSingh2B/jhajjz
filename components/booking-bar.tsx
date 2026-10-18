@@ -64,6 +64,7 @@ export function BookingBar() {
           className="h-12 w-full border border-line bg-white px-3 text-base transition-colors outline-none hover:border-ink/40 focus:border-ink"
           textClassName="px-3 text-base text-ink"
           placeholderClassName="text-muted"
+          clearClassName="right-0.5 text-muted hover:text-ink"
         />
       </Field>
       <Button type="submit" variant="ink" size="default" className="col-span-2 md:col-span-1">

@@ -220,6 +220,7 @@ export function QuoteForm() {
                 className={`${inputClass} [color-scheme:dark]`}
                 textClassName="text-[17px] text-cream"
                 placeholderClassName="text-muted-dark"
+                clearClassName="right-0 text-muted-dark hover:text-cream"
               />
             </DarkField>
             <div className="col-span-full">
