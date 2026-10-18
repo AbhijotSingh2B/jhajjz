@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState, type MouseEvent } from "react";
+import { useEffect, useRef, useState, type MouseEvent } from "react";
 import Link from "next/link";
 import { Photo } from "@/components/photo";
 import { IllustrativeTag } from "@/components/illustrative-tag";
@@ -47,21 +47,44 @@ function scrollHomeToTop(e: MouseEvent<HTMLAnchorElement>) {
  */
 export function SiteHeader({ overlay = false }: { overlay?: boolean }) {
   const [scrolled, setScrolled] = useState(false);
+  const [hidden, setHidden] = useState(false);
+  // Home page section in view ("weddings", "services", "about"), so the header underlines it instead of Home.
+  const [section, setSection] = useState("");
+  const header = useRef<HTMLElement>(null);
   const pathname = usePathname();
 
   useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 40);
+    let lastY = window.scrollY;
+    const onScroll = () => {
+      const y = window.scrollY;
+      setScrolled(y > 40);
+      // Slides away while scrolling down and comes back on any scroll up, so it doesn't sit over the page on a
+      // laptop screen. Stays while the Fleet menu or a header link is in use.
+      const busy = header.current?.matches(":focus-within") || header.current?.querySelector('[data-state="open"]');
+      if (y > lastY + 4 && y > 300 && !busy) setHidden(true);
+      else if (y < lastY - 4 || y <= 300) setHidden(false);
+      lastY = y;
+      setSection(
+        pathname === "/"
+          ? (["weddings", "services", "about"].findLast(
+              (id) => (document.getElementById(id)?.getBoundingClientRect().top ?? Infinity) < window.innerHeight * 0.4,
+            ) ?? "")
+          : "",
+      );
+    };
     onScroll();
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
-  }, []);
+  }, [pathname]);
 
   const solid = !overlay || scrolled;
 
   return (
     <header
+      ref={header}
       className={cn(
-        "fixed inset-x-0 top-0 z-40 text-cream transition-[background-color,box-shadow,backdrop-filter] duration-500",
+        "fixed inset-x-0 top-0 z-40 text-cream transition-[background-color,box-shadow,backdrop-filter,translate] duration-500 motion-reduce:transition-none",
+        hidden && "-translate-y-full",
         solid ? "bg-ink/92 shadow-[0_1px_0_rgba(255,255,255,0.08)] backdrop-blur-md" : "bg-transparent",
       )}
     >
@@ -86,12 +109,12 @@ export function SiteHeader({ overlay = false }: { overlay?: boolean }) {
               link, the 760px menu ran off the screen on laptops and tablets. */}
           <NavigationMenu className="static" viewportClassName="left-auto right-6 justify-end pt-0">
             <NavigationMenuList>
-              <NavItem href="/" label="Home" active={pathname === "/"} />
+              <NavItem href="/" label="Home" active={pathname === "/" && !section} />
               <NavigationMenuItem>
                 <NavigationMenuTrigger
                   className={cn(
                     "text-cream/85 hover:text-cream data-[state=open]:text-cream",
-                    pathname === "/fleet" && "text-cream",
+                    pathname.startsWith("/fleet") && "text-cream",
                   )}
                 >
                   Fleet
@@ -101,7 +124,7 @@ export function SiteHeader({ overlay = false }: { overlay?: boolean }) {
                 </NavigationMenuContent>
               </NavigationMenuItem>
               {links.map((l) => (
-                <NavItem key={l.href} href={l.href} label={l.label} active={pathname === l.href} />
+                <NavItem key={l.href} href={l.href} label={l.label} active={pathname === l.href || l.href === `/#${section}`} />
               ))}
             </NavigationMenuList>
           </NavigationMenu>
