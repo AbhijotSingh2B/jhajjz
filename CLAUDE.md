@@ -183,7 +183,7 @@ The v0 reference design (`redesign-jhajjz-in.zip`) got several facts wrong — n
   these no-background shots. All are `placeholder: true` (kept out of Open Graph / JSON-LD) and get replaced when
   the client signs up and sends their own.
 - `CarPhoto` flags: `cutout` (shown whole on sand, multiply blend on a wrapper), `zoom` (studio shot with wide
-  margins), `portrait` (letterboxed), `position`, `colour` (car-page colour picker). Two generations of one
+  margins), `portrait` (shown whole; a blurred copy of itself fills the sides, `PortraitBackdrop` in photo.tsx), `position`, `colour` (car-page colour picker). Two generations of one
   model are separate cars with `years` (e.g. S-Class "2021 onwards" and "2013–2020"); `carTitle` adds the years where
   both appear in a list. Fleet cards: `imageCutout`, `imagePlaceholder`, `imageZoom`.
 - **No Vercel image optimization (Nirmal)**: saved copies plus smaller saved copies (see above); size/format come from

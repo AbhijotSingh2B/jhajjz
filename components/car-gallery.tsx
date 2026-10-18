@@ -1,7 +1,7 @@
 "use client";
 
 import { ChevronLeft, ChevronRight } from "lucide-react";
-import { Photo } from "@/components/photo";
+import { Photo, PortraitBackdrop } from "@/components/photo";
 import { IllustrativeTag } from "@/components/illustrative-tag";
 import { useEffect, useRef, useState } from "react";
 import { Button } from "@/components/ui/button";
@@ -63,6 +63,7 @@ export function CarGallery({
             aria-label={many ? `${i + 1} of ${photos.length}` : undefined}
           >
             <div className={cn("relative aspect-[3/2] overflow-hidden", photo.cutout ? "bg-sand" : "bg-stone")}>
+              {photo.portrait && <PortraitBackdrop src={photo.src} />}
               {/* The multiply sits on this wrapper: a scaled (zoomed) element is its own stacking context. */}
               <div
                 className={cn("absolute inset-0", photo.cutout && "mix-blend-multiply")}
