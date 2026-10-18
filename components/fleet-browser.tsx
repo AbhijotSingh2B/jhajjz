@@ -171,7 +171,14 @@ export function FleetBrowser() {
 type Result = { kind: "class"; v: Vehicle } | { kind: "car"; car: Car; v: Vehicle };
 type Scored = Result & { score: number; direct: boolean };
 
+// Cars listed under a class card before "Show N more": the SUV list ran to 17 links and swamped the page.
+const CARS_SHOWN = 4;
+
 function ClassCard({ v, priority }: { v: Vehicle; priority: boolean }) {
+  const [expanded, setExpanded] = useState(false);
+  const classCars = carsIn(v.slug);
+  const hidden = classCars.length - CARS_SHOWN;
+  const listed = expanded || hidden <= 1 ? classCars : classCars.slice(0, CARS_SHOWN);
   return (
     <>
       <div className={`relative flex aspect-[3/2] items-center justify-center overflow-hidden ${v.imageCutout ? "bg-sand" : "bg-stone"}`}>
@@ -197,7 +204,7 @@ function ClassCard({ v, priority }: { v: Vehicle; priority: boolean }) {
           without car pages yet (coaches) has no page; its card goes to the quote form instead. */}
       <div className="mt-3 flex items-start justify-between gap-3">
         <h2 className="pt-1 font-serif text-[28px] leading-tight">
-          {carsIn(v.slug).length > 0 ? (
+          {classCars.length > 0 ? (
             <Link
               href={`/fleet/${v.slug}`}
               className="card-name after:absolute after:inset-0"
@@ -212,10 +219,10 @@ function ClassCard({ v, priority }: { v: Vehicle; priority: boolean }) {
         <ShareButton path={classHref(v.slug)} name={v.name} iconOnly className="relative z-10 -mr-3" />
       </div>
       <p className="mt-1.5 text-[15px] text-muted">{v.text}</p>
-      {carsIn(v.slug).length > 0 ? (
+      {classCars.length > 0 ? (
         // Above the card-wide link (its ::after), so these stay clickable on their own.
         <ul className="relative z-10 mt-1 flex flex-wrap gap-x-5">
-          {carsIn(v.slug).map((c) => (
+          {listed.map((c) => (
             <li key={c.slug}>
               <Link
                 href={`/fleet/${c.slug}`}
@@ -225,6 +232,18 @@ function ClassCard({ v, priority }: { v: Vehicle; priority: boolean }) {
               </Link>
             </li>
           ))}
+          {hidden > 1 && (
+            <li>
+              <button
+                type="button"
+                onClick={() => setExpanded((e) => !e)}
+                aria-expanded={expanded}
+                className="inline-flex min-h-11 items-center text-[15px] font-medium text-gold-deep underline decoration-gold-deep/30 underline-offset-[5px] transition-colors hover:decoration-gold-deep"
+              >
+                {expanded ? "Show fewer" : `Show ${hidden} more`}
+              </button>
+            </li>
+          )}
         </ul>
       ) : (
         <Link
