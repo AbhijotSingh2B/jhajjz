@@ -381,11 +381,11 @@ export const fleetGroups: { id: "all" | FleetGroup; label: string }[] = [
 // Individual cars, each with its own page at /fleet/<slug>. Only add a car the client has confirmed is in the
 // fleet. Details with a `null` value are simply not shown; fill them in only from the client or a checked source,
 // never a guess. "Passengers" (Nirmal, Oct 2026) is CarWale's seating capacity (CarDekho where CarWale has none) for
-// the generation in the client's photos, minus the chauffeur; the car page adds ", plus the chauffeur". Where Indian
-// versions differ it gives both ("6 or 7": Innova Crysta 7/8-seat, X7 6/7, older Range Rover Autobiography 4/5).
-// Still unknown (sources conflict or silent): Land Cruiser (LC200 7 seats vs LC300 5; no client photo to tell),
-// Defender (110: 5 on CarWale, 5-7 on CarDekho; 130: 8), HiAce (13 vs 16), Urbania (driver included?), V-Class
-// before the facelift, Flying Spur 2005-2013, the Chrysler limousine, vintage tourers. The client should confirm all. An empty `photos` list shows a highlighted [CONFIRM] box.
+// the generation in the client's photos, minus the chauffeur; the car page adds ", plus the chauffeur". Only filled
+// in where every Indian version of that generation seats the same (Nirmal: list nothing we're unsure of). Unknown:
+// versions differ (Innova Crysta 7/8 seats, X7 6/7, older Range Rover Autobiography 4/5, Defender 5-8, Urbania), the
+// generation is unclear (Land Cruiser), armouring may change it (bulletproof GLE), sources conflict (HiAce) or say
+// nothing (V-Class before the facelift, Flying Spur 2005-2013, the Chrysler limousine, vintage tourers). Ask the client. An empty `photos` list shows a highlighted [CONFIRM] box.
 // Until the client's own photos arrive, a licensed photo of the same model may stand in: give it a `credit`
 // (photographer + licence, e.g. "Photo: Jane Doe, CC BY-SA 4.0, via Wikimedia Commons") and the page labels it
 // "Representative photo".
@@ -528,7 +528,7 @@ export const cars: Car[] = [
       { src: photos.rangeRover, alt: "White Range Rover from the Jhajj'z fleet" },
     ],
     details: [
-      { label: "Passengers", value: "3 or 4" },
+      { label: "Passengers", value: null },
       { label: "Colour", value: null },
     ],
   },
@@ -560,7 +560,7 @@ export const cars: Car[] = [
       { src: studio.gle, alt: "White Mercedes-Benz GLE", placeholder: true, cutout: true },
     ],
     details: [
-      { label: "Passengers", value: "4" },
+      { label: "Passengers", value: null },
       { label: "Colour", value: null },
       { label: "Protection level", value: null },
     ],
@@ -785,7 +785,7 @@ export const cars: Car[] = [
       { src: photos.bmwX7, alt: "White BMW X7 from the Jhajj'z fleet", portrait: true },
     ],
     details: [
-      { label: "Passengers", value: "5 or 6" },
+      { label: "Passengers", value: null },
       { label: "Colour", value: "White" },
     ],
   },
@@ -946,7 +946,7 @@ export const cars: Car[] = [
       { src: photos.innovaCrysta, alt: "Black Toyota Innova Crysta with a Jhajj'z chauffeur" },
     ],
     details: [
-      { label: "Passengers", value: "6 or 7" },
+      { label: "Passengers", value: null },
       { label: "Colour", value: "Black" },
     ],
   },
