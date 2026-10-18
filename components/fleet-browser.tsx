@@ -7,7 +7,7 @@ import Link from "next/link";
 import { AnimatePresence, motion } from "motion/react";
 import { Search, X } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { carName, carsInClass as carsIn, classHref, contact, fleet, fleetGroups, type FleetGroup } from "@/lib/site";
+import { carName, carsInClass as carsIn, classHref, contact, fleet, fleetGroups, type Car, type FleetGroup, type Vehicle } from "@/lib/site";
 import { Confirm } from "@/components/confirm";
 import { ShareButton } from "@/components/share-button";
 
@@ -17,11 +17,17 @@ export function FleetBrowser() {
   const [filter, setFilter] = useState<"all" | FleetGroup>("all");
   const [query, setQuery] = useState("");
   const terms = query.toLowerCase().split(/\s+/).filter(Boolean);
-  const shown = fleet.filter(
-    (v) =>
-      (filter === "all" || v.group === filter) &&
-      terms.every((t) => `${v.name} ${v.text} ${carsIn(v.slug).map(carName).join(" ")}`.toLowerCase().includes(t)),
-  );
+  const matches = (text: string) => terms.every((t) => text.toLowerCase().includes(t));
+  // No search: one card per class. Searching: one card per matching car, labelled with its class ("suv" lists
+  // every SUV), plus the classes that have no car pages yet (coaches) when the class itself matches.
+  const shown: Result[] = fleet
+    .filter((v) => filter === "all" || v.group === filter)
+    .flatMap((v): Result[] => {
+      const classCars = carsIn(v.slug);
+      if (terms.length === 0) return [{ kind: "class", v }];
+      if (classCars.length === 0) return matches(`${v.name} ${v.text}`) ? [{ kind: "class", v }] : [];
+      return classCars.filter((c) => matches(`${carName(c)} ${c.brand} ${c.model} ${v.name}`)).map((car) => ({ kind: "car", car, v }));
+    });
 
   return (
     <>
@@ -82,76 +88,17 @@ export function FleetBrowser() {
       </p>
       <motion.div layout className="mt-10 grid grid-cols-[repeat(auto-fill,minmax(320px,1fr))] gap-x-6 gap-y-10">
         <AnimatePresence mode="popLayout">
-          {shown.map((v, i) => (
+          {shown.map((r, i) => (
             <motion.article
-              key={v.slug}
-              id={v.slug}
+              key={r.kind === "car" ? `car-${r.car.slug}` : r.v.slug}
+              id={r.kind === "class" ? r.v.slug : undefined}
               layout
               initial={{ opacity: 0, y: 24 }}
-              animate={{ opacity: 1, y: 0, transition: { duration: 0.6, ease, delay: i * 0.05 } }}
+              animate={{ opacity: 1, y: 0, transition: { duration: 0.6, ease, delay: Math.min(i, 8) * 0.05 } }}
               exit={{ opacity: 0, scale: 0.96, transition: { duration: 0.25 } }}
               className="group relative scroll-mt-28"
             >
-              <div className={`relative flex aspect-[3/2] items-center justify-center overflow-hidden ${v.imageCutout ? "bg-sand" : "bg-stone"}`}>
-                {v.image ? (
-                  <div className={`absolute inset-0 ${v.imageCutout ? "mix-blend-multiply" : ""}`} style={{ transform: v.imageZoom ? `scale(${v.imageZoom})` : undefined }}>
-                    <Image
-                      src={v.image}
-                      alt={v.imageAlt ?? v.name}
-                      fill
-                      priority={i < 3}
-                      sizes="(max-width: 768px) 100vw, 400px"
-                      className={`transition-transform duration-700 ease-out group-hover:scale-[1.03] ${v.imageCutout ? "object-contain p-5" : "object-cover"}`}
-                    />
-                  </div>
-                ) : (
-                  <span className="text-[15px]">
-                    <Confirm>photo</Confirm>
-                  </span>
-                )}
-                {v.image && v.imagePlaceholder && <IllustrativeTag />}
-              </div>
-              {/* The title link's ::after stretches over the whole card, so the photo opens the class too. A class
-                  without car pages yet (coaches) has no page; its card goes to the quote form instead. */}
-              <div className="mt-3 flex items-start justify-between gap-3">
-                <h2 className="pt-1 font-serif text-[28px] leading-tight">
-                  {carsIn(v.slug).length > 0 ? (
-                    <Link
-                      href={`/fleet/${v.slug}`}
-                      className="underline decoration-transparent underline-offset-[6px] transition-colors duration-300 group-hover:decoration-ink/40 after:absolute after:inset-0"
-                    >
-                      {v.name}
-                    </Link>
-                  ) : (
-                    v.name
-                  )}
-                </h2>
-                {/* Above the card-wide link, like the car names. */}
-                <ShareButton path={classHref(v.slug)} name={v.name} iconOnly className="relative z-10 -mr-3" />
-              </div>
-              <p className="mt-1.5 text-[15px] text-muted">{v.text}</p>
-              {carsIn(v.slug).length > 0 ? (
-                // Above the card-wide link (its ::after), so these stay clickable on their own.
-                <ul className="relative z-10 mt-1 flex flex-wrap gap-x-5">
-                  {carsIn(v.slug).map((c) => (
-                    <li key={c.slug}>
-                      <Link
-                        href={`/fleet/${c.slug}`}
-                        className="inline-flex min-h-11 items-center text-[15px] text-ink underline decoration-ink/30 underline-offset-[5px] transition-colors hover:decoration-ink"
-                      >
-                        {carName(c)}
-                      </Link>
-                    </li>
-                  ))}
-                </ul>
-              ) : (
-                <Link
-                  href={`/contact?vehicle=${encodeURIComponent(v.name)}`}
-                  className="mt-2 inline-flex min-h-11 items-center text-[15px] font-medium text-gold-deep underline decoration-transparent underline-offset-[5px] transition-colors duration-300 group-hover:decoration-gold-deep after:absolute after:inset-0"
-                >
-                  Ask for a quote<span className="sr-only">: {v.name}</span>
-                </Link>
-              )}
+              {r.kind === "car" ? <CarCard car={r.car} fleetClass={r.v} /> : <ClassCard v={r.v} priority={i < 3} />}
             </motion.article>
           ))}
         </AnimatePresence>
@@ -185,6 +132,130 @@ export function FleetBrowser() {
           </Link>
         </p>
       )}
+    </>
+  );
+}
+
+type Result = { kind: "class"; v: Vehicle } | { kind: "car"; car: Car; v: Vehicle };
+
+function ClassCard({ v, priority }: { v: Vehicle; priority: boolean }) {
+  return (
+    <>
+      <div className={`relative flex aspect-[3/2] items-center justify-center overflow-hidden ${v.imageCutout ? "bg-sand" : "bg-stone"}`}>
+        {v.image ? (
+          <div className={`absolute inset-0 ${v.imageCutout ? "mix-blend-multiply" : ""}`} style={{ transform: v.imageZoom ? `scale(${v.imageZoom})` : undefined }}>
+            <Image
+              src={v.image}
+              alt={v.imageAlt ?? v.name}
+              fill
+              priority={priority}
+              sizes="(max-width: 768px) 100vw, 400px"
+              className={`transition-transform duration-700 ease-out group-hover:scale-[1.03] ${v.imageCutout ? "object-contain p-5" : "object-cover"}`}
+            />
+          </div>
+        ) : (
+          <span className="text-[15px]">
+            <Confirm>photo</Confirm>
+          </span>
+        )}
+        {v.image && v.imagePlaceholder && <IllustrativeTag />}
+      </div>
+      {/* The title link's ::after stretches over the whole card, so the photo opens the class too. A class
+          without car pages yet (coaches) has no page; its card goes to the quote form instead. */}
+      <div className="mt-3 flex items-start justify-between gap-3">
+        <h2 className="pt-1 font-serif text-[28px] leading-tight">
+          {carsIn(v.slug).length > 0 ? (
+            <Link
+              href={`/fleet/${v.slug}`}
+              className="underline decoration-transparent underline-offset-[6px] transition-colors duration-300 group-hover:decoration-ink/40 after:absolute after:inset-0"
+            >
+              {v.name}
+            </Link>
+          ) : (
+            v.name
+          )}
+        </h2>
+        {/* Above the card-wide link, like the car names. */}
+        <ShareButton path={classHref(v.slug)} name={v.name} iconOnly className="relative z-10 -mr-3" />
+      </div>
+      <p className="mt-1.5 text-[15px] text-muted">{v.text}</p>
+      {carsIn(v.slug).length > 0 ? (
+        // Above the card-wide link (its ::after), so these stay clickable on their own.
+        <ul className="relative z-10 mt-1 flex flex-wrap gap-x-5">
+          {carsIn(v.slug).map((c) => (
+            <li key={c.slug}>
+              <Link
+                href={`/fleet/${c.slug}`}
+                className="inline-flex min-h-11 items-center text-[15px] text-ink underline decoration-ink/30 underline-offset-[5px] transition-colors hover:decoration-ink"
+              >
+                {carName(c)}
+              </Link>
+            </li>
+          ))}
+        </ul>
+      ) : (
+        <Link
+          href={`/contact?vehicle=${encodeURIComponent(v.name)}`}
+          className="mt-2 inline-flex min-h-11 items-center text-[15px] font-medium text-gold-deep underline decoration-transparent underline-offset-[5px] transition-colors duration-300 group-hover:decoration-gold-deep after:absolute after:inset-0"
+        >
+          Ask for a quote<span className="sr-only">: {v.name}</span>
+        </Link>
+      )}
+    </>
+  );
+}
+
+/** A search result: one car, with its class underneath (same card as on the class pages). */
+function CarCard({ car, fleetClass }: { car: Car; fleetClass: Vehicle }) {
+  const photo = car.photos[0];
+  const name = carName(car);
+  return (
+    <>
+      <div className={cn("relative flex aspect-[3/2] items-center justify-center overflow-hidden", photo?.cutout ? "bg-sand" : "bg-stone")}>
+        {photo ? (
+          // The multiply sits on this wrapper: a scaled (zoomed) element is its own stacking context.
+          <div
+            className={cn("absolute inset-0", photo.cutout && "mix-blend-multiply")}
+            style={{ transform: photo.zoom ? `scale(${photo.zoom})` : undefined }}
+          >
+            <Image
+              src={photo.src}
+              alt={photo.alt}
+              fill
+              sizes="(max-width: 768px) 100vw, 400px"
+              className={cn(
+                "transition-transform duration-700 ease-out group-hover:scale-[1.03]",
+                photo.cutout ? "object-contain p-5" : photo.portrait ? "object-contain" : "object-cover",
+              )}
+              style={{ objectPosition: photo.position }}
+            />
+          </div>
+        ) : (
+          <span className="text-[15px]">
+            <Confirm>photo</Confirm>
+          </span>
+        )}
+        {photo?.placeholder && <IllustrativeTag />}
+      </div>
+      <div className="mt-3 flex items-start justify-between gap-3">
+        <h2 className="pt-1 font-serif text-[28px] leading-tight">
+          {/* The ::after stretches the link over the whole card, so the photo opens the car too. */}
+          <Link
+            href={`/fleet/${car.slug}`}
+            className="underline decoration-transparent underline-offset-[6px] transition-colors duration-300 group-hover:decoration-ink/40 after:absolute after:inset-0"
+          >
+            {name}
+          </Link>
+        </h2>
+        <ShareButton path={`/fleet/${car.slug}`} name={name} iconOnly className="relative z-10 -mr-3" />
+      </div>
+      {/* Above the card-wide link, so the class opens on its own. */}
+      <Link
+        href={classHref(fleetClass.slug)}
+        className="relative z-10 inline-flex min-h-11 items-center text-[15px] text-muted underline decoration-ink/20 underline-offset-[5px] transition-colors hover:text-ink hover:decoration-ink"
+      >
+        {fleetClass.name}
+      </Link>
     </>
   );
 }
