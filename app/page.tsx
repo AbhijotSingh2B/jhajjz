@@ -178,14 +178,16 @@ export default function Home() {
                   Families, companies, hotels, airlines and delegations. If yours isn&apos;t listed, ask us.
                 </p>
               </Reveal>
-              {/* Laid out like a printed rate card: one row per group, name and link left, services right. */}
+              {/* Laid out like a printed rate card: one row per group. On laptops: name and link, the services in a
+                  column, then the photo filling the right (a small photo under the name left the right half empty).
+                  Tablets: text left, photo right. Phones: stacked, photo last. */}
               <Stagger className="mt-12 border-b border-ink/80">
                 {serviceGroups.map((g) => {
                   const link = groupLinks[g.title];
                   return (
                     <StaggerItem
                       key={g.title}
-                      className="grid gap-x-16 gap-y-5 border-t border-ink/80 py-8 md:grid-cols-[minmax(0,4fr)_minmax(0,8fr)] md:py-10"
+                      className="grid gap-x-12 gap-y-6 border-t border-ink/80 py-8 md:grid-cols-2 md:grid-rows-[auto_1fr] md:py-10 lg:grid-cols-[minmax(0,3fr)_minmax(0,3fr)_minmax(0,5fr)] lg:grid-rows-1"
                     >
                       <div>
                         <h3 className="font-serif text-[28px] leading-tight md:text-[32px]">{g.title}</h3>
@@ -199,11 +201,8 @@ export default function Home() {
                             </span>
                           </Link>
                         )}
-                        <div className="relative mt-5 aspect-[3/2] max-w-[420px] overflow-hidden bg-stone">
-                          <Photo src={g.photo.src} alt={g.photo.alt} fill sizes="(max-width: 768px) 100vw, 360px" className="object-cover" />
-                        </div>
                       </div>
-                      <ul className="grid content-start gap-x-10 gap-y-5 sm:grid-cols-2 md:pt-2">
+                      <ul className="grid content-start gap-x-10 gap-y-5 sm:grid-cols-2 md:grid-cols-1 lg:pt-2">
                         {g.items.map((s) => (
                           <li key={s.title}>
                             <span className="block text-[16px] font-semibold">{s.title}</span>
@@ -211,6 +210,9 @@ export default function Home() {
                           </li>
                         ))}
                       </ul>
+                      <div className="relative aspect-[3/2] self-start overflow-hidden bg-stone md:col-start-2 md:row-span-2 md:row-start-1 lg:col-start-3 lg:row-span-1">
+                        <Photo src={g.photo.src} alt={g.photo.alt} fill sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 460px" className="object-cover" />
+                      </div>
                     </StaggerItem>
                   );
                 })}
