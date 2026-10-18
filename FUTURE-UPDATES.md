@@ -29,3 +29,9 @@ All agreed by Nirmal on 2026-10-18. Nothing gets invented: build each once the c
   committing to GitHub), who logs in, and a privacy-policy section for stored enquiries.
 - **Airport transfers**: the hero line mentions them but they aren't one of the 9 services. Add the service or
   change the line (client).
+
+## Offered, Nirmal hasn't answered (2026-10-18)
+
+- Passengers line as "4 passengers (5 seats with the chauffeur)" instead of "4, plus the chauffeur".
+- Everyday people movers on the home page (needs a new grid layout; it fits 9 classes).
+- Per-car link-preview images from the client's photos.

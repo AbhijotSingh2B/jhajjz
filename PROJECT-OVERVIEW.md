@@ -18,20 +18,21 @@ Mohali/Chandigarh, serving pan-India). Replaces jhajjz.in on Wix. Built by Nirma
 
 - **Home**: hero, short quote starter, fleet classes, weddings, "Who we drive for", about + India map.
   The entry screen (logo animation) plays here only, once per tab.
-- **Fleet**: all classes with search and filters; a page per class and per car (29 cars).
+- **Fleet**: 10 classes with search and filters (each card lists 3 cars, then "Show N more"); a page per class and
+  per car (34 cars). Cars in more than one colour have a colour picker (with All) that carries into the quote.
 - **Contact**: quote form and contact details.
 - **Privacy policy**, branded 404.
 
 ## How enquiries work
 
 No backend. The quote form writes the details into a WhatsApp message (or email) that the visitor sends
-themselves; nothing is stored. Name is required, phone is optional. Dates always show as dd/mm/yyyy. Call / WhatsApp / email popups everywhere,
+themselves; nothing is stored. Name is required, phone is optional. Dates always show as dd/mm/yyyy (Day/Month/Year dropdowns on TVs). Call / WhatsApp / email popups everywhere,
 plus a sticky Call / WhatsApp bar on phones.
 
 ## Analytics
 
-Vercel Web Analytics (cookieless page-view counts, Hobby plan), described in the privacy policy. Collects only once
-it's enabled on the project in the Vercel dashboard.
+Vercel Web Analytics (cookieless page-view counts, Hobby plan), described in the privacy policy. Enabled and
+collecting on jhajjz.vercel.app (checked 2026-10-18).
 
 ## Content
 

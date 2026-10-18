@@ -5,6 +5,6 @@ Known problems with the site. Add what you find and can't fix right away; delete
 
 ## Open
 
-- **Date fields not yet checked on iPhone.** `components/date-input.tsx` hides the browser's own date text and
-  writes dd/mm/yyyy over it. Verified in Chromium (phone and desktop, US locale); the sandbox has no WebKit, so
-  Nirmal should check the booking bar and quote form on his iPhone (empty state, picking a date, the text lining up, the × clearing it).
+- **Not yet checked on a real iPhone / TV** (the sandbox has Chromium only). Nirmal to check on his iPhone: both date
+  fields (look, picking, the × clearing), sending a quote opens WhatsApp filled in, the header hiding on scroll. On a
+  smart TV if possible: the Day/Month/Year date dropdowns.

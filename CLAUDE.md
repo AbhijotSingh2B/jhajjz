@@ -96,9 +96,8 @@ components/
                            only (Nirmal: not for visitors landing on a car page), once per tab (script in layout.tsx
                            <head>), skipped for reduced motion. Keep its length (Nirmal). Timed on the animation's own
                            clock, not from the tap (that cut it short on fast phones); 3.3–4s, CSS fallback hides it
-  site-header.tsx          Fixed header (Home, Fleet, Weddings, Services, About, Contact); transparent over the home hero until scroll;
-                           slides away on scroll down, back on scroll up; underlines the home section in view; Fleet mega-menu (hangs from the header's
-                           right edge; "See the full fleet" card uses the black S-Class studio shot); mobile sheet
+  site-header.tsx          Fixed header; transparent over the home hero until scroll; hides on scroll down, back on scroll
+                           up; underlines the home section in view; Fleet mega-menu (right-aligned); mobile sheet
   site-footer.tsx          Also renders the phone-only sticky Call / WhatsApp bar
   date-input.tsx           Date field that always shows dd/mm/yyyy (writes the date over the native input; Nirmal);
                            × clears it (the iPhone picker's Reset does nothing); Day/Month/Year dropdowns where there's
@@ -170,12 +169,10 @@ The v0 reference design (`redesign-jhajjz-in.zip`) got several facts wrong — n
   lists), three-equal-cards feature grids, boxes with a gold left stripe, a → after every link (one per screen at
   most), browser-default UI that clashes with the palette (e.g. the blue search clear ×).
 - Body text ≥15px (the reference used 9–11px). Touch targets ≥44px.
-- Checked (2026-10-18) at 23 sizes: phones, foldables (Galaxy Fold inner/outer, a foldable-iPhone-like 880x690),
-  iPads, MacBook 13–16", 1366–1920 PCs, 2560/3440 ultrawide, 1280x720 TV. The hero's shading is placed from the
-  1200px text column (`.hero-shade`), and the hero may grow past 880px on ultrawide screens (46vw).
+- Layouts are checked from 344px foldables to 3440px ultrawide (Nirmal). Hero shading is placed from the text column
+  (`.hero-shade`), not as a share of the screen.
 - Animations: subtle and purposeful — fade/lift on scroll, staggered lists, animated dropdowns,
-  hero slow zoom. Fleet cards share one hover (`.card-roll` / `.card-zoom` / `.card-name` in globals.css):
-  studio cut-outs roll forward, photos zoom, a gold line draws under the name. Everything must respect `prefers-reduced-motion` (already wired).
+  hero slow zoom. Fleet cards share one hover (`.card-roll`/`.card-zoom`/`.card-name`, globals.css). Everything must respect `prefers-reduced-motion` (already wired).
 - Never invent stats, car models, testimonials or contact details. Use `[BRACKETS]` for unknowns.
 
 ## Photos (all in lib/site.ts)
@@ -204,10 +201,9 @@ The v0 reference design (`redesign-jhajjz-in.zip`) got several facts wrong — n
   Autobiography, whether the black GLE and the bulletproof GLE are the same car, the make of the vintage open tourers
   (`brand: ""`). Identified on 2026-10-18 by comparing with CarWale photos: Audi = A3 Cabriolet before the 2017 facelift,
   limousine = first-generation Chrysler 300C, Bentley = first-generation Continental Flying Spur (2005–2013), V-Class =
-  before the 2019 facelift, HiAce = the older H200 model. **Passengers** (excluding the chauffeur) filled in for 18 cars
-  from CarWale/CarDekho (all rechecked 2026-10-18), only where every Indian version seats the same (Nirmal: nothing
-  we're unsure of); 16 unknown
-  (comment above `cars` in lib/site.ts). Ask the client to confirm all.
+  before the 2019 facelift, HiAce = the older H200 model. **Passengers** = seats minus the chauffeur
+  (shown "4, plus the chauffeur"), only where every Indian version seats the same (Nirmal: list nothing uncertain);
+  18 cars filled, 16 unknown (comment above `cars` in lib/site.ts).
 - **Model years** (`years`) of the split cars (S-Class, Range Rover, 7 Series, E-Class, Range Rover Sport) are the
   global years of the generation identified from the photos, not the client's registration years; confirm.
 - **No studio shot available** (CarWale/CarDekho only have other generations, or none on white): Bentley Flying Spur,
