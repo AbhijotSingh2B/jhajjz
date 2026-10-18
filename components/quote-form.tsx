@@ -3,7 +3,7 @@
 import { useRef, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import { AnimatePresence, motion } from "motion/react";
-import { carTitle, cars, carsInClass, cityOptions, fleet, occasions, otherCity } from "@/lib/site";
+import { carName, carTitle, carYears, cars, carsInClass, cityOptions, fleet, occasions, otherCity } from "@/lib/site";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Button } from "@/components/ui/button";
 import { formatDate } from "@/lib/utils";
@@ -176,7 +176,8 @@ export function QuoteForm() {
                   <SelectItem value={ANY_CAR}>{ANY_CAR}</SelectItem>
                   {carOptions.map((c) => (
                     <SelectItem key={c.slug} value={c.slug}>
-                      {carTitle(c)}
+                      {carName(c)}
+                      {c.years && <span className="ml-2 opacity-60">{carYears(c)}</span>}
                     </SelectItem>
                   ))}
                   <SelectItem value={OTHER_CAR}>{OTHER_CAR}</SelectItem>

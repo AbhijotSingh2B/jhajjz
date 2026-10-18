@@ -219,9 +219,13 @@ function ClassCard({ v, priority }: { v: Vehicle; priority: boolean }) {
             <li key={c.slug}>
               <Link
                 href={`/fleet/${c.slug}`}
-                className="inline-flex min-h-11 items-center text-[15px] text-ink underline decoration-ink/30 underline-offset-[5px] transition-colors hover:decoration-ink"
+                className="group/car inline-flex min-h-11 items-center text-[15px] text-ink"
               >
-                {carTitle(c)}
+                <span className="flex items-baseline gap-x-2">
+                  <span className="underline decoration-ink/30 underline-offset-[5px] transition-colors group-hover/car:decoration-ink">{carName(c)}</span>
+                  {/* Model years as a quieter subtitle beside the name, instead of in brackets. */}
+                  {c.years && <span className="text-[14px] text-muted">{carYears(c)}</span>}
+                </span>
               </Link>
             </li>
           ))}
