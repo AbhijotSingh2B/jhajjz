@@ -208,8 +208,8 @@
 }
 
 /* Entry screen (components/splash.tsx). The script in app/layout.tsx puts `splash` on <html> when it will play
-   and `no-splash` when it won't (seen this visit, or reduced motion). Without JavaScript neither is set and
-   the screen fades by itself at 3.4s. */
+   and `no-splash` when it won't (not the home page, seen this visit, or reduced motion). Without JavaScript
+   neither is set and the screen fades by itself at 3.4s. */
 html.no-splash .splash-screen {
   display: none;
 }

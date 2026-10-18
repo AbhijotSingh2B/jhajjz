@@ -98,8 +98,8 @@ export function QuoteForm() {
             <DarkField label="Full name" id="q-name">
               <input id="q-name" name="name" required autoComplete="name" className={inputClass} />
             </DarkField>
-            <DarkField label="Phone" id="q-phone">
-              <input id="q-phone" name="phone" type="tel" required autoComplete="tel" className={inputClass} />
+            <DarkField label="Phone (optional)" id="q-phone">
+              <input id="q-phone" name="phone" type="tel" autoComplete="tel" className={inputClass} />
             </DarkField>
             <DarkField label="Occasion" id="q-occasion">
               <Select value={occasion} onValueChange={(v) => choose(setOccasion, v)} name="occasion">

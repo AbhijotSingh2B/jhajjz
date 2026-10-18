@@ -8,9 +8,10 @@ export const splashKey = "jhajjz-intro";
 
 /**
  * Runs in <head> before the first paint: decides whether the entry screen plays, so a reload never flashes
+ * it. Only on the home page: a visitor arriving on a car or contact page (e.g. from Google) goes straight to
  * it. Reduced motion skips it (nothing to watch, only a wait).
  */
-export const splashScript = `try{var d=document.documentElement;if(sessionStorage.getItem("${splashKey}")||matchMedia("(prefers-reduced-motion: reduce)").matches)d.classList.add("no-splash");else{d.classList.add("splash");sessionStorage.setItem("${splashKey}","1")}}catch(e){}`;
+export const splashScript = `try{var d=document.documentElement;if(location.pathname!=="/"||sessionStorage.getItem("${splashKey}")||matchMedia("(prefers-reduced-motion: reduce)").matches)d.classList.add("no-splash");else{d.classList.add("splash");sessionStorage.setItem("${splashKey}","1")}}catch(e){}`;
 
 /**
  * Times are on the animation's own clock (from when the screen first paints), not from the tap: on a real

@@ -7,6 +7,17 @@ rental company in Mohali/Chandigarh. Built by Nirmal for the client.
 Repo: github.com/abhijotsingh2b/jhajjz (branch `main`). Design was approved on a
 Claude design canvas first, then ported here.
 
+## Project files (keep them current)
+
+Three files beside this one. After every change, decide whether any of them needs an edit (your call; most small
+changes need none) and make it in the same commit:
+
+- `PROJECT-OVERVIEW.md`: what the site is and does **right now**, in a page. Replace outdated lines instead of
+  adding new ones; no history (that's `git log`), no detail that lives here or in the code. Don't let it bloat.
+- `ISSUES.md`: known problems with the site. Add what you find and can't fix now; delete an entry once fixed.
+- `FUTURE-UPDATES.md`: planned or suggested work, mostly waiting on the client. Delete an entry once done (or
+  move it to the site), and note when Nirmal agrees to or rejects a suggestion.
+
 ## Stack
 
 - Next.js 16 (App Router, `cacheComponents` + `partialPrefetching` on), React 19, TypeScript
@@ -76,8 +87,9 @@ app/
 components/
   logo.tsx                 JJ monogram (two Caslon Js, second lower-right). `Logo` = mark + name (footer), `LogoMark`
                            = header (static; animating it replayed on reload), `LogoMark intro` = entry-screen opening
-  splash.tsx               Entry screen: "Jhajj'z" folds into the monogram, which flies to the header logo. Once per
-                           tab (script in layout.tsx <head>), skipped for reduced motion. Timed on the animation's own
+  splash.tsx               Entry screen: "Jhajj'z" folds into the monogram, which flies to the header logo. Home page
+                           only (Nirmal: not for visitors landing on a car page), once per tab (script in layout.tsx
+                           <head>), skipped for reduced motion. Keep its length (Nirmal). Timed on the animation's own
                            clock, not from the tap (that cut it short on fast phones); 3.3–4s, CSS fallback hides it
   site-header.tsx          Fixed header (Home, Fleet, Weddings, Services, About, Contact); transparent over the home hero until scroll; Fleet mega-menu; mobile sheet
   site-footer.tsx          Also renders the phone-only sticky Call / WhatsApp bar
