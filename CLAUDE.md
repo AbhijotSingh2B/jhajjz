@@ -96,7 +96,8 @@ components/
                            only (Nirmal: not for visitors landing on a car page), once per tab (script in layout.tsx
                            <head>), skipped for reduced motion. Keep its length (Nirmal). Timed on the animation's own
                            clock, not from the tap (that cut it short on fast phones); 3.3–4s, CSS fallback hides it
-  site-header.tsx          Fixed header (Home, Fleet, Weddings, Services, About, Contact); transparent over the home hero until scroll; Fleet mega-menu; mobile sheet
+  site-header.tsx          Fixed header (Home, Fleet, Weddings, Services, About, Contact); transparent over the home hero until scroll; Fleet mega-menu (hangs from the header's
+                           right edge; "See the full fleet" card uses the black S-Class studio shot); mobile sheet
   site-footer.tsx          Also renders the phone-only sticky Call / WhatsApp bar
   date-input.tsx           Date field that always shows dd/mm/yyyy (writes the date over the native input; Nirmal);
                            × clears it (the iPhone picker's Reset does nothing)
@@ -221,6 +222,7 @@ The v0 reference design (`redesign-jhajjz-in.zip`) got several facts wrong — n
       `cardekhoColour` helpers); replace with the client's photos. Delete public/photos/carwale, /cardekho and /stand-ins too
       and re-run `npm run save-photos`.
       They carry a "For illustrative purposes only" corner tag (components/illustrative-tag.tsx), which goes with them.
+      The Fleet menu card (site-header.tsx) uses `studio.sClass`: swap it for a client photo of a car on plain ground.
 - [ ] Vercel Web Analytics is in the code (`<Analytics />` in layout.tsx, described in the privacy policy); it only
       collects once Web Analytics is enabled on the project in the Vercel dashboard. Hobby: 50,000 events a month
       shared by every project on the account, 1-month window, no custom events (Vercel docs, Oct 2026).

@@ -7,9 +7,13 @@ import { cn } from "@/lib/utils";
 
 export function NavigationMenu({
   className,
+  viewportClassName,
   children,
   ...props
-}: React.ComponentProps<typeof NavigationMenuPrimitive.Root>) {
+}: React.ComponentProps<typeof NavigationMenuPrimitive.Root> & {
+  /** Where the dropdown sits; by default under the menu's left edge. */
+  viewportClassName?: string;
+}) {
   return (
     <NavigationMenuPrimitive.Root
       data-slot="navigation-menu"
@@ -17,12 +21,12 @@ export function NavigationMenu({
       {...props}
     >
       {children}
-      <div className="absolute top-full left-0 flex justify-start pt-3">
+      <div className={cn("absolute top-full left-0 flex justify-start pt-3", viewportClassName)}>
         <NavigationMenuPrimitive.Viewport
           className={cn(
             "relative h-(--radix-navigation-menu-viewport-height) w-(--radix-navigation-menu-viewport-width) overflow-hidden",
             "border border-line bg-cream text-ink shadow-[0_24px_60px_-20px_rgba(21,21,20,0.45)]",
-            "origin-top-left transition-[width,height] duration-300 ease-out",
+            "origin-top transition-[width,height] duration-300 ease-out",
             "data-[state=open]:animate-in data-[state=open]:fade-in-0 data-[state=open]:zoom-in-95 data-[state=open]:slide-in-from-top-2",
             "data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=closed]:zoom-out-95",
             "duration-200",

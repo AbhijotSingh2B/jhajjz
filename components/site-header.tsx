@@ -3,12 +3,13 @@
 import { useEffect, useState, type MouseEvent } from "react";
 import Link from "next/link";
 import { Photo } from "@/components/photo";
+import { IllustrativeTag } from "@/components/illustrative-tag";
 import { usePathname } from "next/navigation";
 import { motion } from "motion/react";
 import { ArrowRight, Mail, Menu, Phone } from "lucide-react";
 import { WhatsAppIcon } from "@/components/icons";
 import { cn } from "@/lib/utils";
-import { classHref, contact, fleet, heroThumb } from "@/lib/site";
+import { classHref, contact, fleet, studio } from "@/lib/site";
 import {
   NavigationMenu,
   NavigationMenuContent,
@@ -67,7 +68,7 @@ export function SiteHeader({ overlay = false }: { overlay?: boolean }) {
       <nav
         aria-label="Main"
         className={cn(
-          "mx-auto flex max-w-[1200px] items-center justify-between gap-6 px-6 transition-[height] duration-500",
+          "relative mx-auto flex max-w-[1200px] items-center justify-between gap-6 px-6 transition-[height] duration-500",
           solid ? "h-[72px]" : "h-[88px]",
         )}
       >
@@ -81,7 +82,9 @@ export function SiteHeader({ overlay = false }: { overlay?: boolean }) {
         </Link>
 
         <div className="hidden items-center gap-2 md:flex">
-          <NavigationMenu>
+          {/* The dropdown hangs from the header's right content edge (`static` root, `relative` nav): from the Fleet
+              link, the 760px menu ran off the screen on laptops and tablets. */}
+          <NavigationMenu className="static" viewportClassName="left-auto right-6 justify-end pt-0">
             <NavigationMenuList>
               <NavItem href="/" label="Home" active={pathname === "/"} />
               <NavigationMenuItem>
@@ -168,21 +171,36 @@ function FleetMenu() {
         ))}
       </ul>
       <NavigationMenuLink asChild>
-        <Link href="/fleet" className="group relative block min-h-[280px] overflow-hidden bg-ink">
-          <Photo
-            src={heroThumb}
-            alt=""
-            fill
-            dark
-            sizes="320px"
-            className="object-cover opacity-80 transition-transform duration-700 ease-out group-hover:scale-105"
-          />
-          <span className="absolute inset-0 bg-gradient-to-t from-ink/90 via-ink/20 to-transparent" aria-hidden="true" />
-          <span className="absolute inset-x-0 bottom-0 p-5 text-cream">
-            <span className="block font-serif text-2xl">See the full fleet</span>
-            <span className="mt-1 flex items-center gap-2 text-sm text-cream/80">
+        <Link href="/fleet" className="group relative flex min-h-[280px] flex-col justify-between overflow-hidden bg-sand p-5 text-ink">
+          {/* Studio shot on white, blended into the sand (multiply on the outer moving span: a transformed element is its own
+              stacking context). The car drives in when the menu opens and rolls forward a little on hover. */}
+          <span className="relative -mx-2 mt-2 block aspect-[16/9]">
+            <motion.span
+              initial={{ opacity: 0, x: -28 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.7, ease: [0.2, 0.7, 0.2, 1] }}
+              className="absolute inset-0 mix-blend-multiply"
+            >
+              <span className="absolute inset-0 transition-transform duration-700 ease-[cubic-bezier(0.2,0.7,0.2,1)] group-hover:translate-x-3 group-hover:scale-[1.04] motion-reduce:transition-none motion-reduce:group-hover:transform-none">
+                <Photo src={studio.sClass} alt="" fill sizes="360px" className="object-contain" />
+              </span>
+            </motion.span>
+            <IllustrativeTag />
+          </span>
+          <span className="block">
+            <span className="relative inline-block font-serif text-2xl">
+              See the full fleet
+              <span
+                aria-hidden="true"
+                className="absolute inset-x-0 -bottom-0.5 h-px origin-left scale-x-0 bg-gold transition-transform duration-500 ease-out group-hover:scale-x-100"
+              />
+            </span>
+            <span className="mt-2 flex items-center gap-2 text-sm text-muted">
               {fleet.length} classes, all chauffeur-driven
-              <ArrowRight className="size-3.5 transition-transform duration-300 group-hover:translate-x-1" aria-hidden="true" />
+              <ArrowRight
+                className="size-3.5 transition-transform duration-300 group-hover:translate-x-1 group-hover:text-ink"
+                aria-hidden="true"
+              />
             </span>
           </span>
         </Link>
