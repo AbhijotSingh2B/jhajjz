@@ -110,6 +110,9 @@ components/
   page-transition.tsx      Fade-and-lift between pages (React <ViewTransition>); wraps each page's <main>
   car-gallery.tsx          Car-page photo carousel (scroll-snap swipe, prev/next, thumbnail row)
   car-photos.tsx           Wraps it with a colour picker when photos carry a `colour` (Ghost: White / Silver)
+  photo.tsx                Every photo goes through `Photo` (next/image + skeleton pulse + blur fade-in). `photoScript`
+                           in layout.tsx <head> marks photos loaded before hydration; hidden only under
+                           `@media (scripting: enabled)`, so photos still show with JavaScript off
   car-preview.tsx          Small photo + name card: "Also in our fleet" (other model years) under the quote buttons and
                            the "Looking at other cars?" row (swipe row on phones, grid on wider screens)
   india-map.tsx            India outline (lib/india-map.ts, Survey of India boundary) + city dots, beside "Pan-India, including"
@@ -241,4 +244,6 @@ Preview: Nirmal reviews at https://jhajjz.vercel.app. **Never touch the existing
 - A `transform`ed element is its own stacking context: put `mix-blend-multiply` on the scaled wrapper, not the img.
 - Next skips same-page link clicks: the logo/Home scroll to top explicitly when already on the home page.
 - `lib/seo.ts` `openGraphBase` must be spread into every page's openGraph (Next doesn't deep-merge it).
+- `npm run build` once kept an old stylesheet from its cache (new rules in globals.css missing from .next/static).
+  If a CSS change doesn't show in a production build, `rm -rf .next` and build again.
 - History of every change: `git log`.

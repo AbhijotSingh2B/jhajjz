@@ -20,3 +20,12 @@ All agreed by Nirmal on 2026-10-18. Nothing gets invented: build each once the c
 
 - **Weddings page** (`/weddings`): "wedding car rental Chandigarh" is likely the biggest search, but weddings
   only has a band on the home page. Needs decoration photos and what's included. Nirmal: "maybe".
+
+## Planned (Nirmal, 2026-10-18)
+
+- **Staff CMS at `/staff`**: edit cars, classes, photos, services, cities, contact details and home copy without code,
+  plus an inbox that keeps every quote request (the form saves it, then opens WhatsApp as now). Waiting on Nirmal's
+  own CMS code (same stack, another app) to build from. Needs a decision on storage (database + file storage vs
+  committing to GitHub), who logs in, and a privacy-policy section for stored enquiries.
+- **Airport transfers**: the hero line mentions them but they aren't one of the 9 services. Add the service or
+  change the line (client).

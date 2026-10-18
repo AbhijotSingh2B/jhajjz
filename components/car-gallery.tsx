@@ -1,7 +1,7 @@
 "use client";
 
 import { ChevronLeft, ChevronRight } from "lucide-react";
-import Image from "next/image";
+import { Photo } from "@/components/photo";
 import { IllustrativeTag } from "@/components/illustrative-tag";
 import { useEffect, useRef, useState } from "react";
 import { Button } from "@/components/ui/button";
@@ -68,7 +68,7 @@ export function CarGallery({
                 className={cn("absolute inset-0", photo.cutout && "mix-blend-multiply")}
                 style={{ transform: photo.zoom ? `scale(${photo.zoom})` : undefined }}
               >
-                <Image
+                <Photo
                   src={photo.src}
                   alt={photo.alt}
                   fill
@@ -106,7 +106,7 @@ export function CarGallery({
                   )}
                 >
                   <span className={cn("absolute inset-0", photo.cutout && "mix-blend-multiply")}>
-                    <Image
+                    <Photo
                       src={photo.src}
                       alt=""
                       fill

@@ -37,7 +37,8 @@ it's enabled on the project in the Vercel dashboard.
 
 All client facts (contact, cities, fleet, cars, photos) live in `lib/site.ts`. Photos are saved copies in
 `public/photos/`: the client's from their Wix site, plus studio placeholder shots to be replaced at launch.
-Smaller saved copies go to phones and cards; no Vercel image optimization.
+Smaller saved copies go to phones and cards; no Vercel image optimization. Photos show a soft pulse while
+loading, then fade in from a blur.
 
 ## See also
 

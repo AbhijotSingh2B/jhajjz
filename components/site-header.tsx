@@ -2,7 +2,7 @@
 
 import { useEffect, useState, type MouseEvent } from "react";
 import Link from "next/link";
-import Image from "next/image";
+import { Photo } from "@/components/photo";
 import { usePathname } from "next/navigation";
 import { motion } from "motion/react";
 import { ArrowRight, Mail, Menu, Phone } from "lucide-react";
@@ -169,10 +169,11 @@ function FleetMenu() {
       </ul>
       <NavigationMenuLink asChild>
         <Link href="/fleet" className="group relative block min-h-[280px] overflow-hidden bg-ink">
-          <Image
+          <Photo
             src={heroThumb}
             alt=""
             fill
+            dark
             sizes="320px"
             className="object-cover opacity-80 transition-transform duration-700 ease-out group-hover:scale-105"
           />

@@ -239,3 +239,41 @@ html.splash .header-logo {
 .date-input::-webkit-date-and-time-value {
   opacity: 0;
 }
+
+/* Photo loading skeleton (components/photo.tsx): a slow pulse over the frame's own colour until the photo loads. */
+.photo-skeleton {
+  background: rgb(21 21 20 / 0.08);
+  animation: photo-pulse 1.6s ease-in-out infinite;
+}
+.photo-skeleton-dark {
+  background: rgb(244 242 238 / 0.07);
+}
+@keyframes photo-pulse {
+  50% {
+    opacity: 0.35;
+  }
+}
+/* Once the photo is in (marked by the <head> script before React hydrates), the skeleton goes even if React hasn't
+   removed it yet. */
+.photo-skeleton:has(+ img[data-photo="loaded"]) {
+  display: none;
+}
+/* Blur fade-in. Hidden only when scripts run, so with JavaScript off every photo still shows. The transform stays in
+   the list so the cards' hover zoom keeps working. Reduced motion makes it instant (rule above). */
+img[data-photo] {
+  transition-property: opacity, filter, transform;
+  transition-duration: 700ms;
+  transition-timing-function: cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+@media (scripting: enabled) {
+  img[data-photo="loading"] {
+    opacity: 0;
+    filter: blur(16px);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  /* Still, not the near-zero-duration loop the rule above would make of it. */
+  .photo-skeleton {
+    animation: none !important;
+  }
+}

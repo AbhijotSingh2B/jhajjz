@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import Image from "next/image";
+import { Photo } from "@/components/photo";
 import { IllustrativeTag } from "@/components/illustrative-tag";
 import Link from "next/link";
 import { AnimatePresence, motion } from "motion/react";
@@ -177,7 +177,7 @@ function ClassCard({ v, priority }: { v: Vehicle; priority: boolean }) {
       <div className={`relative flex aspect-[3/2] items-center justify-center overflow-hidden ${v.imageCutout ? "bg-sand" : "bg-stone"}`}>
         {v.image ? (
           <div className={`absolute inset-0 ${v.imageCutout ? "mix-blend-multiply" : ""}`} style={{ transform: v.imageZoom ? `scale(${v.imageZoom})` : undefined }}>
-            <Image
+            <Photo
               src={v.image}
               alt={v.imageAlt ?? v.name}
               fill
@@ -251,7 +251,7 @@ function CarCard({ car, fleetClass }: { car: Car; fleetClass: Vehicle }) {
             className={cn("absolute inset-0", photo.cutout && "mix-blend-multiply")}
             style={{ transform: photo.zoom ? `scale(${photo.zoom})` : undefined }}
           >
-            <Image
+            <Photo
               src={photo.src}
               alt={photo.alt}
               fill
