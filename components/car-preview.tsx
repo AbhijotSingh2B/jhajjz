@@ -1,4 +1,4 @@
-import { Photo, PortraitBackdrop } from "@/components/photo";
+import { Photo } from "@/components/photo";
 import Link from "next/link";
 import { IllustrativeTag } from "@/components/illustrative-tag";
 import { cn } from "@/lib/utils";
@@ -11,7 +11,6 @@ export function CarPreview({ car, frame = "bg-sand", className }: { car: Car; fr
   return (
     <Link href={`/fleet/${car.slug}`} className={cn("group block", className)}>
       <div className={cn("relative aspect-[3/2] overflow-hidden", photo?.cutout ? frame : "bg-stone")}>
-        {photo?.portrait && <PortraitBackdrop src={photo.src} />}
         {photo && (
           // The multiply sits on this wrapper: a scaled (zoomed) element is its own stacking context.
           <div

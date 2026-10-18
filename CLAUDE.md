@@ -189,7 +189,8 @@ The v0 reference design (`redesign-jhajjz-in.zip`) got several facts wrong — n
   these no-background shots. All are `placeholder: true` (kept out of Open Graph / JSON-LD) and get replaced when
   the client signs up and sends their own.
 - `CarPhoto` flags: `cutout` (shown whole on sand, multiply blend on a wrapper), `zoom` (studio shot with wide
-  margins), `portrait` (shown whole; a blurred copy of itself fills the sides, `PortraitBackdrop` in photo.tsx), `position`, `colour` (car-page colour picker). Two generations of one
+  margins), `portrait` (letterboxed in cards; in the car-page carousel the frame's
+  side borders close in around it once it's shown), `position`, `colour` (car-page colour picker). Two generations of one
   model are separate cars with `years` (e.g. S-Class "2021 onwards" and "2013–2020"); on screen the years show as a
   lighter subtitle beside or under the name (`carYears`), never in brackets; `carTitle` ("S-Class (2021 onwards)") is for
   plain text only (page titles, WhatsApp messages, JSON-LD). Fleet cards: `imageCutout`, `imagePlaceholder`, `imageZoom`.

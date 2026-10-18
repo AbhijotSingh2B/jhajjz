@@ -1,7 +1,7 @@
 "use client";
 
 import { ChevronLeft, ChevronRight } from "lucide-react";
-import { Photo, PortraitBackdrop } from "@/components/photo";
+import { Photo } from "@/components/photo";
 import { IllustrativeTag } from "@/components/illustrative-tag";
 import { useEffect, useRef, useState } from "react";
 import { Button } from "@/components/ui/button";
@@ -26,6 +26,9 @@ export function CarGallery({
   const track = useRef<HTMLDivElement>(null);
   const thumbs = useRef<HTMLUListElement>(null);
   const [index, setIndex] = useState(0);
+  // Width ÷ height of each portrait photo once it has loaded, and the slides shown so far (their borders stay closed).
+  const [ratios, setRatios] = useState<Record<string, number>>({});
+  const [seen, setSeen] = useState(() => new Set([0]));
   const many = photos.length > 1;
 
   // Keep the current photo's thumbnail in view when the row is wider than the screen (phones). Scrolls only the row.
@@ -51,7 +54,11 @@ export function CarGallery({
     <div role={many ? "region" : undefined} aria-roledescription={many ? "carousel" : undefined} aria-label={many ? label : undefined}>
       <div
         ref={track}
-        onScroll={(e) => setIndex(Math.round(e.currentTarget.scrollLeft / e.currentTarget.clientWidth))}
+        onScroll={(e) => {
+          const i = Math.round(e.currentTarget.scrollLeft / e.currentTarget.clientWidth);
+          setIndex(i);
+          setSeen((s) => (s.has(i) ? s : new Set(s).add(i)));
+        }}
         className="flex snap-x snap-mandatory overflow-x-auto overscroll-x-contain [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
       >
         {photos.map((photo, i) => (
@@ -62,24 +69,37 @@ export function CarGallery({
             aria-roledescription={many ? "slide" : undefined}
             aria-label={many ? `${i + 1} of ${photos.length}` : undefined}
           >
-            <div className={cn("relative aspect-[3/2] overflow-hidden", photo.cutout ? "bg-sand" : "bg-stone")}>
-              {photo.portrait && <PortraitBackdrop src={photo.src} />}
-              {/* The multiply sits on this wrapper: a scaled (zoomed) element is its own stacking context. */}
+            {/* A portrait photo starts letterboxed in the full-width frame; once its slide is shown, the frame's sides
+                close in to the photo's own width, so the empty borders slide away. */}
+            <div className="relative aspect-[3/2]">
               <div
-                className={cn("absolute inset-0", photo.cutout && "mix-blend-multiply")}
-                style={{ transform: photo.zoom ? `scale(${photo.zoom})` : undefined }}
+                className={cn(
+                  "absolute inset-y-0 left-1/2 w-full -translate-x-1/2 overflow-hidden transition-[width] duration-700 ease-[cubic-bezier(0.2,0.7,0.2,1)] motion-reduce:transition-none",
+                  photo.cutout ? "bg-sand" : "bg-stone",
+                )}
+                style={{ width: photo.portrait && ratios[photo.src] && seen.has(i) ? `${Math.min(100, ratios[photo.src] * (200 / 3))}%` : undefined }}
               >
-                <Photo
-                  src={photo.src}
-                  alt={photo.alt}
-                  fill
-                  priority={priority && i === 0}
-                  sizes={sizes}
-                  className={cn(photo.cutout ? "object-contain p-4 md:p-8" : photo.portrait ? "object-contain" : "object-cover")}
-                  style={{ objectPosition: photo.position }}
-                />
+                {/* The multiply sits on this wrapper: a scaled (zoomed) element is its own stacking context. */}
+                <div
+                  className={cn("absolute inset-0", photo.cutout && "mix-blend-multiply")}
+                  style={{ transform: photo.zoom ? `scale(${photo.zoom})` : undefined }}
+                >
+                  <Photo
+                    src={photo.src}
+                    alt={photo.alt}
+                    fill
+                    priority={priority && i === 0}
+                    sizes={sizes}
+                    className={cn(photo.cutout ? "object-contain p-4 md:p-8" : photo.portrait ? "object-contain" : "object-cover")}
+                    style={{ objectPosition: photo.position }}
+                    onLoad={(e) => {
+                      const { naturalWidth: w, naturalHeight: h } = e.currentTarget;
+                      if (photo.portrait && w && h) setRatios((r) => ({ ...r, [photo.src]: w / h }));
+                    }}
+                  />
+                </div>
+                {photo.placeholder && <IllustrativeTag />}
               </div>
-              {photo.placeholder && <IllustrativeTag />}
             </div>
             {photo.credit && <figcaption className="mt-2 text-[13px] text-muted">Representative photo · {photo.credit}</figcaption>}
           </figure>

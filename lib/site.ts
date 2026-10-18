@@ -404,8 +404,7 @@ export type CarPhoto = {
   cutout?: true;
   /** Enlarges a cutout whose studio shot has wide white margins, so the car matches the others in size. */
   zoom?: number;
-  /** Portrait photo: shown whole in the 3:2 frame rather than cropped, with a blurred copy of itself filling the sides
-   * (`PortraitBackdrop`). Fetch it with `wixFit`. */
+  /** Portrait photo: shown whole (letterboxed) in the 3:2 frame rather than cropped. Fetch it with `wixFit`. */
   portrait?: true;
   /** When the client has the car in more than one colour: the car page shows a colour picker (with "All") above the
    *  quote buttons, which filters the photos and adds the colour to the quote. */

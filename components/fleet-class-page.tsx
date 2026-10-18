@@ -1,4 +1,4 @@
-import { Photo, PortraitBackdrop } from "@/components/photo";
+import { Photo } from "@/components/photo";
 import { IllustrativeTag } from "@/components/illustrative-tag";
 import Link from "next/link";
 import { SiteHeader } from "@/components/site-header";
@@ -48,7 +48,6 @@ export function FleetClassPage({ fleetClass }: { fleetClass: Vehicle }) {
                   return (
                     <StaggerItem key={car.slug} className="group relative">
                       <div className={cn("relative aspect-[3/2] overflow-hidden", photo?.cutout ? "bg-sand" : "bg-stone")}>
-                        {photo?.portrait && <PortraitBackdrop src={photo.src} />}
                         {photo ? (
                           // The multiply sits on this wrapper: a scaled (zoomed) element is its own stacking context.
                           <div
