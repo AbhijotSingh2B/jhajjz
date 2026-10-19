@@ -319,18 +319,35 @@ img[data-photo] {
   }
 }
 
-/* Touch screens: what's pressed dims the moment the finger lands, since the hover effects don't run there and the
-   browser's own tap flash is off (html above). A fleet card dims as a whole (its name link covers the card); things
-   pressed inside it don't dim twice. <Button> has its own press (scale). */
+/* Touch screens: feedback the moment the finger lands, since the hover effects don't run there and the browser's own
+   tap flash is off (html above). It eases in quickly and back out more slowly, so neither end is sudden. A fleet card
+   presses in slightly as a whole (its name link covers the card; dimming washed the cut-out cars out on sand); links
+   and other buttons dim. Something pressed inside a card (share, a car name) doesn't press the card. <Button> has its
+   own press (scale). The transition list keeps the colour changes these elements already had. */
 @media (hover: none) {
+  a,
+  button:not([data-slot="button"]),
+  .group:has(.card-name) {
+    transition-property: opacity, scale, color, background-color, border-color, text-decoration-color, box-shadow;
+    transition-duration: 250ms;
+    transition-timing-function: cubic-bezier(0.23, 1, 0.32, 1);
+  }
+  /* Only the press on the card itself: Motion fades some cards in from script, which a CSS opacity transition would drag. */
+  .group:has(.card-name) {
+    transition-property: scale;
+  }
   a:active,
   button:not([data-slot="button"]):active {
     opacity: 0.6;
+    transition-duration: 100ms;
   }
-  .group:has(.card-name):active {
-    opacity: 0.75;
+  .group:has(.card-name:active),
+  a.group:has(.card-name):active {
+    scale: 0.98;
+    transition-duration: 150ms;
   }
-  .group:has(.card-name):active :is(a, button):active {
+  :is(.group:has(.card-name:active), a.group:has(.card-name):active),
+  .group:has(.card-name:active) .card-name {
     opacity: 1;
   }
 }

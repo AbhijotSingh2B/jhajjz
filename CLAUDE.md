@@ -176,7 +176,8 @@ The v0 reference design (`redesign-jhajjz-in.zip`) got several facts wrong — n
 - Animations: subtle and purposeful — fade/lift on scroll, staggered lists, animated dropdowns,
   hero slow zoom. Fleet cards share one hover (`.card-roll`/`.card-zoom`/`.card-name`, globals.css). Everything must respect `prefers-reduced-motion` (already wired).
   UI motion (menus, popups, header) stays around 300ms or less; nothing animates per keystroke (fleet search results
-  appear instantly, only tab clicks animate). Touch screens dim what's pressed (globals.css `@media (hover: none)`),
+  appear instantly, only tab clicks animate). Touch screens: cards press in to 98%, links and buttons dim, both easing
+  in 100–150ms and out 250ms (globals.css `@media (hover: none)`),
   since hover effects don't run there. Translucent bars go solid under `prefers-reduced-transparency`.
 - Never invent stats, car models, testimonials or contact details. Use `[BRACKETS]` for unknowns.
 
