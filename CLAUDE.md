@@ -58,6 +58,8 @@ before pushing, and merge (never force-push) if someone else's commit arrives.
   behaviour can't be reproduced — ask Nirmal to check on his phone). Don't run `playwright install`.
 - Verify against a production build (`npm run build && npx next start -p 3001`), not a long-running `next dev`:
   the dev server served stale CSS once (footer lost its background) and made a working change look broken.
+- Skills in `.claude/skills/` (committed): `apple-design` (Emil Kowalski's emilkowalski/skill) for reviewing motion,
+  touch feedback, sheets and materials against Apple's fluid-interface rules. Its tips still answer to the design rules below.
 - Python helpers (fontTools, Pillow) go in a venv in the scratchpad; the favicon was made that way from Libre
   Caslon Display. To judge photos, download them and view contact sheets (Pillow) before using any.
 - Don't `pkill -f next`: it matches your own shell and kills it. Use `fuser -k <port>/tcp` or the server's PID.
