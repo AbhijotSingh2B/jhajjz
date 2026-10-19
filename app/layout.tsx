@@ -3,6 +3,7 @@ import "./globals.css";
 import { MotionProvider } from "@/components/motion";
 import { Analytics } from "@vercel/analytics/next";
 import { Splash, splashScript } from "@/components/splash";
+import { pressScript } from "@/components/touch-press";
 import { photoScript } from "@/components/photo";
 import { BusinessStructuredData } from "@/components/structured-data";
 import { siteName, siteUrl } from "@/lib/site";
@@ -69,6 +70,7 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
       <head>
         <script dangerouslySetInnerHTML={{ __html: splashScript }} />
         <script dangerouslySetInnerHTML={{ __html: photoScript }} />
+        <script dangerouslySetInnerHTML={{ __html: pressScript }} />
       </head>
       <body>
         <Splash />

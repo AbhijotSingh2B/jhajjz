@@ -126,6 +126,7 @@ components/
   car-photos.tsx           The car page's carousel, filtered by the colour chosen in car-colour.tsx
   car-colour.tsx           Colour picker (All + each colour) above the quote buttons when photos carry 2+ `colour`s
                            (Ghost, G-Class, S-Class 2013–2020); passes ?colour= to the quote form and its message
+  touch-press.ts           <head> script: a card in a sideways row stays pressed while the row scrolls, until the finger lifts
   photo.tsx                Every photo goes through `Photo` (next/image + skeleton pulse + blur fade-in). `photoScript`
                            in layout.tsx <head> marks photos loaded before hydration; hidden only under
                            `@media (scripting: enabled)`, so photos still show with JavaScript off

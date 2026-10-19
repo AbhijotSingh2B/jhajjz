@@ -264,15 +264,16 @@ img[data-photo] {
   .group:has(.card-name:active) .card-name {
     opacity: 1;
   }
-  /* In rows that scroll sideways (home fleet preview, "Looking at other cars?"), a card that starts scaling under
-     the finger stopped iPhone Safari from scrolling the row when the swipe began on it (Nirmal). Their press is
-     prepared in advance, so nothing new appears under the finger, and waits 90ms, so a swipe (which cancels the
-     press) moves the row and only a tap shows it. */
+  /* In rows that scroll sideways (home fleet preview, "Looking at other cars?"), a card that started scaling under
+     the finger stopped iPhone Safari from scrolling the row when the swipe began on it (Nirmal), so their press
+     layer is prepared in advance. The press is held while the row scrolls (Nirmal): :active ends when a scroll
+     starts, so components/touch-press.ts marks the card [data-pressed] until the finger lifts. */
   .snap-x .group:has(.card-name) {
     will-change: scale;
   }
-  .snap-x :is(.group:has(.card-name:active), a.group:has(.card-name):active) {
-    transition-delay: 90ms;
+  .snap-x .group[data-pressed] {
+    scale: 0.98;
+    transition-duration: 150ms;
   }
 }
 
