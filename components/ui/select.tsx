@@ -75,8 +75,8 @@ export function SelectItem({ className, children, ...props }: React.ComponentPro
       data-slot="select-item"
       className={cn(
         "relative flex min-h-11 cursor-pointer select-none items-center gap-3 py-2 pr-9 pl-3 text-[15px] outline-none",
-        "transition-[background-color,padding] duration-150",
-        "data-[highlighted]:bg-sand data-[highlighted]:pl-4",
+        "transition-colors duration-150",
+        "data-[highlighted]:bg-sand",
         "data-[state=checked]:font-semibold",
         "data-[disabled]:pointer-events-none data-[disabled]:opacity-50",
         className,

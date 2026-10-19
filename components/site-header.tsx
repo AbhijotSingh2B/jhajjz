@@ -83,15 +83,17 @@ export function SiteHeader({ overlay = false }: { overlay?: boolean }) {
     <header
       ref={header}
       className={cn(
-        "fixed inset-x-0 top-0 z-40 text-cream transition-[background-color,box-shadow,backdrop-filter,translate] duration-500 motion-reduce:transition-none",
+        "fixed inset-x-0 top-0 z-40 text-cream transition-[background-color,box-shadow,translate] duration-300 ease-[cubic-bezier(0.23,1,0.32,1)] motion-reduce:transition-none",
         hidden && "-translate-y-full",
-        solid ? "bg-ink/92 shadow-[0_1px_0_rgba(255,255,255,0.08)] backdrop-blur-md" : "bg-transparent",
+        solid
+          ? "bg-ink/92 shadow-[0_1px_0_rgba(255,255,255,0.08)] backdrop-blur-md [@media(prefers-reduced-transparency:reduce)]:bg-ink [@media(prefers-reduced-transparency:reduce)]:backdrop-blur-none"
+          : "bg-transparent",
       )}
     >
       <nav
         aria-label="Main"
         className={cn(
-          "relative mx-auto flex max-w-[1200px] items-center justify-between gap-6 px-6 transition-[height] duration-500",
+          "relative mx-auto flex max-w-[1200px] items-center justify-between gap-6 px-6 transition-[height] duration-300",
           solid ? "h-[72px]" : "h-[88px]",
         )}
       >
@@ -201,7 +203,7 @@ function FleetMenu() {
             <motion.span
               initial={{ opacity: 0, x: -28 }}
               animate={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.7, ease: [0.2, 0.7, 0.2, 1] }}
+              transition={{ duration: 0.45, ease: [0.2, 0.7, 0.2, 1] }}
               className="absolute inset-0 mix-blend-multiply"
             >
               <span className="absolute inset-0 transition-transform duration-700 ease-[cubic-bezier(0.2,0.7,0.2,1)] group-hover:translate-x-3 group-hover:scale-[1.04] motion-reduce:transition-none motion-reduce:group-hover:transform-none">
@@ -252,7 +254,7 @@ function MobileMenu() {
                 key={l.href}
                 initial={{ opacity: 0, x: 24 }}
                 animate={{ opacity: 1, x: 0 }}
-                transition={{ delay: 0.12 + i * 0.06, duration: 0.5, ease: [0.2, 0.7, 0.2, 1] }}
+                transition={{ delay: 0.08 + i * 0.04, duration: 0.35, ease: [0.2, 0.7, 0.2, 1] }}
                 className="border-b border-white/10"
               >
                 <SheetClose asChild>
@@ -269,7 +271,7 @@ function MobileMenu() {
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
-            transition={{ delay: 0.5, duration: 0.5 }}
+            transition={{ delay: 0.15, duration: 0.35 }}
             className="mt-auto flex flex-col gap-1 text-cream/80"
           >
             {(

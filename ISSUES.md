@@ -5,6 +5,13 @@ Known problems with the site. Add what you find and can't fix right away; delete
 
 ## Open
 
+- **Motion audit leftovers** (emil-design-eng / apple-design audit, 2026-10-19; the quick fixes are done). Still open:
+  the phone popup and menu can't be swiped away and use fixed CSS keyframes, so closing one mid-opening jumps (see
+  FUTURE-UPDATES); `Reveal`/`Enter` use Motion's `x`/`y` shorthands (main thread) rather than `transform`; the car
+  gallery's portrait frame animates `width` (clip-path would be cheaper); the Fleet menu grows from `origin-top` though
+  it sits right-aligned; reduced motion zeroes every fade too (it only needs to drop the movement); the same
+  `[0.2, 0.7, 0.2, 1]` curve is typed in about 12 places instead of one token.
+
 - **Not yet checked on a real iPhone / TV** (the sandbox has Chromium only). Nirmal to check on his iPhone: both date
-  fields (look, picking, the × clearing), sending a quote opens WhatsApp filled in, the header hiding on scroll. On a
+  fields (look, picking, the × clearing), sending a quote opens WhatsApp filled in, the header hiding on scroll, tapping a card or link dims it while pressed. On a
   smart TV if possible: the Day/Month/Year date dropdowns.

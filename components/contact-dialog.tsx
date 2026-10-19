@@ -79,7 +79,7 @@ function Panel({ channel, message }: { channel: View; message?: string }) {
           initial="enter"
           animate="center"
           exit="exit"
-          transition={{ duration: 0.28, ease }}
+          transition={{ duration: 0.2, ease }}
           className="px-6 pt-8 pb-6 sm:px-10 sm:pt-10 sm:pb-8"
         >
           {view === "all" ? (
@@ -308,9 +308,9 @@ function CopyButton({ value }: { value: string }) {
       <AnimatePresence mode="wait" initial={false}>
         <motion.span
           key={copied ? "done" : "copy"}
-          initial={{ scale: 0.5, opacity: 0 }}
+          initial={{ scale: 0.8, opacity: 0 }}
           animate={{ scale: 1, opacity: 1 }}
-          exit={{ scale: 0.5, opacity: 0 }}
+          exit={{ scale: 0.8, opacity: 0 }}
           transition={{ duration: 0.15 }}
           className={copied ? "text-gold-deep" : undefined}
         >
@@ -338,7 +338,7 @@ function AutoHeight({ children }: { children: React.ReactNode }) {
   }, []);
 
   return (
-    <motion.div animate={{ height }} transition={{ duration: 0.3, ease }} className="overflow-hidden">
+    <motion.div animate={{ height }} transition={{ duration: 0.25, ease }} className="overflow-hidden">
       <div ref={ref}>{children}</div>
     </motion.div>
   );

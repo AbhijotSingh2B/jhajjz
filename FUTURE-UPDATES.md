@@ -18,6 +18,10 @@ All agreed by Nirmal on 2026-10-18. Nothing gets invented: build each once the c
 
 ## Maybe
 
+- **Swipe to close the phone popup and menu** (apple-design audit, 2026-10-19): drag the bottom-sheet popup down or
+  the menu right to close it, following the finger, closing on a flick. Changes how they feel, so Nirmal to try it
+  on his iPhone first (a branch, or Vaul for the popup).
+
 - **Weddings page** (`/weddings`): "wedding car rental Chandigarh" is likely the biggest search, but weddings
   only has a band on the home page. Needs decoration photos and what's included. Nirmal: "maybe".
 

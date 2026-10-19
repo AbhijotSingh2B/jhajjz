@@ -117,7 +117,7 @@ export function SiteFooter() {
 /** Phones only: Call and WhatsApp always within thumb reach. */
 function MobileContactBar() {
   return (
-    <div className="fixed inset-x-0 bottom-0 z-30 grid grid-cols-2 border-t border-white/10 bg-ink/95 pb-[env(safe-area-inset-bottom)] text-cream backdrop-blur-md md:hidden">
+    <div className="fixed inset-x-0 bottom-0 z-30 grid grid-cols-2 border-t border-white/10 bg-ink/95 pb-[env(safe-area-inset-bottom)] text-cream backdrop-blur-md md:hidden [@media(prefers-reduced-transparency:reduce)]:bg-ink [@media(prefers-reduced-transparency:reduce)]:backdrop-blur-none">
       <ContactDialog channel="call">
         <button type="button" className="flex h-14 items-center justify-center gap-2 text-[15px] font-medium">
           <Phone className="size-4 text-gold" aria-hidden="true" />

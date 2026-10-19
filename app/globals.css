@@ -92,10 +92,10 @@
   pointer-events: none;
 }
 ::view-transition-old(.page-exit) {
-  animation: 160ms ease-in both page-fade-out;
+  animation: 140ms ease-out both page-fade-out;
 }
 ::view-transition-new(.page-enter) {
-  animation: 420ms cubic-bezier(0.2, 0.7, 0.2, 1) 100ms both page-rise;
+  animation: 300ms cubic-bezier(0.2, 0.7, 0.2, 1) 40ms both page-rise;
 }
 @keyframes page-fade-out {
   to {
@@ -316,6 +316,22 @@ img[data-photo] {
   .group:hover .card-roll,
   .group:hover .card-zoom {
     transform: none;
+  }
+}
+
+/* Touch screens: what's pressed dims the moment the finger lands, since the hover effects don't run there and the
+   browser's own tap flash is off (html above). A fleet card dims as a whole (its name link covers the card); things
+   pressed inside it don't dim twice. <Button> has its own press (scale). */
+@media (hover: none) {
+  a:active,
+  button:not([data-slot="button"]):active {
+    opacity: 0.6;
+  }
+  .group:has(.card-name):active {
+    opacity: 0.75;
+  }
+  .group:has(.card-name):active :is(a, button):active {
+    opacity: 1;
   }
 }
 

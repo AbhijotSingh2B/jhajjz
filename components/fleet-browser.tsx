@@ -16,6 +16,9 @@ const ease = [0.2, 0.7, 0.2, 1] as const;
 export function FleetBrowser() {
   const [filter, setFilter] = useState<"all" | FleetGroup>("all");
   const [query, setQuery] = useState("");
+  // Results follow the keyboard instantly; only a tab click animates the cards (a keystroke shouldn't wait on motion).
+  const [typing, setTyping] = useState(false);
+  const instant = { duration: 0 };
   const terms = query.toLowerCase().split(/\s+/).filter(Boolean);
   // Relevance: each search word scores by the best place it appears (name over class over description); every
   // word has to appear somewhere (else 0). `direct`: every word is in the car's own name, make or model (weight 3+).
@@ -47,7 +50,7 @@ export function FleetBrowser() {
   const [top, more] = direct.length > 0 && direct.length < shown.length ? [direct, shown.filter((r) => !r.direct)] : [shown, []];
 
   const grid = (list: Result[], offset: number, spacing = "mt-10") => (
-    <motion.div layout className={cn("grid grid-cols-[repeat(auto-fill,minmax(320px,1fr))] gap-x-6 gap-y-10", spacing)}>
+    <motion.div layout transition={typing ? instant : undefined} className={cn("grid grid-cols-[repeat(auto-fill,minmax(320px,1fr))] gap-x-6 gap-y-10", spacing)}>
       <AnimatePresence mode="popLayout">
         {list.map((r, j) => {
           const i = offset + j;
@@ -57,8 +60,9 @@ export function FleetBrowser() {
               id={r.kind === "class" ? r.v.slug : undefined}
               layout
               initial={{ opacity: 0, y: 24 }}
-              animate={{ opacity: 1, y: 0, transition: { duration: 0.6, ease, delay: Math.min(i, 8) * 0.05 } }}
-              exit={{ opacity: 0, scale: 0.96, transition: { duration: 0.25 } }}
+              animate={{ opacity: 1, y: 0, transition: typing ? instant : { duration: 0.6, ease, delay: Math.min(i, 8) * 0.05 } }}
+              exit={{ opacity: 0, scale: 0.96, transition: typing ? instant : { duration: 0.25 } }}
+              transition={typing ? instant : undefined}
               className="group relative scroll-mt-28"
             >
               {r.kind === "car" ? <CarCard car={r.car} fleetClass={r.v} /> : <ClassCard v={r.v} priority={i < 3} />}
@@ -80,6 +84,8 @@ export function FleetBrowser() {
           id="fleet-search"
           type="search"
           value={query}
+          // Set on focus, before the first keystroke: cards on their way out keep the props of their last render.
+          onFocus={() => setTyping(true)}
           onChange={(e) => setQuery(e.target.value)}
           placeholder="Search by brand or type"
           className="h-12 w-full border border-line bg-white pr-12 pl-11 text-base text-ink outline-none transition-colors hover:border-ink/40 focus:border-ink [&::-webkit-search-cancel-button]:appearance-none"
@@ -103,7 +109,10 @@ export function FleetBrowser() {
               key={g.id}
               type="button"
               aria-pressed={active}
-              onClick={() => setFilter(g.id)}
+              onClick={() => {
+                setTyping(false);
+                setFilter(g.id);
+              }}
               className={cn(
                 "relative isolate h-11 px-5 text-[15px] font-medium transition-colors duration-300",
                 active ? "text-cream" : "text-ink hover:bg-ink/5",
