@@ -124,103 +124,17 @@
   }
 }
 
-/* Logo opening on the entry screen (components/logo.tsx LogoMark intro): "Jhajj'z" turns into the JJ monogram.
-   "'z" fades, "haj" slides in behind the gold J, the last j turns gold and moves into place as the second J
-   while the whole grows. The resting styles are the finished monogram, so reduced motion just shows that. */
-.logo-intro .logo-word {
-  transform-box: view-box;
-  transform-origin: 0 0;
-  transform: translateX(var(--logo-end-x, 0px));
-  animation: logo-grow 850ms cubic-bezier(0.65, 0, 0.25, 1) 1250ms both;
-}
-.logo-intro .logo-tail {
-  opacity: 0;
-  animation: logo-tail 380ms cubic-bezier(0.4, 0, 0.6, 1) 600ms both;
-}
-.logo-intro .logo-tuck {
-  opacity: 0;
-  transform: translateX(-1110px);
-  animation: logo-tuck 700ms cubic-bezier(0.65, 0, 0.35, 1) 720ms both;
-}
-/* The j and J2 move together on the same curve; the j is gold by then, so one reads as becoming the other. */
-.logo-intro .logo-last-j {
-  opacity: 0;
-  fill: var(--color-gold);
-  animation:
-    logo-gild 450ms ease 950ms both,
-    logo-j-out 850ms cubic-bezier(0.65, 0, 0.25, 1) 1250ms both;
-}
-.logo-intro .logo-j2 {
-  animation: logo-j2-in 850ms cubic-bezier(0.65, 0, 0.25, 1) 1250ms both;
-}
-@keyframes logo-grow {
-  from {
-    transform: translate(0px, 200px) scale(0.657);
-  }
-}
-@keyframes logo-tail {
-  from {
-    opacity: 1;
-  }
-  to {
-    opacity: 0;
-    transform: translateX(-40px);
-  }
-}
-@keyframes logo-tuck {
-  from {
-    opacity: 1;
-    transform: none;
-  }
-  45% {
-    opacity: 1;
-  }
-}
-@keyframes logo-gild {
-  from {
-    fill: var(--color-cream);
-  }
-}
-@keyframes logo-j-out {
-  0%,
-  30% {
-    opacity: 1;
-  }
-  0% {
-    transform: none;
-  }
-  70%,
-  100% {
-    opacity: 0;
-  }
-  100% {
-    transform: translate(-1189px, 150px);
-  }
-}
-@keyframes logo-j2-in {
-  0%,
-  30% {
-    opacity: 0;
-  }
-  0% {
-    transform: translate(1189px, -150px);
-  }
-  70%,
-  100% {
-    opacity: 1;
-  }
-}
-@media (prefers-reduced-motion: reduce) {
-  .logo-intro * {
-    animation: none !important;
-  }
-}
-
 /* Entry screen (components/splash.tsx). The script in app/layout.tsx puts `splash` on <html> when it will play
    and `no-splash` when it won't (not the home page, seen this visit, or reduced motion). Without JavaScript
-   neither is set and the screen fades by itself at 3.4s. */
+   there is no animation to watch, so there's no screen. If the page's script is slow to start, the screen
+   fades by itself at 3.4s; once it runs, it takes over from that fallback. */
 html.no-splash .splash-screen {
   display: none;
+}
+@media (scripting: none) {
+  .splash-screen {
+    display: none;
+  }
 }
 html.splash {
   overflow: hidden;

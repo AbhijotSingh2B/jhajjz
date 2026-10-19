@@ -1,4 +1,3 @@
-import type { CSSProperties } from "react";
 import { cn } from "@/lib/utils";
 
 /**
@@ -6,16 +5,16 @@ import { cn } from "@/lib/utils";
  * and to the right so its top serif meets the first J's stem. Outlines exported with fontTools; same
  * drawing as app/icon.svg.
  */
-const J1 =
+export const J1 =
   "M117 849Q83 849 83 814L84 785Q84 764 73 752Q62 740 42 740Q23 740 11.5 752Q0 764 0 784Q0 817 31 839Q62 861 109 861Q146 861 179 844.5Q212 828 232 799Q250 773 257.5 735.5Q265 698 265 633V16L347 8V0H106V8L188 16V710Q188 773 168.5 811Q149 849 117 849Z";
-const J2 =
+export const J2 =
   "M267 999Q233 999 233 964L234 935Q234 914 223 902Q212 890 192 890Q173 890 161.5 902Q150 914 150 934Q150 967 181 989Q212 1011 259 1011Q296 1011 329 994.5Q362 978 382 949Q400 923 407.5 885.5Q415 848 415 783V166L497 158V150H256V158L338 166V860Q338 923 318.5 961Q299 999 267 999Z";
 
 /**
  * "hajj'z" from the same font, set after J1 on its baseline (x = left edge, font units). Drawn as outlines
- * so the opening looks right before the web font has loaded.
+ * so the entry screen (components/splash.tsx) looks right before the web font has loaded.
  */
-const letters = [
+export const letters = [
   {
     x: 384,
     d: "M822 682V690H635V682L696 674V419Q696 378 694 359.5Q692 341 686 329Q678 312 660 302.5Q642 293 618 293Q566 293 528 336V674L589 682V690H402V682L463 674V37L404 15V8L520 -31H528V321Q559 289 592.5 272.5Q626 256 659 256Q689 256 713.5 269Q738 282 750 305Q757 318 759 340.5Q761 363 761 419V674Z",
@@ -42,7 +41,7 @@ const letters = [
   },
 ];
 /** The second "j" of "hajj" is the one that becomes J2. */
-const lastJ = 3;
+export const lastJ = 3;
 
 /** Mark + "Jhajj'z" as text (footer). */
 export function Logo({
@@ -67,56 +66,12 @@ export function Logo({
   );
 }
 
-/**
- * Header logo (plain monogram). With `intro` (the entry screen, components/splash.tsx) it opens as the name
- * "Jhajj'z" (gold J, cream "hajj'z") at text size: the other letters fold into the J, the last "j" slides down
- * into place as the second J, and the whole grows into the monogram. CSS keyframes in globals.css.
- */
-export function LogoMark({
-  intro = false,
-  className = "h-10",
-  clipId = "logo-tuck",
-  centred = false,
-}: {
-  intro?: boolean;
-  className?: string;
-  clipId?: string;
-  /** End with the monogram in the middle of the box instead of at its left edge (entry screen). */
-  centred?: boolean;
-}) {
-  if (!intro) {
-    return (
-      <svg viewBox="0 0 497 1011" aria-hidden="true" className={cn("w-auto fill-gold", className)}>
-        <path d={J1} />
-        <path d={J2} />
-      </svg>
-    );
-  }
-  // Wide enough for the name at text size (26px type in a 40px-high mark).
+/** Header logo (plain monogram). */
+export function LogoMark({ className = "h-10" }: { className?: string }) {
   return (
-    <svg
-      viewBox="0 0 1460 1011"
-      aria-hidden="true"
-      className={cn("logo-intro w-auto overflow-visible", className)}
-      style={centred ? ({ "--logo-end-x": "481px" } as CSSProperties) : undefined}
-    >
-      <g className="logo-word">
-        {/* "haj" slides left behind the J's stem: everything left of it is clipped away. */}
-        <clipPath id={clipId}>
-          <rect x="265" y="-500" width="3000" height="2000" />
-        </clipPath>
-        <g clipPath={`url(#${clipId})`}>
-          {letters.slice(0, lastJ).map((l) => (
-            <path key={l.x} className="logo-tuck fill-cream" d={l.d} />
-          ))}
-        </g>
-        {letters.slice(lastJ + 1).map((l) => (
-          <path key={l.x} className="logo-tail fill-cream" d={l.d} />
-        ))}
-        <path className="logo-last-j" d={letters[lastJ].d} />
-        <path className="fill-gold" d={J1} />
-        <path className="logo-j2 fill-gold" d={J2} />
-      </g>
+    <svg viewBox="0 0 497 1011" aria-hidden="true" className={cn("w-auto fill-gold", className)}>
+      <path d={J1} />
+      <path d={J2} />
     </svg>
   );
 }

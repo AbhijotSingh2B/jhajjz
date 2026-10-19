@@ -98,11 +98,16 @@ app/
   not-found.tsx            Branded 404
 components/
   logo.tsx                 JJ monogram (two Caslon Js, second lower-right). `Logo` = mark + name (footer), `LogoMark`
-                           = header (static; animating it replayed on reload), `LogoMark intro` = entry-screen opening
-  splash.tsx               Entry screen: "Jhajj'z" folds into the monogram, which flies to the header logo. Home page
-                           only (Nirmal: not for visitors landing on a car page), once per tab (script in layout.tsx
-                           <head>), skipped for reduced motion. Keep its length (Nirmal). Timed on the animation's own
-                           clock, not from the tap (that cut it short on fast phones); 3.3–4s, CSS fallback hides it
+                           = header (static; animating it replayed on reload). Exports the glyph outlines for splash.tsx
+  splash.tsx               Entry screen (Nirmal approved it as a rendered preview, 2026-10-19): "Jhajj'z" rises letter by
+                           letter; "hajj'z" slides into the first J's stem while the last j turns gold and reshapes into
+                           the second J (outline morph), covering the letters; light passes once over the gold; the
+                           monogram flies to the header logo as the ink lifts. Drawn per frame (SVG + springs), not CSS
+                           keyframes. Nirmal rejected: letters cut off by a hard edge, a gold dot or apostrophe drifting
+                           off on its own, letters crossing the second J. Home page only (Nirmal: not for visitors landing
+                           on a car page), once per tab (script in layout.tsx <head>), skipped for reduced motion and
+                           without JavaScript. Timed on its own clock from when the script starts, not from the tap (that
+                           cut it short on fast phones); ~3.5–3.9s; a CSS fallback hides it if the script never starts
   site-header.tsx          Fixed header; transparent over the home hero until scroll; hides on scroll down, back on scroll
                            up; underlines the home section in view; Fleet mega-menu (right-aligned); mobile sheet
   site-footer.tsx          Also renders the phone-only sticky Call / WhatsApp bar
