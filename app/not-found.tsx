@@ -15,7 +15,7 @@ export default function NotFound() {
             <h1 className="max-w-[640px] font-serif text-[clamp(38px,4.8vw,56px)] leading-[1.08] tracking-[-0.01em]">
               We couldn&apos;t find that page
             </h1>
-            <p className="mt-5 max-w-[480px] text-[17px] text-muted">
+            <p className="mt-5 max-w-[480px] text-[17px] text-body">
               It may have moved when we rebuilt the site. Head back to the home page, or call us and we&apos;ll help.
             </p>
             <div className="mt-8 flex flex-wrap gap-3">

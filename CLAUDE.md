@@ -71,6 +71,8 @@ before pushing, and merge (never force-push) if someone else's commit arrives.
 ## How Nirmal likes to work
 
 - Wants changes done and pushed, then a short summary of what changed and anything that still needs the client.
+- **Ask before large design decisions** (layout, type scale, new photos or sections): offer options and let him choose. Small
+  fixes and decisions he hands over ("your choice") go ahead.
 - Only verified facts: nothing invented, even "safe" defaults (e.g. languages spoken were removed from JSON-LD).
 - Very sensitive to anything that looks AI-made or templated — check new UI against the "avoid" list below.
 - Wording he set: "Talk to us on WhatsApp" (never "WhatsApp us"); hero line "Head office in Chandigarh,
@@ -81,7 +83,7 @@ before pushing, and merge (never force-push) if someone else's commit arrives.
 ```
 app/
   page.tsx                 Home: hero, booking bar, fleet preview, weddings photo band, "Who we drive for"
-                           (rate-card rows), "Chandigarh, since 1998" about + city list
+                           (one row per group), "Chandigarh, since 1998" about + city list
   fleet/page.tsx           Full fleet with search + filter tabs (components/fleet-browser.tsx). Searching lists
                            individual cars, each with its class linked underneath (classes without cars, i.e. coaches, as a card),
                            sorted by relevance: name > make/model > class name > description. Cars matching by their own
@@ -173,7 +175,9 @@ The v0 reference design (`redesign-jhajjz-in.zip`) got several facts wrong — n
   Also avoid (caught in a 2026-10-17 audit): icons inside coloured squares (feature cards, popup headers, option
   lists), three-equal-cards feature grids, boxes with a gold left stripe, a → after every link (one per screen at
   most), browser-default UI that clashes with the palette (e.g. the blue search clear ×).
-- Body text ≥15px (the reference used 9–11px). Touch targets ≥44px.
+- Running text 17px in `text-body` (`text-muted` only for secondary notes); nothing readable under 13px. Touch targets ≥44px.
+- No thin lines between sections or rows (services, cities, contact list, footer): space or a background shade instead.
+  Lines stay on the car details table and form fields.
 - Layouts are checked from 344px foldables to 3440px ultrawide (Nirmal). Hero shading is placed from the text column
   (`.hero-shade`), not as a share of the screen.
 - Animations: subtle and purposeful — fade/lift on scroll, staggered lists, animated dropdowns,

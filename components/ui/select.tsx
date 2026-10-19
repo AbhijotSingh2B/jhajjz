@@ -94,5 +94,5 @@ export function SelectItem({ className, children, ...props }: React.ComponentPro
 }
 
 export function SelectLabel({ className, ...props }: React.ComponentProps<typeof SelectPrimitive.Label>) {
-  return <SelectPrimitive.Label className={cn("px-3 pt-2 pb-1 text-xs font-semibold text-muted", className)} {...props} />;
+  return <SelectPrimitive.Label className={cn("px-3 pt-2 pb-1 text-[13px] font-semibold text-muted", className)} {...props} />;
 }

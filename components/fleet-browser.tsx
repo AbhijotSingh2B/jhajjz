@@ -138,7 +138,7 @@ export function FleetBrowser() {
       {grid(top, 0)}
       {more.length > 0 && (
         <>
-          <div className="mt-16 border-t border-ink/15 pt-8">
+          <div className="mt-20">
             <h2 className="font-serif text-[clamp(26px,3vw,32px)] leading-tight">You might also consider</h2>
           </div>
           {grid(more, top.length, "mt-8")}
@@ -147,7 +147,7 @@ export function FleetBrowser() {
       {shown.length === 0 && (
         <div className="mt-10 max-w-[560px]">
           <h2 className="font-serif text-[28px] leading-tight">Nothing matches &ldquo;{query.trim()}&rdquo;</h2>
-          <p className="mt-3 text-[17px] text-muted">
+          <p className="mt-3 text-[17px] text-body">
             This page only shows our featured cars. Talk to us about the car you want and we&apos;ll tell you what we can
             arrange.
           </p>
@@ -165,7 +165,7 @@ export function FleetBrowser() {
         </div>
       )}
       {shown.length > 0 && (
-        <p className="mt-12 max-w-[560px] text-[15px] text-muted">
+        <p className="mt-12 max-w-[560px] text-[17px] text-body">
           These are our featured cars. Looking for something else? Talk to us and we&apos;ll tell you what we can
           arrange.{" "}
           <Link href="/contact" className="font-semibold text-ink underline underline-offset-[6px]">
@@ -227,7 +227,7 @@ function ClassCard({ v, priority }: { v: Vehicle; priority: boolean }) {
         {/* Above the card-wide link, like the car names. */}
         <ShareButton path={classHref(v.slug)} name={v.name} iconOnly className="relative z-10 -mr-3" />
       </div>
-      <p className="mt-1.5 text-[15px] text-muted">{v.text}</p>
+      <p className="mt-1.5 text-[17px] text-body">{v.text}</p>
       {classCars.length > 0 ? (
         // Above the card-wide link (its ::after), so these stay clickable on their own.
         <ul className="relative z-10 mt-1 flex flex-wrap gap-x-5">

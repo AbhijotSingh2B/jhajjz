@@ -149,7 +149,7 @@ export default async function CarPage({ params }: Props) {
                   <CarQuoteButtons params={{ ...(fleetClass && { vehicle: fleetClass.name }), car: car.slug }} title={carTitle(car)} />
 
                   {siblings.length > 0 && (
-                    <div className="mt-10 border-t border-ink/15 pt-6">
+                    <div className="mt-12">
                       <h2 className="text-[16px] font-semibold">Also in our fleet</h2>
                       <ul className="mt-4 grid grid-cols-2 gap-x-4 gap-y-6 sm:max-w-[400px]">
                         {siblings.map((c) => (

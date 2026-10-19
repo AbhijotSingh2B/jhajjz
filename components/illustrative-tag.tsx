@@ -5,7 +5,7 @@
  */
 export function IllustrativeTag() {
   return (
-    <span className="pointer-events-none absolute right-2.5 bottom-2 text-[12px] leading-none text-muted/60">
+    <span className="pointer-events-none absolute right-2.5 bottom-2 text-[13px] leading-none text-muted/60">
       For illustrative purposes only
     </span>
   );

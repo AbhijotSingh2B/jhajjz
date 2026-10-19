@@ -39,7 +39,7 @@ export default function FleetPage() {
                 </h1>
               </Enter>
               <Enter delay={0.12}>
-                <p className="mt-5 max-w-[560px] text-[17px] text-muted">
+                <p className="mt-5 max-w-[560px] text-[17px] text-body">
                   Rolls-Royce, Bentley, Mercedes-Benz, BMW, Audi, Jaguar and Range Rover, plus Volvo and Mercedes-Benz coaches. Every
                   vehicle comes with a trained chauffeur, anywhere in India, and any of them can be booked for a wedding or event.
                 </p>

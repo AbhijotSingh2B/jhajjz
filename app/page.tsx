@@ -90,7 +90,7 @@ export default function Home() {
           </section>
 
           {/* Booking bar */}
-          <section className="border-b border-stone bg-white">
+          <section className="bg-white">
             <Enter delay={0.6} y={12}>
               <BookingBar />
             </Enter>
@@ -132,7 +132,7 @@ export default function Home() {
                         <h3 className={i === 0 ? "text-[19px] font-semibold md:font-serif md:text-[28px] md:font-normal" : "text-[19px] font-semibold"}>
                           <span className="card-name">{v.name}</span>
                         </h3>
-                        <p className="mt-1 text-[15px] text-muted">{v.text}</p>
+                        <p className="mt-1 text-[17px] text-body">{v.text}</p>
                       </div>
                     </Link>
                   </StaggerItem>
@@ -176,20 +176,20 @@ export default function Home() {
             <div className="mx-auto max-w-[1200px] px-6">
               <Reveal className="grid items-end gap-x-16 gap-y-5 md:grid-cols-2">
                 <h2 className="font-serif text-[clamp(32px,4vw,48px)] leading-[1.1] tracking-[-0.01em]">Who we drive for</h2>
-                <p className="max-w-[420px] text-[17px] text-muted md:justify-self-end">
+                <p className="max-w-[420px] text-[17px] text-body md:justify-self-end">
                   Families, companies, hotels, airlines and delegations. If yours isn&apos;t listed, ask us.
                 </p>
               </Reveal>
-              {/* Laid out like a printed rate card: one row per group. On laptops: name and link, the services in a
+              {/* One row per group, set apart by space (no rules). On laptops: name and link, the services in a
                   column, then the photo filling the right (a small photo under the name left the right half empty).
                   Tablets: text left, photo right. Phones: stacked, photo last. */}
-              <Stagger className="mt-12 border-b border-ink/80">
+              <Stagger className="mt-12 grid gap-y-16 md:gap-y-24">
                 {serviceGroups.map((g) => {
                   const link = groupLinks[g.title];
                   return (
                     <StaggerItem
                       key={g.title}
-                      className="grid gap-x-12 gap-y-6 border-t border-ink/80 py-8 md:grid-cols-2 md:grid-rows-[auto_1fr] md:py-10 lg:grid-cols-[minmax(0,3fr)_minmax(0,3fr)_minmax(0,5fr)] lg:grid-rows-1"
+                      className="grid gap-x-12 gap-y-6 md:grid-cols-2 md:grid-rows-[auto_1fr] lg:grid-cols-[minmax(0,3fr)_minmax(0,3fr)_minmax(0,5fr)] lg:grid-rows-1"
                     >
                       <div>
                         <h3 className="font-serif text-[28px] leading-tight md:text-[32px]">{g.title}</h3>
@@ -207,8 +207,8 @@ export default function Home() {
                       <ul className="grid content-start gap-x-10 gap-y-5 sm:grid-cols-2 md:grid-cols-1 lg:pt-2">
                         {g.items.map((s) => (
                           <li key={s.title}>
-                            <span className="block text-[16px] font-semibold">{s.title}</span>
-                            <span className="mt-0.5 block text-[15px] text-muted">{s.text}</span>
+                            <span className="block text-[17px] font-semibold">{s.title}</span>
+                            <span className="mt-0.5 block text-[17px] text-body">{s.text}</span>
                           </li>
                         ))}
                       </ul>
@@ -250,9 +250,9 @@ export default function Home() {
                 <div className="mt-6 grid items-start gap-x-10 gap-y-8 sm:grid-cols-[minmax(0,5fr)_minmax(0,6fr)]">
                   <IndiaMap className="mx-auto w-full max-w-[300px] sm:max-w-none" />
                   <div>
-                    <ul className="grid grid-cols-2 gap-x-6 border-t border-ink/15">
+                    <ul className="grid grid-cols-2 gap-x-6 gap-y-3">
                       {cities.map((c) => (
-                        <li key={c} className="border-b border-ink/15 py-2.5 text-[16px] text-body">
+                        <li key={c} className="text-[17px] text-body">
                           {c}
                         </li>
                       ))}

@@ -43,7 +43,7 @@ export default function ContactPage() {
           <section className="mx-auto grid max-w-[1200px] gap-y-12 px-6 py-[72px] md:py-28 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.3fr)] lg:grid-rows-[auto_1fr] lg:gap-x-16">
             <Enter>
               <h1 className="font-serif text-[clamp(38px,4.8vw,56px)] leading-[1.08] tracking-[-0.01em]">Get a quote</h1>
-              <p className="mt-5 max-w-[420px] text-[17px] text-muted">
+              <p className="mt-5 max-w-[420px] text-[17px] text-body">
                 Share a few details and we&apos;ll recommend the right car and send a price, for anywhere in India. For
                 anything urgent, call or WhatsApp.
               </p>
@@ -57,9 +57,9 @@ export default function ContactPage() {
               </Suspense>
             </Enter>
             <Enter delay={0.25}>
-              <ul className="border-t border-line">
+              <ul>
                 {rows.map((r) => (
-                  <li key={r.value} className="border-b border-line">
+                  <li key={r.value}>
                     <ContactDialog channel={r.channel}>
                       <button
                         type="button"
@@ -73,12 +73,12 @@ export default function ContactPage() {
                     </ContactDialog>
                   </li>
                 ))}
-                <li className="border-b border-line">
+                <li>
                   <a
                     href={contact.mapsUrl}
                     target="_blank"
                     rel="noreferrer"
-                    className="block py-4 text-[15px] text-muted underline-offset-4 transition-colors hover:text-ink hover:underline"
+                    className="block py-4 text-[17px] text-body underline-offset-4 transition-colors hover:text-ink hover:underline"
                   >
                     {contact.address[0]}, {contact.address[1]}
                   </a>

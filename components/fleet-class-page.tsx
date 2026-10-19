@@ -38,7 +38,7 @@ export function FleetClassPage({ fleetClass }: { fleetClass: Vehicle }) {
                 </h1>
               </Enter>
               <Enter delay={0.12}>
-                <p className="mt-5 max-w-[560px] text-[17px] text-muted">{fleetClass.text}</p>
+                <p className="mt-5 max-w-[560px] text-[17px] text-body">{fleetClass.text}</p>
               </Enter>
 
               <Stagger className="mt-12 grid grid-cols-[repeat(auto-fill,minmax(min(320px,100%),1fr))] gap-x-6 gap-y-10">
