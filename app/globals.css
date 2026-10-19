@@ -264,6 +264,16 @@ img[data-photo] {
   .group:has(.card-name:active) .card-name {
     opacity: 1;
   }
+  /* In rows that scroll sideways (home fleet preview, "Looking at other cars?"), a card that starts scaling under
+     the finger stopped iPhone Safari from scrolling the row when the swipe began on it (Nirmal). Their press is
+     prepared in advance, so nothing new appears under the finger, and waits 90ms, so a swipe (which cancels the
+     press) moves the row and only a tap shows it. */
+  .snap-x .group:has(.card-name) {
+    will-change: scale;
+  }
+  .snap-x :is(.group:has(.card-name:active), a.group:has(.card-name):active) {
+    transition-delay: 90ms;
+  }
 }
 
 /* Home hero shading (app/page.tsx). Phones: from the bottom up, under the full-width text. From md: from the left,
