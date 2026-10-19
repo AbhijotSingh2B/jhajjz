@@ -60,6 +60,9 @@ before pushing, and merge (never force-push) if someone else's commit arrives.
   the dev server served stale CSS once (footer lost its background) and made a working change look broken.
 - Skills in `.claude/skills/` (committed): `apple-design` (Apple's WWDC fluid-interface talks, packaged in the
   emilkowalski/skill repo) for reviewing motion, touch feedback, sheets and materials. Its tips answer to the design rules below.
+- Plugin: **Superpowers** (obra/superpowers, from Anthropic's claude-plugins-official list) is enabled for everyone in
+  `.claude/settings.json` (Nirmal); Claude Code offers to install it when the repo is trusted. Its workflow skills
+  (brainstorm → plan → test-first → review) answer to Nirmal's preferences above: changes done and pushed, short summary.
 - Python helpers (fontTools, Pillow) go in a venv in the scratchpad; the favicon was made that way from Libre
   Caslon Display. To judge photos, download them and view contact sheets (Pillow) before using any.
 - Don't `pkill -f next`: it matches your own shell and kills it. Use `fuser -k <port>/tcp` or the server's PID.
