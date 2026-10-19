@@ -40,3 +40,6 @@ yarn-error.log*
 *.tsbuildinfo
 next-env.d.ts
 .netlify
+
+# design-taste skill working files (screenshots, reports)
+/.taste-skill/
