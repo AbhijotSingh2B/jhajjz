@@ -5,8 +5,8 @@ Agreed with Nirmal, 2026-10-24. Not pushed to `main` until he says so (commits s
 **Changed after building the hero (Nirmal, 2026-10-24):** the hero stays the photo hero. The S-Class turn moved into
 its own box above "The cars and coaches we run" (components/sclass-box.tsx), approved from stills: a black box with a
 paper border that opens to full width once properly in view, the car turning ~100° (never the back), then closing
-again; an "S-Class" title and "Get a quote" button blur-fade in while it is open. Pinned (230svh) from lg; on phones a
-4:5 card that isn't pinned. Section 1 below describes the earlier hero version; the frames, loading and fallbacks
+again; an "S-Class" title and "Get a quote" button blur-fade in while it is open. Pinned (230svh) at every width so the page
+holds while the car turns; on phones it starts as a 4:5 card that grows to fill the screen. Section 1 below describes the earlier hero version; the frames, loading and fallbacks
 carried over.
 
 ## Goal

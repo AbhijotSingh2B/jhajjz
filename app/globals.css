@@ -295,15 +295,29 @@ img[data-photo] {
   }
 }
 
-/* Home S-Class box (components/sclass-box.tsx): from lg, 2.3 screens tall with a sticky one-screen stage while it opens,
-   the car turns and it closes (Nirmal: 1.8 turned too fast), only when script runs and motion is allowed; otherwise,
-   and on smaller screens, just the card. */
-@media (scripting: enabled) and (prefers-reduced-motion: no-preference) and (width >= 64rem) {
+/* Home S-Class box (components/sclass-box.tsx): 2.3 screens tall with a sticky one-screen stage while it opens, the car
+   turns and it closes (Nirmal: 1.8 turned too fast; it must hold the page on phones too), only when script runs and
+   motion is allowed; otherwise just the card. Below lg the box is then the whole screen, clipped to the 4:5 card
+   (24px side border, centred) until it opens; the component's clip uses the same sum. */
+@media (scripting: enabled) and (prefers-reduced-motion: no-preference) {
   .sclass-box {
     height: 230svh;
   }
   .sclass-box-stage {
+    position: sticky;
+    top: 0;
     height: 100svh;
+  }
+}
+@media (scripting: enabled) and (prefers-reduced-motion: no-preference) and (width < 64rem) {
+  .sclass-box-frame {
+    height: 100svh;
+    max-height: none;
+    aspect-ratio: auto;
+    clip-path: inset(max(24px, calc((100svh - (100vw - 48px) * 1.25) / 2)) 24px round 8px);
+  }
+  .sclass-box-card {
+    inset: max(24px, calc((100svh - (100vw - 48px) * 1.25) / 2)) 24px;
   }
 }
 /* Its title blur-fades in once the box opens; without script it never would, so show it. */

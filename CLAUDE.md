@@ -137,7 +137,7 @@ components/
                            a pre-rendered black S-Class turns ~100° (never the back; 120 WebP frames per framing in
                            public/sclass-turn, rendered by video/tools/render-hero-turn.mjs), then closes; "S-Class"
                            title + "Get a quote" blur-fade in while open (Nirmal asked "Buy now"; they rent, not sell).
-                           Pinned from lg, a passing 4:5 card on phones. Maths in lib/scroll-motion.ts (tested)
+                           Pinned while it turns (phones too; there a 4:5 card that grows to the screen). Maths in lib/scroll-motion.ts (tested)
   india-map.tsx            India outline (lib/india-map.ts, Survey of India boundary) + city dots, beside "Pan-India, including"
   motion.tsx               Reveal, Enter, Stagger, StaggerItem, MotionProvider (respects reduced motion)
   icons.tsx                WhatsApp glyph (Simple Icons) + social icons (Tabler, MIT); lucide has no brand icons

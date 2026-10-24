@@ -3,7 +3,6 @@
 import Link from "next/link";
 import { motion, useReducedMotion, useScroll, useSpring, useTransform } from "motion/react";
 import { useEffect, useRef, useState } from "react";
-import type { MotionValue } from "motion/react";
 import { IllustrativeTag } from "@/components/illustrative-tag";
 import { Button } from "@/components/ui/button";
 import {
@@ -19,11 +18,10 @@ import {
 
 const frameSize: Record<FrameSet, [number, number]> = { wide: [1920, 1080], tall: [960, 720] };
 
-// When the border goes and comes back. lg (pinned, 0 = top enters, 0.435 = top reaches the screen top and sticks,
-// 1 = it scrolls away): opens once the top is 40% down the screen, open until the car has nearly turned. Below lg
-// (0 = top enters, 1 = bottom leaves, 0.5 = centred): opens around the middle of the screen, closes as it leaves.
-const pinnedStops = [0.26, 0.435, 0.85, 1] as const;
-const passingStops = [0.3, 0.45, 0.6, 0.75] as const;
+// When the border goes and comes back, over the section's scroll (0 = its top enters the screen, 0.435 = its top
+// reaches the screen top and sticks, 1 = it scrolls away): opens once the top is 40% down the screen, stays open until
+// the car has nearly turned.
+const stops = [0.26, 0.435, 0.85, 1] as const;
 
 const smooth = { stiffness: 140, damping: 30, mass: 0.5, restDelta: 0.0001 };
 
@@ -34,10 +32,11 @@ const isOpen = (p: number, stops: readonly number[]) => p >= stops[1] && p <= st
  * Home page, above the fleet: a black box with a paper border round it that opens to full width as it scrolls in,
  * stays while the black S-Class turns ~100° (one front three-quarter to the other, never the back; frames rendered by
  * video/tools/render-hero-turn.mjs), then closes back to a card and scrolls away (Nirmal approved it from stills,
- * 2026-10-24). lg and up: the section is 230svh with a sticky one-screen stage (`.sclass-box` in globals.css) when script
- * runs and motion is allowed. Below lg it isn't pinned (Nirmal: pinned with paper bands above and below looked odd on
- * phones): a 4:5 card that opens as it passes the middle of the screen and closes as it leaves, the car turning on the
- * way through. Without script or with reduced motion it is just the card with the first frame as a still.
+ * 2026-10-24). When script runs and motion is allowed the section is 230svh with a sticky one-screen stage
+ * (`.sclass-box` in globals.css), so the page holds while the car turns (Nirmal: it has to stop you scrolling on phones
+ * too). lg and up the box is the screen with a 48px border. Below lg it is the screen clipped to a 4:5 card with a 24px
+ * border, which grows to fill the screen as it opens (a card pinned with paper bands above and below looked odd).
+ * Without script or with reduced motion it is just the card with the first frame as a still.
  * The title and quote button blur-fade in once the box is fully open and out as it starts to close (Nirmal; he asked
  * for "Buy now", but Jhajj'z rents with a chauffeur, so it reads "Get a quote" like the rest of the site).
  * Frame 1 is a plain <picture> (two framings, which next/image can't art-direct) so it shows before JavaScript; the
@@ -54,17 +53,21 @@ export function SClassBox({ car }: { car: { slug: string; model: string; years?:
   const [lg, setLg] = useState<boolean | null>(null);
   const [open, setOpen] = useState(false);
   const lgRef = useRef(false);
-  // lg: from entering the screen until the end of the pinned stretch. Below lg: from entering to leaving the screen.
-  // Both eased through a spring, so a fast flick or a mouse-wheel notch glides through the frames instead of jumping
+  // Eased through a spring, so a fast flick or a mouse-wheel notch glides through the frames instead of jumping
   // (Nirmal: make it smoother).
-  const pinned = useSpring(useScroll({ target: section, offset: ["start end", "end end"] }).scrollYProgress, smooth);
-  const passing = useSpring(useScroll({ target: section, offset: ["start end", "end start"] }).scrollYProgress, smooth);
-  const clipPath = useTransform([pinned, passing] as MotionValue<number>[], ([a, b]: number[]) => {
-    const inset = lgRef.current ? boxInset(a, 48, pinnedStops) : boxInset(b, 24, passingStops);
-    return `inset(${inset.toFixed(1)}px round ${(inset / 3).toFixed(1)}px)`;
+  const progress = useSpring(useScroll({ target: section, offset: ["start end", "end end"] }).scrollYProgress, smooth);
+  const clipPath = useTransform(progress, (p) => {
+    const f = boxInset(p, 1, stops); // 1 = card, 0 = open
+    const el = box.current;
+    if (!el) return "none";
+    // Below lg the card is 4:5 inside the 24px side border, centred; the same sum as `.sclass-box-frame` in globals.css.
+    const [y, x, r] = lgRef.current
+      ? [48, 48, 16]
+      : [Math.max(24, (el.clientHeight - (el.clientWidth - 48) * 1.25) / 2), 24, 8];
+    return `inset(${(y * f).toFixed(1)}px ${(x * f).toFixed(1)}px round ${(r * f).toFixed(1)}px)`;
   });
-  // The car turns from just before the box is fully open until just after it starts to close (lg: over ~1.4 screens).
-  const turn = () => (lgRef.current ? (pinned.get() - 0.3) / 0.6 : (passing.get() - 0.1) / 0.8);
+  // The car turns from just before the box is fully open until just after it starts to close (~1.4 screens of scroll).
+  const turn = () => (progress.get() - 0.3) / 0.6;
 
   useEffect(() => {
     const q = window.matchMedia("(width >= 64rem)");
@@ -78,15 +81,10 @@ export function SClassBox({ car }: { car: { slug: string; model: string; years?:
   }, []);
 
   useEffect(() => {
-    const check = () => setOpen(lgRef.current ? isOpen(pinned.get(), pinnedStops) : isOpen(passing.get(), passingStops));
+    const check = () => setOpen(isOpen(progress.get(), stops));
     check();
-    const offPinned = pinned.on("change", check);
-    const offPassing = passing.on("change", check);
-    return () => {
-      offPinned();
-      offPassing();
-    };
-  }, [lg, pinned, passing]);
+    return progress.on("change", check);
+  }, [progress]);
 
   useEffect(() => {
     const saveData = (navigator as Navigator & { connection?: { saveData?: boolean } }).connection?.saveData ?? false;
@@ -154,8 +152,7 @@ export function SClassBox({ car }: { car: { slug: string; model: string; years?:
     };
 
     start();
-    const offPinned = pinned.on("change", () => draw());
-    const offPassing = passing.on("change", () => draw());
+    const off = progress.on("change", () => draw());
     const onResize = () => {
       if (frameSet(window.innerWidth) !== set) start();
       else draw(true);
@@ -163,22 +160,21 @@ export function SClassBox({ car }: { car: { slug: string; model: string; years?:
     window.addEventListener("resize", onResize);
     return () => {
       gen++;
-      offPinned();
-      offPassing();
+      off();
       window.removeEventListener("resize", onResize);
     };
-    // eslint-disable-next-line react-hooks/exhaustive-deps -- `turn` only reads the progress values and lgRef
-  }, [reduce, pinned, passing]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- `turn` only reads `progress`
+  }, [reduce, progress]);
 
   return (
     <section ref={section} className="sclass-box relative">
-      <div className="sclass-box-stage flex items-center lg:sticky lg:top-0">
-        {/* Phones and tablets: a 4:5 card, 24px border like the page gutter (tall frames); lg and up: the whole screen,
-            48px border (wide frames). */}
+      <div className="sclass-box-stage flex items-center">
+        {/* Phones and tablets: a 4:5 card, 24px border like the page gutter (tall frames); while pinned the box is the
+            whole screen, clipped to that card (globals.css). lg and up: the whole screen, 48px border (wide frames). */}
         <motion.div
           ref={box}
           style={reduce || lg === null ? undefined : { clipPath }}
-          className="relative aspect-[4/5] max-h-[80svh] w-full bg-ink-deep [clip-path:inset(24px_round_8px)] lg:aspect-auto lg:h-svh lg:max-h-none lg:[clip-path:inset(48px_round_16px)]"
+          className="sclass-box-frame relative aspect-[4/5] max-h-[80svh] w-full bg-ink-deep [clip-path:inset(24px_round_8px)] lg:aspect-auto lg:h-svh lg:max-h-none lg:[clip-path:inset(48px_round_16px)]"
         >
           <picture>
             <source media="(max-width: 1023px)" srcSet={frameUrl("tall", 0)} />
@@ -190,27 +186,31 @@ export function SClassBox({ car }: { car: { slug: string; model: string; years?:
             />
           </picture>
           <canvas ref={canvas} aria-hidden="true" className="absolute inset-0 size-full opacity-0" />
-          {/* A 3D model, not the client's own car. Top right, clear of the title; kept inside the card's clip. */}
-          <div className="absolute inset-x-6 top-6 h-9 lg:inset-x-12 lg:top-12">
-            <IllustrativeTag tone="dark" />
+          {/* The card's area (`.sclass-box-card` in globals.css while pinned below lg), so the tag and title sit inside
+              the card even before it opens. */}
+          <div className="sclass-box-card absolute inset-6 lg:inset-12">
+            {/* A 3D model, not the client's own car. Top right, clear of the title. */}
+            <div className="absolute inset-x-0 top-0 h-9">
+              <IllustrativeTag tone="dark" />
+            </div>
+            {/* Always shown under reduced motion (the card doesn't open) and without script (globals.css). Hidden, it is
+                inert so the button can't be tabbed to while invisible. */}
+            <motion.div
+              className="sclass-box-title absolute bottom-0 left-0 text-cream lg:p-10"
+              initial={false}
+              animate={open || reduce ? { opacity: 1, filter: "blur(0px)", y: 0 } : { opacity: 0, filter: "blur(12px)", y: 12 }}
+              transition={{ duration: 0.6, ease: [0.2, 0.7, 0.2, 1] }}
+              inert={!(open || reduce)}
+            >
+              <h2 className="font-serif text-[clamp(32px,3.6vw,48px)] leading-[1.1] tracking-[-0.01em]">
+                {car.model}
+                <span className="ml-3 align-middle font-sans text-[15px] tracking-normal text-cream/60">{car.years}</span>
+              </h2>
+              <Button asChild className="mt-6">
+                <Link href={`/contact?car=${car.slug}`}>Get a quote</Link>
+              </Button>
+            </motion.div>
           </div>
-          {/* Always shown under reduced motion (the card doesn't open) and without script (globals.css). Hidden, it is
-              inert so the button can't be tabbed to while invisible. */}
-          <motion.div
-            className="sclass-box-title absolute bottom-6 left-6 text-cream lg:bottom-12 lg:left-12 lg:p-10"
-            initial={false}
-            animate={open || reduce ? { opacity: 1, filter: "blur(0px)", y: 0 } : { opacity: 0, filter: "blur(12px)", y: 12 }}
-            transition={{ duration: 0.6, ease: [0.2, 0.7, 0.2, 1] }}
-            inert={!(open || reduce)}
-          >
-            <h2 className="font-serif text-[clamp(32px,3.6vw,48px)] leading-[1.1] tracking-[-0.01em]">
-              {car.model}
-              <span className="ml-3 align-middle font-sans text-[15px] tracking-normal text-cream/60">{car.years}</span>
-            </h2>
-            <Button asChild className="mt-6">
-              <Link href={`/contact?car=${car.slug}`}>Get a quote</Link>
-            </Button>
-          </motion.div>
         </motion.div>
       </div>
     </section>
