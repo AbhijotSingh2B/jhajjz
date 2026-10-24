@@ -1,0 +1,50 @@
+<!doctype html>
+<html><head><meta charset="utf-8">
+<script>window.__hf=window.__hf||{};window.__hf.buildReady=window.__hf.buildReady||{};</script>
+<script src="./vendor/gsap.min.js"></script>
+<link rel="stylesheet" href="./shared/film.css">
+<script type="importmap">{"imports":{"three":"./vendor/three.module.js","three/addons/":"./vendor/addons/"}}</script>
+</head>
+<body>
+<div id="root" data-composition-id="root" data-width="1080" data-height="1920" data-duration="15" data-fps="60">
+  <canvas id="gl" width="1080" height="1920"></canvas>
+
+  <!-- shot 1: hook -->
+  <div class="hook">
+    <h1 class="hook-name"><span class="w" id="hookName">Jhajj'z</span></h1>
+    <p class="hook-line"><span class="w" id="hw1">Chauffeur-driven</span> <span class="w" id="hw2">since 1998.</span></p>
+  </div>
+
+  <!-- car titles: same position for all three -->
+  <div class="title" id="tGhost"><h2><span class="mask"><span class="in">Rolls-Royce Ghost</span></span></h2></div>
+  <div class="title" id="tS"><h2><span class="mask"><span class="in">Mercedes-Benz S-Class</span></span></h2><p><span class="mask"><span class="in">2021 onwards</span></span></p></div>
+  <div class="title" id="tRR"><h2><span class="mask"><span class="in">Range Rover Autobiography</span></span></h2><p><span class="mask"><span class="in">2022 onwards</span></span></p></div>
+
+  <!-- shot 5: services -->
+  <div class="services" id="services">
+    <span class="sl" id="s1">Weddings, VIP visits,</span>
+    <span class="sl" id="s2">corporate travel and</span>
+    <span class="sl" id="s3">airport transfers.</span>
+  </div>
+
+  <div class="tag" id="tag">3D illustration</div>
+
+  <!-- shot 6: map -->
+  <div class="mapfield" id="mapfield">
+    <p class="map-line" id="mapLine">Head office in Chandigarh, serving pan-India.</p>
+    <div class="mapwrap" id="mapwrap"><svg id="map" viewBox="0 0 400 446"></svg></div>
+  </div>
+
+  <!-- shot 7: end card -->
+  <div class="endcard" id="endcard">
+    <div class="endinner" id="endinner">
+      <svg class="mono" id="mono" viewBox="0 0 497 1011"><path id="j1"/><path id="j2"/></svg>
+      <div class="end-name">Jhajj'z</div>
+      <div class="end-cta">Talk to us on WhatsApp</div>
+      <div class="end-phone">+91 98036 00001</div>
+      <div class="end-url">jhajjz.in</div>
+    </div>
+  </div>
+</div>
+<script type="module" src="./shared/film.js"></script>
+</body></html>

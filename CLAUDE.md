@@ -145,6 +145,7 @@ lib/seo.ts                 `openGraphBase` (spread into every page's openGraph; 
                            banner on every page for now; custom per-page banners later
 scripts/make-previews.mjs  `npm run previews` redraws the banner (Ghost head-on, sides filled from the photo, no bars)
 lib/india-map.ts           Map path + city positions (generated with mapshaper; source and method in the file header)
+video/                     15 s 3D Reel of three cars (own package; see video/README.md), kept out of the site build
 lib/site.ts                ALL client facts: contact, cities, services, fleet, photos. Edit here, not in pages.
 ```
 

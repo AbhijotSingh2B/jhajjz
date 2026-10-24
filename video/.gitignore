@@ -1,0 +1,7 @@
+node_modules/
+dev/
+models/src/
+review/dev-shots/
+tests/
+renders/
+*.wav

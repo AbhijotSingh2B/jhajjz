@@ -12,6 +12,8 @@ const eslintConfig = defineConfig([
     "out/**",
     "build/**",
     "next-env.d.ts",
+    // The motion video (video/) is its own project with its own dependencies.
+    "video/**",
   ]),
 ]);
 
