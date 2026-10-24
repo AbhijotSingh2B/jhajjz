@@ -1,4 +1,4 @@
-# Home page motion: pre-rendered S-Class + scroll effects
+# Home page motion: pre-rendered S-Class hero + scroll effects
 
 Agreed with Nirmal, 2026-10-24. Not pushed to `main` until he says so (commits stay local).
 
@@ -10,36 +10,45 @@ Jhajj'z, never templated (CLAUDE.md "avoid" list), and fast on an iPhone.
 
 ## Decisions
 
-- Keep the current sections and order; add motion only.
+- Keep the current sections and order; add motion only. The hero's background changes (below); its copy doesn't.
 - Both kinds of 3D: depth effects across the page, plus one 3D car moment.
 - The car is the **Mercedes-Benz S-Class W223** model already in `video/models/src/sclass/` (black, like the
   client's S-Class 2021 onwards).
 - The car is **pre-rendered at full quality** (no optimising the model) and played back frame by frame on scroll,
   instead of running three.js on the site.
-- Placement: the fleet intro (my recommendation; Nirmal hasn't objected — confirm when reviewing this spec).
+- **Placement: the hero** (Nirmal). The hero becomes a dark studio; the client's hero photo leaves the hero but stays
+  the link-preview image (`heroImage`, Open Graph / JSON-LD unchanged).
 
-## 1. S-Class turn (fleet intro)
+## 1. S-Class hero
+
+**Look**
+- Ink background (`bg-ink-deep`, as now) lit like a studio: the black S-Class with soft overhead light, a faint
+  floor reflection and contact shadow, champagne-gold highlight on the paint edges only. No gradient blobs or glow.
+- Headline, line ("Head office in Chandigarh, serving pan-India"), buttons and booking bar stay as they are. On wide
+  screens the car sits to the right of the text column; on phones the car sits above the text, text below. Shading
+  stays placed from the text column (`.hero-shade`) where the car and text overlap.
 
 **Rendering (offline, in `video/`)**
-- A new render script reuses the Reel's studio (`video/shared/studio.js`) and the `sclass` entry in
-  `video/shared/cars.js` (unpose prep, `Paint` material, paint `#0b0c0e`).
-- Camera fixed, three-quarter front view at roughly bonnet height; the car turns ~180° on its axis
-  (front three-quarter → side → rear three-quarter). Background is paper `#F4F2EE` with a soft contact shadow,
-  so frames sit on the page with no visible box.
-- 120 frames, eased so the turn starts and ends gently. Output WebP:
-  `public/sclass-turn/1920/0001.webp…` (desktop) and `public/sclass-turn/960/…` (phones). Target a total of
-  ~3–5 MB for the phone set, ~8–12 MB for desktop; tune quality to hit it.
-- Frames are committed (they are site assets); the render script lives in `video/` and is documented in
-  `video/README.md`.
+- A new render script reuses the Reel's studio (`video/shared/studio.js`, with an ink background variant) and the
+  `sclass` entry in `video/shared/cars.js` (unpose prep, `Paint` material, paint `#0b0c0e`).
+- Camera fixed at roughly bonnet height; the car turns ~180° on its axis (front three-quarter → side → rear
+  three-quarter), eased at both ends. Background exactly the hero's ink so frames sit on the page with no box.
+- 120 frames, WebP, two framings because phone and desktop place the car differently:
+  `public/sclass-turn/wide/1920/0001.webp…` and `public/sclass-turn/tall/960/…`. Targets: phone set ~3–5 MB,
+  desktop ~8–12 MB; tune quality to hit them.
+- Frames are committed (site assets); the render script lives in `video/` and is documented in `video/README.md`.
 - Window glass currently renders fully clear (Reel handoff note): fix before the final render.
 
 **Playback (site)**
-- `components/scroll-sequence.tsx` (client): a sticky `<canvas>` inside a section ~200svh tall; `useScroll`
-  progress → frame index → `drawImage`. Picks the 960 or 1920 set from viewport width × devicePixelRatio.
-- Frame 1 is a normal `<img>` (via `Photo`) so it shows before JavaScript; remaining frames load in order once the
-  section is within ~1 screen (IntersectionObserver), drawing the nearest loaded frame meanwhile.
-- After the turn, the existing heading and fleet cards follow as they do now.
-- Reduced motion or no JavaScript: just the still (frame 1, or a chosen hero frame), no pinning.
+- `components/scroll-sequence.tsx` (client): the hero becomes ~200svh tall with a sticky full-screen stage;
+  `useScroll` progress → frame index → `drawImage` on a `<canvas>`. Picks the set from viewport shape and width ×
+  devicePixelRatio.
+- Frame 1 is the hero's LCP image: a normal `<img>` (via `Photo`, `priority`/preloaded) so it shows before
+  JavaScript and the first screen stays as fast as now. The other frames load in order after the page is idle,
+  drawing the nearest loaded frame meanwhile.
+- While the car turns, the headline block drifts up and fades a little; the booking bar arrives after the turn as now.
+- Splash: the monogram still flies to the header logo; the hero's first frame is what appears behind it.
+- Reduced motion or no JavaScript: hero is normal height with the still frame, no pinning or turning.
 - Layout checked from 344px to 3440px; the canvas keeps the car's aspect and never widens its column.
 
 **Open**
@@ -50,8 +59,6 @@ Jhajj'z, never templated (CLAUDE.md "avoid" list), and fast on an iPhone.
 
 ## 2. Scroll effects (existing `motion` library)
 
-- **Hero:** photo pushes in slowly with scroll; headline block drifts up slightly faster than the page (parallax).
-  Booking bar unchanged.
 - **Weddings band:** starts inset with a paper border and rounded corners (`clip-path: inset(… round …)`), and the
   inset shrinks to 0 as the band reaches mid-screen, so the photo becomes full-bleed. Text fades up once it's full.
 - **Fleet cards:** on `(hover: hover)` devices only, a slight tilt toward the pointer (≤4°, eased); touch keeps the
@@ -72,9 +79,9 @@ Jhajj'z, never templated (CLAUDE.md "avoid" list), and fast on an iPhone.
 
 - Production build (`npm run build && npx next start -p 3001`), checked in the browser at 344, 390, 768, 1440 and
   3440px; scroll through each effect, then again with reduced motion.
-- Network: phone width downloads only the 960 frames; first screen weight unchanged.
+- Network: phone width downloads only the phone frames; first screen weight about the same as today's hero photo.
 - Nirmal checks on his iPhone after he approves a push (Safari can't be tested here).
 
 ## Not in scope
 
-- Layout or section changes, new copy, a live three.js scene, other pages.
+- Section order or copy changes, a live three.js scene, other pages.
