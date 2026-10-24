@@ -68,7 +68,7 @@ Jhajj'z, never templated (CLAUDE.md "avoid" list), and fast on an iPhone.
 - Scroll-linked motion follows the scroll position (no timed playback); UI motion stays ≤300ms.
   `prefers-reduced-motion` disables all of it (static layout, weddings band full-bleed).
 
-## Taste review (design-taste-frontend, 2026-10-24) — proposals, not yet agreed
+## Taste review (design-taste-frontend, 2026-10-24) — hero and headline agreed by Nirmal
 
 Before: `.taste-skill/before/` (production build, 1440/768/390). Inspector: 4 FAIL, 5 WARN.
 - **Real:** hero headline wraps to 3 lines at 1440px and 4 at 390px (rule: 2 at most). 13 font sizes in use (rule: ~5).
@@ -81,8 +81,8 @@ sections stay (agreed). Adapted for the S-Class hero:
   on desktop and above the text on phones. Nothing else glows; gold only on the primary button.
 - Headline modest and short, two lines bottom-left at the existing serif; one supporting sentence in the dimmer ink
   beside it (desktop) or under it (phone). Header unchanged.
-- Headline copy proposal (fits two lines, facts only): **"Chauffeur-driven since 1998."** with "From a Rolls-Royce to
-  a Volvo coach" moving into the supporting sentence. Needs Nirmal's OK (wording he set elsewhere stays).
+- Headline (agreed): **"Chauffeur-driven since 1998."** with "From a Rolls-Royce to a Volvo coach" moving into the
+  supporting sentence. The line "Head office in Chandigarh, serving pan-India" stays word for word.
 
 ## Skills used
 
