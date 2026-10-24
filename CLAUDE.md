@@ -32,6 +32,7 @@ changes need none) and make it in the same commit:
 npm install
 npm run dev     # http://localhost:3000
 npm run build
+npm test        # lib/*.test.mjs (Node's test runner): scroll maths + S-Class frame files
 ```
 
 ## Git workflow
@@ -82,7 +83,7 @@ before pushing, and merge (never force-push) if someone else's commit arrives.
 
 ```
 app/
-  page.tsx                 Home: hero, booking bar, fleet preview, weddings photo band, "Who we drive for"
+  page.tsx                 Home: hero, booking bar, S-Class box, fleet preview, weddings photo band, "Who we drive for"
                            (one row per group), "Chandigarh, since 1998" about + city list
   fleet/page.tsx           Full fleet with search + filter tabs (components/fleet-browser.tsx). Searching lists
                            individual cars, each with its class linked underneath (classes without cars, i.e. coaches, as a card),
@@ -132,6 +133,11 @@ components/
                            `@media (scripting: enabled)`, so photos still show with JavaScript off
   car-preview.tsx          Small photo + name card: "Also in our fleet" (other model years) under the quote buttons and
                            the "Looking at other cars?" row (swipe row on phones, grid on wider screens)
+  sclass-box.tsx           Home, above the fleet: black box with a paper border that opens to full width on scroll while
+                           a pre-rendered black S-Class turns ~100° (never the back; 120 WebP frames per framing in
+                           public/sclass-turn, rendered by video/tools/render-hero-turn.mjs), then closes; "S-Class"
+                           title + "Get a quote" blur-fade in while open (Nirmal asked "Buy now"; they rent, not sell).
+                           Pinned from lg, a passing 4:5 card on phones. Maths in lib/scroll-motion.ts (tested)
   india-map.tsx            India outline (lib/india-map.ts, Survey of India boundary) + city dots, beside "Pan-India, including"
   motion.tsx               Reveal, Enter, Stagger, StaggerItem, MotionProvider (respects reduced motion)
   icons.tsx                WhatsApp glyph (Simple Icons) + social icons (Tabler, MIT); lucide has no brand icons
@@ -253,6 +259,8 @@ The v0 reference design (`redesign-jhajjz-in.zip`) got several facts wrong — n
       and re-run `npm run save-photos`.
       They carry a "For illustrative purposes only" corner tag (components/illustrative-tag.tsx), which goes with them.
       The Fleet menu card (site-header.tsx) uses `studio.sClass`: swap it for a client photo of a car on plain ground.
+- [ ] The home S-Class box (components/sclass-box.tsx) is a 3D model, not the client's car (tagged "For illustrative
+      purposes only"). Its author and licence aren't recorded (video/CREDITS.md): find them, and add a credit if needed.
 - [ ] Vercel Web Analytics is in the code (`<Analytics />` in layout.tsx, described in the privacy policy); it only
       collects once Web Analytics is enabled on the project in the Vercel dashboard. Hobby: 50,000 events a month
       shared by every project on the account, 1-month window, no custom events (Vercel docs, Oct 2026).

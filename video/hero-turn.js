@@ -7,11 +7,14 @@ import { CARS } from './shared/cars.js';
 const INK = '#0e0e0d'; // --color-ink-deep, the hero's background on the site
 const FRAMES = 120;
 const START = -Math.PI / 4; // front three-quarter, nose toward the text on the left
+// Ends on the other front three-quarter (side a little more open), never showing the back (Nirmal: stop around here).
+const TURN = 0.95 + Math.PI / 4;
 
-// wide: tablets and up, car right of centre (the headline sits in the empty left). tall: phones, car centred above the text.
+// Both centred, the car about half the box width. wide: the full-screen box at lg and up. tall: the shorter box on
+// phones and tablets (60% of the screen), car across most of its width.
 export const LAYOUTS = {
-  wide: { width: 1920, height: 1080, dist: 10.5, shift: -0.17 },
-  tall: { width: 960, height: 720, dist: 9.5, shift: 0 },
+  wide: { width: 1920, height: 1080, dist: 7.6, shift: 0 },
+  tall: { width: 960, height: 720, dist: 8.6, shift: 0 },
 };
 
 const sclass = { ...CARS.find(c => c.id === 'sclass'), pos: [0, 0], heading: 0 };
@@ -49,7 +52,7 @@ window.renderTurn = async (layout, i) => {
   const s = await studioFor(layout), L = LAYOUTS[layout], root = s.cars.sclass.root;
   const out = document.createElement('canvas'); out.width = L.width; out.height = L.height;
   const g = out.getContext('2d');
-  root.rotation.y = START + smoother(i / (FRAMES - 1)) * Math.PI;
+  root.rotation.y = START + smoother(i / (FRAMES - 1)) * TURN;
 
   root.scale.y = -1; root.updateMatrixWorld(true); s.render();
   const mirror = document.createElement('canvas'); mirror.width = L.width; mirror.height = L.height;

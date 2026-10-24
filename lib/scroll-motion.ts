@@ -4,7 +4,7 @@
 /** Frames in each rendered set of the S-Class turn (public/sclass-turn/<set>/0001–0120.webp). */
 export const FRAME_COUNT = 120;
 
-/** "wide" = 1920×1080 frames for tablets and up, "tall" = 960×720 frames for phones. */
+/** "wide" = 1920×1080 frames with the car right of the headline (lg and up), "tall" = 960×720 frames with the car above it. */
 export type FrameSet = "wide" | "tall";
 
 const clamp01 = (x: number) => Math.min(1, Math.max(0, x));
@@ -14,9 +14,9 @@ export function frameIndex(progress: number, count: number = FRAME_COUNT): numbe
   return Math.round(clamp01(progress) * (count - 1));
 }
 
-/** Phones (below Tailwind's md, 768px) get the tall framing. */
+/** Below Tailwind's lg (1024px) the headline would cover the car in the wide framing, so phones and tablets get the tall one. */
 export function frameSet(viewportWidth: number): FrameSet {
-  return viewportWidth < 768 ? "tall" : "wide";
+  return viewportWidth < 1024 ? "tall" : "wide";
 }
 
 export function frameUrl(set: FrameSet, index: number): string {
@@ -41,6 +41,25 @@ export function shouldLoadSequence({ reducedMotion, saveData }: { reducedMotion:
 export function insetAt(progress: number, max: number): number {
   const eased = 1 - (1 - clamp01(progress)) ** 2;
   return max * (1 - eased);
+}
+
+const smoothstep = (t: number) => t * t * (3 - 2 * t);
+
+/**
+ * Inset (px) of the S-Class box over its section's scroll progress: a card with the full `max` border until
+ * `openStart` (so it doesn't open before it is properly in view; Nirmal), opening to 0 by `openEnd`, open while the car
+ * turns, closing from `closeStart` back to `max` by `closeEnd`. Both changes ease in and out.
+ */
+export function boxInset(
+  progress: number,
+  max: number,
+  [openStart, openEnd, closeStart, closeEnd]: readonly [number, number, number, number],
+): number {
+  const p = clamp01(progress);
+  if (p <= openStart || p >= closeEnd) return max;
+  if (p < openEnd) return max * (1 - smoothstep((p - openStart) / (openEnd - openStart)));
+  if (p <= closeStart) return 0;
+  return max * smoothstep((p - closeStart) / (closeEnd - closeStart));
 }
 
 /** Card tilt toward the pointer: 0 at the centre, ±max degrees at the edges (top edge tips toward the viewer). */

@@ -12,18 +12,19 @@ npx hyperframes render . --fps 60 -o renders/film.mp4     # full film
 
 Car models: free CC-BY Sketchfab models (CREDITS.md), kept out of git in models/src/; optimised copies in models/.
 
-## Website hero frames
+## Website S-Class frames
 
-The site's home hero (components/hero-turn.tsx) plays the S-Class turning ~180° from 120 pre-rendered frames:
-`hero-turn.html` / `hero-turn.js` (the studio on the hero's ink `#0e0e0d`, overhead light, floor reflection), saved by
+The home page's S-Class box (components/sclass-box.tsx; first planned as the hero, hence the file names) plays the
+S-Class turning ~100° (front three-quarter to front three-quarter, never the back) from 120 pre-rendered frames:
+`hero-turn.html` / `hero-turn.js` (the studio on the box's ink `#0e0e0d`, overhead light, floor reflection), saved by
 
 ```bash
 node tools/render-hero-turn.mjs                       # all frames → ../public/sclass-turn/{wide,tall}/0001–0120.webp
 node tools/render-hero-turn.mjs --frames 1,60,120 --out <dir>   # stills to check the look first
 ```
 
-It uses the system Chrome (`CHROME_PATH` to override). `wide` is 1920×1080 with the car right of centre, `tall` is
-960×720 for phones. `npm test` in the site checks every frame exists, the size budget and the ink corners.
+It uses the system Chrome (`CHROME_PATH` to override). `wide` is 1920×1080 for the full-screen box (lg and up), `tall`
+is 960×720 for the phone/tablet card; the car is centred in both, about half the box width. `npm test` in the site checks every frame exists, the size budget and the ink corners.
 
 ## Where this stopped (handoff, 2026-10-24)
 

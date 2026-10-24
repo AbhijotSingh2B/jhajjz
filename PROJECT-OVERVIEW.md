@@ -16,7 +16,8 @@ Mohali/Chandigarh, serving pan-India). Replaces jhajjz.in on Wix. Built by Nirma
 
 ## Pages
 
-- **Home**: hero, short quote starter, fleet classes, weddings, "Who we drive for", about + India map.
+- **Home**: hero, short quote starter, a 3D S-Class that turns on scroll in a box that opens to full width (with a quote
+  button), fleet classes, weddings, "Who we drive for", about + India map.
   The entry screen (logo animation) plays here only, once per tab.
 - **Fleet**: 10 classes with search and filters (each card lists 3 cars, then "Show N more"); a page per class and
   per car (34 cars). Cars in more than one colour have a colour picker (with All) that carries into the quote.

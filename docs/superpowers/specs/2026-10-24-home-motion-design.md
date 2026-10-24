@@ -2,6 +2,13 @@
 
 Agreed with Nirmal, 2026-10-24. Not pushed to `main` until he says so (commits stay local).
 
+**Changed after building the hero (Nirmal, 2026-10-24):** the hero stays the photo hero. The S-Class turn moved into
+its own box above "The cars and coaches we run" (components/sclass-box.tsx), approved from stills: a black box with a
+paper border that opens to full width once properly in view, the car turning ~100° (never the back), then closing
+again; an "S-Class" title and "Get a quote" button blur-fade in while it is open. Pinned (230svh) from lg; on phones a
+4:5 card that isn't pinned. Section 1 below describes the earlier hero version; the frames, loading and fallbacks
+carried over.
+
 ## Goal
 
 Give the home page more depth and movement without changing its sections or their order (hero, booking bar,
@@ -31,8 +38,8 @@ Jhajj'z, never templated (CLAUDE.md "avoid" list), and fast on an iPhone.
 **Rendering (offline, in `video/`)**
 - A new render script reuses the Reel's studio (`video/shared/studio.js`, with an ink background variant) and the
   `sclass` entry in `video/shared/cars.js` (unpose prep, `Paint` material, paint `#0b0c0e`).
-- Camera fixed at roughly bonnet height; the car turns ~180° on its axis (front three-quarter → side → rear
-  three-quarter), eased at both ends. Background exactly the hero's ink so frames sit on the page with no box.
+- Camera fixed at roughly bonnet height; the car turns ~100° on its axis (front three-quarter → the other front
+  three-quarter; Nirmal: never show the back), eased at both ends, over half a screen of scroll (150svh hero). Background exactly the hero's ink so frames sit on the page with no box.
 - 120 frames, WebP, two framings because phone and desktop place the car differently:
   `public/sclass-turn/wide/1920/0001.webp…` and `public/sclass-turn/tall/960/…`. Targets: phone set ~3–5 MB,
   desktop ~8–12 MB; tune quality to hit them.

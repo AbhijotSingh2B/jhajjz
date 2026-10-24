@@ -9,8 +9,9 @@ import { Enter, Reveal, Stagger, StaggerItem } from "@/components/motion";
 import { Button } from "@/components/ui/button";
 import { ContactDialog } from "@/components/contact-dialog";
 import { IndiaMap } from "@/components/india-map";
-import { cities, classHref, fleet, heroPhoto, photos, serviceGroups } from "@/lib/site";
+import { cars, cities, classHref, fleet, heroPhoto, photos, serviceGroups } from "@/lib/site";
 import { PageTransition } from "@/components/page-transition";
+import { SClassBox } from "@/components/sclass-box";
 
 // Home only shows classes that have a photo.
 const withPhoto = (slug: string) => {
@@ -33,6 +34,9 @@ const groupLinks: Record<string, { label: string; href: string }> = {
   "Corporate & VIP": { label: "Ask about corporate travel", href: "/contact?occasion=Corporate%20%2F%20VIP" },
   "Personal travel": { label: "Book a chauffeur", href: "/contact" },
 };
+
+// Only what the S-Class box shows goes to the client.
+const pick = ({ slug, model, years }: (typeof cars)[number]) => ({ slug, model, years });
 
 export default function Home() {
   return (
@@ -97,6 +101,9 @@ export default function Home() {
           </section>
 
           {/* Fleet preview */}
+          {/* The 3D model is the 2021-onwards generation (W223), so the title and quote link use that car. */}
+          <SClassBox car={pick(cars.find((c) => c.slug === "mercedes-benz-s-class")!)} />
+
           <section id="fleet" className="py-[72px] md:py-28">
             <div className="mx-auto max-w-[1200px] px-6">
               <Reveal className="mb-10 flex flex-wrap items-end justify-between gap-4">

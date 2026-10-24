@@ -13,5 +13,6 @@ Known problems with the site. Add what you find and can't fix right away; delete
   `[0.2, 0.7, 0.2, 1]` curve is typed in about 12 places instead of one token.
 
 - **Not yet checked on a real iPhone / TV** (the sandbox has Chromium only). Nirmal to check on his iPhone: both date
-  fields (look, picking, the × clearing), sending a quote opens WhatsApp filled in, the header hiding on scroll, holding a card presses it in slightly, links and buttons dim, both easing in and out. On a
+  fields (look, picking, the × clearing), sending a quote opens WhatsApp filled in, the header hiding on scroll, holding a card presses it in slightly, links and buttons dim, both easing in and out; the home S-Class box (smooth
+  turn while scrolling, border opening and closing, no jump when the address bar hides). On a
   smart TV if possible: the Day/Month/Year date dropdowns.
