@@ -188,6 +188,8 @@ The v0 reference design (`redesign-jhajjz-in.zip`) got several facts wrong — n
   Also avoid (caught in a 2026-10-17 audit): icons inside coloured squares (feature cards, popup headers, option
   lists), three-equal-cards feature grids, boxes with a gold left stripe, a → after every link (one per screen at
   most), browser-default UI that clashes with the palette (e.g. the blue search clear ×).
+- Form field and icon-button edges use `border-field` (3:1 on white and paper; `line` was too faint), `white/35` on ink.
+  Every focusable control shows a focus style: never `outline-none` without a `focus-visible:` replacement.
 - Running text 17px in `text-body` (`text-muted` only for secondary notes); nothing readable under 13px. Touch targets ≥44px.
 - No thin lines between sections or rows (services, cities, contact list, footer): space or a background shade instead.
   Lines stay on the car details table and form fields.

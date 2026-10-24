@@ -50,7 +50,7 @@ export function NavigationMenuTrigger({
 }: React.ComponentProps<typeof NavigationMenuPrimitive.Trigger>) {
   return (
     <NavigationMenuPrimitive.Trigger
-      className={cn("group inline-flex h-11 items-center gap-1.5 px-3 text-[15px] outline-none transition-colors", className)}
+      className={cn("group inline-flex h-11 items-center gap-1.5 px-3 text-[15px] transition-colors", className)}
       {...props}
     >
       {children}

@@ -50,7 +50,7 @@ export function FleetBrowser() {
   const [top, more] = direct.length > 0 && direct.length < shown.length ? [direct, shown.filter((r) => !r.direct)] : [shown, []];
 
   const grid = (list: Result[], offset: number, spacing = "mt-10") => (
-    <motion.div layout transition={typing ? instant : undefined} className={cn("grid grid-cols-[repeat(auto-fill,minmax(320px,1fr))] gap-x-6 gap-y-10", spacing)}>
+    <motion.div layout transition={typing ? instant : undefined} className={cn("grid grid-cols-[repeat(auto-fill,minmax(min(320px,100%),1fr))] gap-x-6 gap-y-10", spacing)}>
       <AnimatePresence mode="popLayout">
         {list.map((r, j) => {
           const i = offset + j;
@@ -88,7 +88,7 @@ export function FleetBrowser() {
           onFocus={() => setTyping(true)}
           onChange={(e) => setQuery(e.target.value)}
           placeholder="Search by brand or type"
-          className="h-12 w-full border border-line bg-white pr-12 pl-11 text-base text-ink outline-none transition-colors hover:border-ink/40 focus:border-ink [&::-webkit-search-cancel-button]:appearance-none"
+          className="h-12 w-full border border-field bg-white pr-12 pl-11 text-base text-ink outline-none transition-colors hover:border-ink/70 focus:border-ink [&::-webkit-search-cancel-button]:appearance-none"
         />
         {query && (
           <button

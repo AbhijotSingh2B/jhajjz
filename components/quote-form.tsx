@@ -64,7 +64,7 @@ export function QuoteForm() {
   }
 
   const inputClass =
-    "h-12 w-full border-b border-white/30 bg-transparent text-[17px] text-cream outline-none transition-colors placeholder:text-muted-dark hover:border-white/60 focus:border-gold";
+    "h-12 w-full border-b border-white/35 bg-transparent text-[17px] text-cream outline-none transition-colors placeholder:text-muted-dark hover:border-white/60 focus:border-gold";
 
   return (
     <div className="relative">
@@ -236,7 +236,7 @@ export function QuoteForm() {
                   name="notes"
                   defaultValue={params.get("notes") ? `I'm looking for: ${params.get("notes")}` : ""}
                   rows={4}
-                  className="w-full resize-y border border-white/30 bg-transparent p-3 text-base text-cream outline-none transition-colors hover:border-white/60 focus:border-gold"
+                  className="w-full resize-y border border-white/35 bg-transparent p-3 text-base text-cream outline-none transition-colors hover:border-white/60 focus:border-gold"
                 />
               </DarkField>
             </div>

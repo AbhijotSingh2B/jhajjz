@@ -10,6 +10,8 @@
   --color-sand: #eae6de;
   --color-stone: #e3dfd7;
   --color-line: #ddd8ce;
+  /* Edge of a form field or icon button: 3:1 on white and paper (`line` is too faint to show where a field is). */
+  --color-field: #8e8a81;
   --color-muted: #5f5c55;
   --color-muted-dark: #a9a59c;
   --color-cream: #fbfaf7;

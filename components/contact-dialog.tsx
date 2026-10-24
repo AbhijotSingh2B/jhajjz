@@ -303,7 +303,7 @@ function CopyButton({ value }: { value: string }) {
       type="button"
       onClick={copy}
       aria-label={`Copy ${value}`}
-      className="flex size-11 items-center justify-center border border-line text-muted transition-colors duration-200 hover:border-ink/40 hover:text-ink"
+      className="flex size-11 items-center justify-center border border-field text-muted transition-colors duration-200 hover:border-ink/70 hover:text-ink"
     >
       <AnimatePresence mode="wait" initial={false}>
         <motion.span

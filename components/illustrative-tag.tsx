@@ -11,7 +11,8 @@ export function IllustrativeTag({ tone = "light" }: { tone?: "light" | "dark" })
     <span
       className={cn(
         "pointer-events-none absolute right-2.5 bottom-2 text-[13px] leading-none",
-        tone === "dark" ? "text-cream/45" : "text-muted/60",
+        // Full `muted` (5:1 on sand and stone) and cream/70 (8.9:1 on ink): fainter failed 4.5:1 at this size.
+        tone === "dark" ? "text-cream/70" : "text-muted",
       )}
     >
       For illustrative purposes only

@@ -22,9 +22,9 @@ export function SelectTrigger({
         "group flex h-12 w-full items-center justify-between gap-2 px-3 text-left text-base transition-colors duration-200 outline-none",
         "data-[placeholder]:text-muted",
         tone === "light" &&
-          "border border-line bg-white text-ink hover:border-ink/40 focus-visible:border-gold-deep data-[state=open]:border-ink",
+          "border border-field bg-white text-ink hover:border-ink/70 focus-visible:border-ink data-[state=open]:border-ink",
         tone === "dark" &&
-          "border-b border-white/30 bg-transparent px-0 text-cream hover:border-white/60 data-[state=open]:border-gold data-[placeholder]:text-muted-dark",
+          "border-b border-white/35 bg-transparent px-0 text-cream hover:border-white/60 focus-visible:border-gold data-[state=open]:border-gold data-[placeholder]:text-muted-dark",
         className,
       )}
       {...props}
