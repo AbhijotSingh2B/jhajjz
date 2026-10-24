@@ -100,9 +100,10 @@ function contactShadowTexture() {
 }
 
 // ---- the studio ---------------------------------------------------------------------------------------------------
-export async function createStudio(canvas, { cars, pixelRatio = 1 }) {
+/** width/height/background default to the Reel's portrait paper studio; the home hero passes its own (hero-turn.js). */
+export async function createStudio(canvas, { cars, pixelRatio = 1, width = W, height = H, background = BRAND.paper }) {
   const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, preserveDrawingBuffer: true, powerPreference: 'high-performance' });
-  renderer.setPixelRatio(pixelRatio); renderer.setSize(W, H, false);
+  renderer.setPixelRatio(pixelRatio); renderer.setSize(width, height, false);
   renderer.outputColorSpace = THREE.SRGBColorSpace;
   renderer.toneMapping = THREE.ACESFilmicToneMapping; renderer.toneMappingExposure = 1.0;
   renderer.shadowMap.enabled = true; renderer.shadowMap.type = THREE.PCFSoftShadowMap;
@@ -110,7 +111,7 @@ export async function createStudio(canvas, { cars, pixelRatio = 1 }) {
   const scene = new THREE.Scene();
   // Background and fog: authored brighter than paper so that, after ACES, the rendered pixel lands on #F4F2EE.
   // BG_GAIN is tuned by measuring the render (see tools/measure-bg.mjs).
-  const bg = new THREE.Color(BRAND.paper).multiplyScalar(window.__BG_GAIN ?? 1.0);
+  const bg = new THREE.Color(background).multiplyScalar(window.__BG_GAIN ?? 1.0);
   scene.background = bg;
   scene.fog = new THREE.Fog(bg, 40, 90);
 
@@ -144,7 +145,7 @@ export async function createStudio(canvas, { cars, pixelRatio = 1 }) {
     const a = i * (NX + 1) + k, b = a + 1, c2 = a + NX + 1, d = c2 + 1; idx.push(a, c2, b, b, c2, d);
   }
   cycGeo.setIndex(idx); cycGeo.setAttribute('position', new THREE.Float32BufferAttribute(pos, 3)); cycGeo.computeVertexNormals();
-  const cycMat = new THREE.MeshStandardMaterial({ color: new THREE.Color(BRAND.paper), roughness: 0.55, metalness: 0, envMapIntensity: 0.35 });
+  const cycMat = new THREE.MeshStandardMaterial({ color: new THREE.Color(background), roughness: 0.55, metalness: 0, envMapIntensity: 0.35 });
   const cyc = new THREE.Mesh(cycGeo, cycMat); cyc.receiveShadow = true; scene.add(cyc);
 
   // Lights: soft key from the left, fill from the right, warm rim behind; one shadow-casting sun from high left.
@@ -157,7 +158,7 @@ export async function createStudio(canvas, { cars, pixelRatio = 1 }) {
   const fill = new THREE.DirectionalLight(0xf2f4ff, 0.6); fill.position.set(16, 8, 12); scene.add(fill);
   const rim = new THREE.DirectionalLight(0xffe2bd, 1.6); rim.position.set(4, 10, -26); scene.add(rim);
 
-  const camera = new THREE.PerspectiveCamera(32, W / H, 0.05, 200);
+  const camera = new THREE.PerspectiveCamera(32, width / height, 0.05, 200);
 
   const loaded = [];
   const shadowTex = contactShadowTexture();
@@ -178,8 +179,8 @@ export async function createStudio(canvas, { cars, pixelRatio = 1 }) {
     camera.position.copy(pos); camera.up.set(Math.sin(roll), Math.cos(roll), 0); camera.lookAt(target);
     if (camera.fov !== fov) { camera.fov = fov; camera.updateProjectionMatrix(); }
   }
-  function project(v) { const p = v.clone().project(camera); return { x: (p.x + 1) / 2 * W, y: (1 - p.y) / 2 * H }; }
+  function project(v) { const p = v.clone().project(camera); return { x: (p.x + 1) / 2 * width, y: (1 - p.y) / 2 * height }; }
 
   await renderer.compileAsync(scene, camera);
-  return { renderer, scene, camera, cars: byId, toWorld, setCamera, setStrip, project, render: () => renderer.render(scene, camera), key };
+  return { renderer, scene, camera, cars: byId, toWorld, setCamera, setStrip, project, render: () => renderer.render(scene, camera), key, fill, rim, hemi, cyc };
 }

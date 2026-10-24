@@ -12,6 +12,19 @@ npx hyperframes render . --fps 60 -o renders/film.mp4     # full film
 
 Car models: free CC-BY Sketchfab models (CREDITS.md), kept out of git in models/src/; optimised copies in models/.
 
+## Website hero frames
+
+The site's home hero (components/hero-turn.tsx) plays the S-Class turning ~180° from 120 pre-rendered frames:
+`hero-turn.html` / `hero-turn.js` (the studio on the hero's ink `#0e0e0d`, overhead light, floor reflection), saved by
+
+```bash
+node tools/render-hero-turn.mjs                       # all frames → ../public/sclass-turn/{wide,tall}/0001–0120.webp
+node tools/render-hero-turn.mjs --frames 1,60,120 --out <dir>   # stills to check the look first
+```
+
+It uses the system Chrome (`CHROME_PATH` to override). `wide` is 1920×1080 with the car right of centre, `tall` is
+960×720 for phones. `npm test` in the site checks every frame exists, the size budget and the ink corners.
+
 ## Where this stopped (handoff, 2026-10-24)
 
 Done: brief, facts, storyboard v2 (after a critic round), renderer test (5 s, 1080×1920, 60 fps, deterministic), shared
@@ -31,8 +44,9 @@ Next:
    S-Class black, Range Rover white. Sketchfab exports carry a viewer tilt: `prep: unpose` clears it. Re-tune the
    camera keys per shot from stills.
    - S-Class: in (`models/src/sclass/`, glTF + bin + textures, ~50 MB, from Nirmal's Mercedes_S_Class.zip; not in git).
-     Upright, nose +z, paint material `Paint`. Still to do: the shot 3 camera (tuned on the Ferrari, now far too
-     close; title overlaps the roof), the window glass (renders fully clear), and its author in CREDITS.md.
+     Upright, nose +z, paint material `Paint`. Glass fixed (`tintGlass` in shared/cars.js: tinted
+     windows, clear headlamp lenses). Still to do: the shot 3 camera (tuned on the Ferrari, now far too close; title
+     overlaps the roof), and the model's author and licence in CREDITS.md.
 2. Check the Ghost model is the first generation (2009–2020); the S-Class close-ups must not show a toy-like grille.
 3. Component critic per shot, then a full render and the critic rounds in the kit
    (https://github.com/echris6/motion-video-kit, `business-motion-film/`): frozen time, contrast, brand colour on the

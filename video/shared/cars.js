@@ -4,10 +4,27 @@
 const DEV = './dev/ferrari.glb';
 // Sketchfab exports tilt the whole car into their viewer pose; clearing these two rotations leaves it upright.
 const unpose = m => ['Sketchfab_model', 'GLTF_SceneRootNode'].forEach(n => m.getObjectByName(n)?.quaternion.identity());
+// The S-Class glass is alpha 0 + transmission, which renders fully clear here: make the windows tinted, reflective glass.
+// The headlamp lenses use the same "Glass" material, so glass below the waistline (runs after scaling: metres) stays
+// nearly clear, or the lamps behind it turn black.
+const WAIST = 0.95;
+const tintGlass = (model, THREE) => model.traverse(o => {
+  if (!o.isMesh) return;
+  const mats = Array.isArray(o.material) ? o.material : [o.material];
+  mats.forEach((m, i) => {
+    if (!m.transmission) return;
+    const lens = /Rear Light/.test(m.name) || new THREE.Box3().setFromObject(o).getCenter(new THREE.Vector3()).y < WAIST;
+    const glass = m.clone();
+    Object.assign(glass, { transmission: 0, transparent: true, roughness: 0.03, metalness: 0, depthWrite: false, envMapIntensity: 1.6,
+      opacity: /Rear Light/.test(m.name) ? 0.7 : lens ? 0.12 : 0.82 });
+    if (!lens) glass.color.set('#07090b');
+    if (Array.isArray(o.material)) o.material[i] = glass; else o.material = glass;
+  });
+});
 export const CARS = [
   { id: 'rr', url: DEV, length: 5.05, paint: '#f1f0ec', paintMatch: /^Body_Color$/, pos: [-0.9, 3.2], heading: 0.55 },
   { id: 'sclass', url: './models/src/sclass/Mercedes_S_Class.gltf', prep: unpose, yaw: Math.PI / 2, length: 5.18,
-    paint: '#0b0c0e', paintMatch: /^Paint$/, paintMetal: 0.5, paintRough: 0.25, pos: [1.7, -3.8], heading: 0.55 },
+    paint: '#0b0c0e', paintMatch: /^Paint$/, paintMetal: 0.5, paintRough: 0.25, pos: [1.7, -3.8], heading: 0.55, fix: tintGlass },
   { id: 'ghost', url: DEV, length: 5.4, paint: '#f3f2ee', paintMatch: /^Body_Color$/, pos: [-1.3, -10.8], heading: 0.55 },
 ];
 
