@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { motion, useReducedMotion, useScroll, useTransform } from "motion/react";
+import { motion, useReducedMotion, useScroll, useSpring, useTransform } from "motion/react";
 import { useEffect, useRef, useState } from "react";
 import type { MotionValue } from "motion/react";
 import { IllustrativeTag } from "@/components/illustrative-tag";
@@ -24,6 +24,8 @@ const frameSize: Record<FrameSet, [number, number]> = { wide: [1920, 1080], tall
 // (0 = top enters, 1 = bottom leaves, 0.5 = centred): opens around the middle of the screen, closes as it leaves.
 const pinnedStops = [0.26, 0.435, 0.85, 1] as const;
 const passingStops = [0.3, 0.45, 0.6, 0.75] as const;
+
+const smooth = { stiffness: 140, damping: 30, mass: 0.5, restDelta: 0.0001 };
 
 /** Fully open: between the end of opening and the start of closing. */
 const isOpen = (p: number, stops: readonly number[]) => p >= stops[1] && p <= stops[2];
@@ -53,8 +55,10 @@ export function SClassBox({ car }: { car: { slug: string; model: string; years?:
   const [open, setOpen] = useState(false);
   const lgRef = useRef(false);
   // lg: from entering the screen until the end of the pinned stretch. Below lg: from entering to leaving the screen.
-  const pinned = useScroll({ target: section, offset: ["start end", "end end"] }).scrollYProgress;
-  const passing = useScroll({ target: section, offset: ["start end", "end start"] }).scrollYProgress;
+  // Both eased through a spring, so a fast flick or a mouse-wheel notch glides through the frames instead of jumping
+  // (Nirmal: make it smoother).
+  const pinned = useSpring(useScroll({ target: section, offset: ["start end", "end end"] }).scrollYProgress, smooth);
+  const passing = useSpring(useScroll({ target: section, offset: ["start end", "end start"] }).scrollYProgress, smooth);
   const clipPath = useTransform([pinned, passing] as MotionValue<number>[], ([a, b]: number[]) => {
     const inset = lgRef.current ? boxInset(a, 48, pinnedStops) : boxInset(b, 24, passingStops);
     return `inset(${inset.toFixed(1)}px round ${(inset / 3).toFixed(1)}px)`;
@@ -115,15 +119,18 @@ export function SClassBox({ car }: { car: { slug: string; model: string; years?:
       new Promise<void>((done) => {
         const img = new Image();
         img.decoding = "async";
-        img.onload = () => {
-          if (g !== gen) return done();
-          images[i] = img;
-          loaded[i] = true;
-          draw();
-          done();
-        };
-        img.onerror = () => done();
         img.src = frameUrl(set, i);
+        // Decoded before it's used, so drawing it while scrolling doesn't stall on the decode.
+        img.decode().then(
+          () => {
+            if (g !== gen) return done();
+            images[i] = img;
+            loaded[i] = true;
+            draw();
+            done();
+          },
+          () => done(),
+        );
       });
 
     const start = () => {
