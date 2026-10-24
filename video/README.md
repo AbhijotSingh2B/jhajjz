@@ -26,9 +26,13 @@ Next:
    - Ghost (first generation, like the client's): https://sketchfab.com/3d-models/rolls-royce-ghost-1f614e803fc24946b83bdc2dd9926d62
    - Range Rover L460: https://sketchfab.com/3d-models/land-rover-range-rover-l460-74dfbfd36dd3419cb935ce832e67957d
      (backup: https://sketchfab.com/3d-models/2022-land-rover-range-rover-fa4d79a5875e4733a71101e28a30e2e3)
-   Optimise with `npx gltf-transform optimize in.glb models/<id>.glb` (installed), then in `shared/cars.js` set each
+   **Don't optimise the models** (Nirmal: it lowers quality); load them as downloaded. In `shared/cars.js` set each
    `url`, `yaw` (so the nose points +z), `paintMatch` (the body paint material's name) and colour: Ghost white,
-   S-Class black, Range Rover white. Re-tune the camera keys per shot from stills.
+   S-Class black, Range Rover white. Sketchfab exports carry a viewer tilt: `prep: unpose` clears it. Re-tune the
+   camera keys per shot from stills.
+   - S-Class: in (`models/src/sclass/`, glTF + bin + textures, ~50 MB, from Nirmal's Mercedes_S_Class.zip; not in git).
+     Upright, nose +z, paint material `Paint`. Still to do: the shot 3 camera (tuned on the Ferrari, now far too
+     close; title overlaps the roof), the window glass (renders fully clear), and its author in CREDITS.md.
 2. Check the Ghost model is the first generation (2009–2020); the S-Class close-ups must not show a toy-like grille.
 3. Component critic per shot, then a full render and the critic rounds in the kit
    (https://github.com/echris6/motion-video-kit, `business-motion-film/`): frozen time, contrast, brand colour on the

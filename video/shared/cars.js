@@ -1,10 +1,13 @@
 // The three cars, where they are parked, and the camera for every shot.
 // Positions in metres on the studio floor; heading turns each car (nose along +z at 0).
-// MODELS: dev stand-in until the Sketchfab files arrive (see CREDITS.md).
+// MODELS: dev stand-in until the Sketchfab files arrive (see CREDITS.md). Used as downloaded, not optimised (Nirmal).
 const DEV = './dev/ferrari.glb';
+// Sketchfab exports tilt the whole car into their viewer pose; clearing these two rotations leaves it upright.
+const unpose = m => ['Sketchfab_model', 'GLTF_SceneRootNode'].forEach(n => m.getObjectByName(n)?.quaternion.identity());
 export const CARS = [
   { id: 'rr', url: DEV, length: 5.05, paint: '#f1f0ec', paintMatch: /^Body_Color$/, pos: [-0.9, 3.2], heading: 0.55 },
-  { id: 'sclass', url: DEV, length: 5.18, paint: '#0b0c0e', paintMatch: /^Body_Color$/, paintMetal: 0.5, paintRough: 0.25, pos: [1.7, -3.8], heading: 0.55 },
+  { id: 'sclass', url: './models/src/sclass/Mercedes_S_Class.gltf', prep: unpose, yaw: Math.PI / 2, length: 5.18,
+    paint: '#0b0c0e', paintMatch: /^Paint$/, paintMetal: 0.5, paintRough: 0.25, pos: [1.7, -3.8], heading: 0.55 },
   { id: 'ghost', url: DEV, length: 5.4, paint: '#f3f2ee', paintMatch: /^Body_Color$/, pos: [-1.3, -10.8], heading: 0.55 },
 ];
 

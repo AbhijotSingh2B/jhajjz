@@ -49,11 +49,12 @@ gltfLoader.setDRACOLoader(draco); gltfLoader.setMeshoptDecoder(MeshoptDecoder);
 
 /**
  * cfg: { url, length (m), yaw (rad, turns the model so its nose points +z), paint: hex, paintMatch: RegExp,
- *        pos: [x, z], heading (rad) }
+ *        pos: [x, z], heading (rad), prep(model) (runs before measuring, e.g. to undo a viewer pose) }
  */
 async function loadCar(cfg, envMap) {
   const gltf = await gltfLoader.loadAsync(cfg.url);
   const model = gltf.scene;
+  if (cfg.prep) cfg.prep(model);
   model.rotation.y = cfg.yaw || 0;
   model.updateMatrixWorld(true);
   const box = new THREE.Box3().setFromObject(model), size = box.getSize(new THREE.Vector3());
