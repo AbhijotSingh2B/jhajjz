@@ -34,6 +34,8 @@ export function Photo({
         {...props}
         alt={alt}
         data-photo={done ? "loaded" : "loading"}
+        // photoScript may already have set data-photo="loaded" before hydration; that's intended, not a mismatch.
+        suppressHydrationWarning
         onLoad={(e) => {
           setDone(true);
           onLoad?.(e);
