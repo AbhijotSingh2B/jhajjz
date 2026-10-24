@@ -51,6 +51,12 @@
     background: var(--color-ink);
     scroll-behavior: smooth;
     -webkit-tap-highlight-color: transparent;
+    /* No page scrollbar (Nirmal: the light track on Windows showed as a white bar beside the dark S-Class box and
+       hero). Wheel, trackpad, touch and keys still scroll; phones and Macs only show it while scrolling anyway. */
+    scrollbar-width: none;
+  }
+  html::-webkit-scrollbar {
+    display: none;
   }
   /* Radix's scroll lock (dialogs, sheet, selects) hides the scrollbar and adds its width as a right margin on body,
      so on computers the page jumped sideways and an ink strip showed. With a mouse, keep the scrollbar instead: the
