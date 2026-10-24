@@ -43,3 +43,6 @@ next-env.d.ts
 
 # design-taste skill working files (screenshots, reports)
 /.taste-skill/
+
+# superpowers plan workspaces (ledgers, briefs)
+/.superpowers/
